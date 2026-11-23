@@ -49,7 +49,7 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
   <div class="ct">
     <header class="hd">
       <div><p class="eb">${p.eb || SECOES[p.sec].nome}</p><h1>${p.t}</h1>${p.sub ? `<p class="sub">${p.sub}</p>` : ''}</div>
-      <div class="hd-r">${p.data ? `<span class="data">${ic('Calendar', 9)}<i></i>/<i></i>/<i></i></span>` : mark(22)}</div>
+      <div class="hd-r">${p.data ? `<span class="data">${ic('Calendar', 9)}<i></i>/<i></i>/<i></i></span>` : mark(22)}${p.dia ? `<span style="display:flex;align-items:center;gap:1.4mm;font-family:Mont;font-weight:700;font-size:5.8pt;letter-spacing:.08em;color:${C.terEsc}">DIA ${p.dia}/30<span style="width:22mm;height:1.3mm;border-radius:1mm;background:${C.creEsc};overflow:hidden;display:block"><span style="display:block;height:100%;width:${(p.dia / 30) * 100}%;background:${C.ter}"></span></span></span>` : ''}</div>
     </header>
     <div class="bd${p.sp ? ' sp' : ''}">${p.body(x)}</div>
     <footer class="ft">${rodapeEsq}<span class="mt">${mantra(i)}</span><span class="lg">${p.data ? mark(13) : ''}<span>PLANNER MENTE CALMA</span></span></footer>
@@ -129,7 +129,7 @@ const py = (...a) => execFileSync('python3', ['-I', path.join(DIR, 'impor.py'), 
 
   // ---------- REFIS (A4, cada folha = 2 cópias, frente e verso) ----------
   const todas = [...planner('imp'), ...bi.b1, ...bi.b2, ...bi.b3, ...bi.b4];
-  const por = Object.fromEntries(todas.map((p) => [p.key, p]));
+  const por = { ...Object.fromEntries(todas.map((p) => [p.key, p])), ...planner('imp').tpl };
   const PARES = [
     ['tpl-metodo', 'tpl-dia'], ['tpl-metodo', 'tpl-metodo'], ['tpl-dia', 'tpl-dia'], ['tpl-semana', 'tpl-revisao'], ['tpl-preoc', 'tpl-horario'], ['tpl-acelerada', 'tpl-acelerada'],
     ['tpl-habitos', 'tpl-sono'], ['tpl-contas', 'tpl-dinheiro'], ['tpl-recomeco', 'tpl-pautada'], ['tpl-pautada', 'tpl-pontilhada'],
@@ -149,6 +149,12 @@ const py = (...a) => execFileSync('python3', ['-I', path.join(DIR, 'impor.py'), 
   py('cortar', t, MARCAS, path.join(OUT, 'Teste de impressao frente e verso (1 folha).pdf'));
 
   await browser.close();
-  console.log('PDFs gerados em', OUT);
+  // Cópia para o site (entrega por e-mail). Pasta no .gitignore enquanto o repositório for público.
+  const pasta = fs.readFileSync(path.join(DIR, '..', 'src', 'config', 'entrega.ts'), 'utf8').match(/PASTA = '([^']+)'/)[1];
+  const PUB = path.join(DIR, '..', 'public', pasta);
+  fs.rmSync(PUB, { recursive: true, force: true });
+  fs.mkdirSync(PUB, { recursive: true });
+  for (const f of fs.readdirSync(OUT)) fs.copyFileSync(path.join(OUT, f), path.join(PUB, f));
+  console.log('PDFs gerados em', OUT, 'e copiados para public/' + pasta);
   for (const f of fs.readdirSync(OUT)) console.log(' ·', f, (fs.statSync(path.join(OUT, f)).size / 1024).toFixed(0) + ' KB');
 })();

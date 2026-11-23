@@ -7,7 +7,8 @@ import { Logo } from '@/components/Logo';
 const KEY = 'pmc:pv';
 const AUTH = 'pmc:admin';
 
-type Status = { checkout: boolean; pixel: boolean; utmify: boolean; suporte: boolean; exemplo: boolean };
+type Status = { checkout: boolean; pixel: boolean; utmify: boolean; suporte: boolean; exemplo: boolean; resend: boolean; from: boolean; kiwify: boolean; segredo: boolean; site: string };
+const SENHA = 'pmc:admin-senha';
 
 export function Painel({ status }: { status: Status }) {
   const [entrou, setEntrou] = useState(false);
@@ -43,6 +44,7 @@ export function Painel({ status }: { status: Status }) {
     if (d.aviso) setAviso(d.aviso);
     try {
       sessionStorage.setItem(AUTH, '1');
+      sessionStorage.setItem(SENHA, senha);
     } catch {
       /* ignore */
     }
@@ -92,12 +94,15 @@ export function Painel({ status }: { status: Status }) {
             <p className="mt-3 text-[13px] text-grafite/55">Essas variáveis ficam na Vercel (Settings → Environment Variables) e valem depois de um novo deploy.</p>
           </section>
 
+          <Entrega status={status} />
+
           <button
             type="button"
             onClick={() => {
               salvar({});
               try {
                 sessionStorage.removeItem(AUTH);
+                sessionStorage.removeItem(SENHA);
               } catch {
                 /* ignore */
               }
@@ -135,5 +140,73 @@ function Item({ ok, t, d }: { ok: boolean; t: string; d: string }) {
         <b>{t}</b> <span className="text-grafite/50">· {ok ? 'configurado' : `falta ${d}`}</span>
       </span>
     </li>
+  );
+}
+
+function Entrega({ status }: { status: Status }) {
+  const [email, setEmail] = useState('');
+  const [nome, setNome] = useState('');
+  const [msg, setMsg] = useState<{ ok: boolean; t: string; link?: string } | null>(null);
+  const [enviando, setEnviando] = useState(false);
+  const site = status.site || (typeof window !== 'undefined' ? window.location.origin : '');
+
+  const agir = async (enviar: boolean) => {
+    setEnviando(true);
+    setMsg(null);
+    let senha = '';
+    try {
+      senha = sessionStorage.getItem(SENHA) || '';
+    } catch {
+      /* ignore */
+    }
+    const r = await fetch('/api/admin/reenviar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ senha, email, nome, enviar }) });
+    const d = await r.json().catch(() => ({}));
+    setEnviando(false);
+    setMsg(d.ok ? { ok: true, t: enviar ? 'E-mail enviado.' : 'Link gerado (não enviado).', link: d.link } : { ok: false, t: d.erro || 'Não deu certo.', link: d.link });
+  };
+
+  return (
+    <section className="card p-5">
+      <h2 className="text-[18px] font-bold">Entrega por e-mail</h2>
+      <p className="mt-1 text-[14px] text-grafite/65">
+        Compra aprovada na Kiwify → o site recebe o aviso e envia um e-mail (Resend) com os links do planner e dos bônus, e uma área de downloads.
+      </p>
+      <ul className="mt-3 space-y-2 text-[14.5px]">
+        <Item ok={status.resend} t="Chave do Resend" d="RESEND_API_KEY" />
+        <Item ok={status.from} t="Remetente (domínio verificado no Resend)" d="EMAIL_FROM" />
+        <Item ok={status.kiwify} t="Token do webhook da Kiwify" d="KIWIFY_WEBHOOK_TOKEN" />
+        <Item ok={status.segredo} t="Segredo dos links de acesso" d="ENTREGA_SECRET" />
+      </ul>
+      <p className="mt-3 rounded-xl bg-creme p-3 text-[13px] leading-relaxed text-grafite/70">
+        URL do webhook na Kiwify (evento <b>Compra aprovada</b>):<br />
+        <code className="break-all font-bold text-grafite">{site}/api/kiwify</code>
+      </p>
+
+      <h3 className="mt-5 font-display text-[15px] font-bold">Reenviar acesso</h3>
+      <div className="mt-2 space-y-2">
+        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="e-mail da compradora" type="email" className="w-full rounded-xl border border-grafite/15 bg-white px-4 py-3 text-[16px] outline-none focus:border-petroleo" />
+        <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome (opcional)" className="w-full rounded-xl border border-grafite/15 bg-white px-4 py-3 text-[16px] outline-none focus:border-petroleo" />
+        <div className="flex gap-2">
+          <button type="button" disabled={enviando || !email} onClick={() => agir(true)} className="btn-verde !min-w-0 flex-1 disabled:opacity-50">
+            {enviando ? 'Enviando…' : 'Enviar e-mail'}
+          </button>
+          <button type="button" disabled={enviando || !email} onClick={() => agir(false)} className="flex-1 rounded-full border border-grafite/15 bg-white px-4 text-[14px] font-bold disabled:opacity-50">
+            Só gerar o link
+          </button>
+        </div>
+      </div>
+      {msg && (
+        <div className={`mt-3 rounded-xl p-3 text-[13.5px] ${msg.ok ? 'bg-salvia-bg' : 'bg-terracota-claro'}`}>
+          <b>{msg.t}</b>
+          {msg.link && (
+            <p className="mt-1 break-all">
+              <a href={msg.link} target="_blank" rel="noreferrer" className="underline">
+                {msg.link}
+              </a>
+            </p>
+          )}
+        </div>
+      )}
+    </section>
   );
 }

@@ -1,6 +1,10 @@
 # Planner Mente Calma: arquivos do produto
 
-Os PDFs prontos para entrega estão em `planner/dist/`. Suba para a área de membros da Kiwify:
+Os PDFs são gerados em `planner/dist/` e copiados para `public/<pasta secreta>` (ver `src/config/entrega.ts`).
+A entrega é por e-mail: compra aprovada na Kiwify → `/api/kiwify` → e-mail (Resend) com os links e a área `/acesso`.
+
+**Atenção:** enquanto o repositório for público, os PDFs ficam fora do git (`.gitignore`), senão qualquer pessoa baixaria.
+Com o repositório privado, tire as linhas `planner/dist/` e `public/a-*/` do `.gitignore` e faça commit dos PDFs.
 
 | Arquivo | Para quê |
 |---|---|

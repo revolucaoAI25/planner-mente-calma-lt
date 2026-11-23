@@ -5,7 +5,7 @@ import { C, ic, mark, ondas, fill, dots, linhas, box, escala, chk, chkLinha, cam
 export const SECOES = {
   inicio: { nome: 'Início', cor: C.pet },
   metodo: { nome: 'Método', cor: C.pet },
-  dia: { nome: 'Dia', cor: C.terEsc },
+  dia: { nome: '30 dias', cor: C.terEsc },
   semana: { nome: 'Semana', cor: C.salEsc },
   mes: { nome: 'Mês', cor: C.pet },
   preoc: { nome: 'Preocupações', cor: C.terEsc },
@@ -80,7 +80,7 @@ const paginaDia = () => `
     ${box({ icon: 'Clock', t: 'Compromissos com hora', cor: 'white', body: fill(6.4, 'hora') })}
     <div class="col" style="min-height:0">
       ${box({ icon: 'ListPlus', t: 'Se sobrar tempo', cor: 'cre', cls: 'grow', body: fill(6.4) })}
-      ${box({ icon: 'Coffee', t: 'Pausas', s: 'sem culpa', cor: 'ter', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 2mm;margin-top:.8mm">${['água', 'respirar', 'comer bem', 'mexer o corpo', '5 min sem tela', 'ar livre'].map((t) => chk(t)).join('')}</div>` })}
+      ${box({ icon: 'Coffee', t: 'Pausas', s: 'sem culpa', cor: 'ter', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 2mm;margin-top:.8mm">${['água', 'respirar', 'comer bem', 'mexer-se', 'sem tela', 'ar livre'].map((t) => chk(t)).join('')}</div>` })}
     </div>
   </div>
   ${box({ icon: 'ArrowRightCircle', t: 'Pode ficar para amanhã', s: 'e está tudo bem', cor: 'cre', style: 'flex:0 0 auto', body: linhas(2) })}
@@ -203,15 +203,19 @@ export function planner(modo) {
         ['Tablet', 'No tablet', 'Arquivo “Tablet”. Abas clicáveis. Funciona no GoodNotes, Notability, Samsung Notes, Noteshelf, Xodo e outros.'],
       ].map(([i, t, d]) => `<div class="box b-cre" style="padding:2.6mm"><span class="bi" style="background:${C.pet};color:#fff;width:6mm;height:6mm">${ic(i, 12)}</span><p class="h2" style="font-size:8.2pt;margin-top:1.6mm">${t}</p><p class="mini" style="margin-top:.8mm;font-size:6.6pt">${d}</p></div>`).join('')}
     </div>
-    ${box({ icon: 'Repeat', t: 'Imprima quantas vezes quiser', cor: 'sal', style: 'flex:0 0 auto', body: `<p class="tx" style="font-size:7.6pt;margin-top:1mm">As páginas são <b>sem datas</b>. Comece em qualquer dia do ano e imprima de novo as páginas que você mais usa. O arquivo <b>“Refis”</b> já vem com as páginas do dia a dia prontas para imprimir em quantidade.</p>` })}
+    ${box({ icon: 'PenLine', t: 'Como preencher', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:1.2mm;margin-top:1.4mm;font-size:7.6pt;line-height:1.42">
+      <p><b>À caneta mesmo.</b> Cada página é usada uma vez. O planner já vem com <b>30 dias prontos</b>: cada dia ocupa uma página dupla, e cada semana abre com o planejamento e fecha com a revisão.</p>
+      <p><b>Acabaram os 30 dias?</b> Imprima o arquivo de novo para um novo ciclo, ou só os <b>Refis</b> das páginas que você mais usa. As páginas não têm datas: comece em qualquer dia do ano.</p>
+      <p><b>No tablet</b>, escreva com a caneta digital ou o dedo. Para repetir uma página, use “duplicar” no seu app.</p>
+    </div>` })}
     ${box({ icon: 'Map', t: 'O caminho mais simples', cor: 'white', cls: 'grow', body: `
       <div style="display:flex;flex-direction:column;justify-content:space-evenly;flex:1;gap:2.2mm;margin-top:2mm">
         ${[
-          ['Todo dia, 10 min', 'Mente em 3 Lugares', 'quando a cabeça encher, de manhã ou à noite'],
-          ['Todo dia, 3 min', 'Meu dia sem sobrecarga', '3 prioridades e um primeiro passo'],
-          ['Uma vez por semana', 'Semana leve + Revisão', 'domingo ou segunda, 15 minutos'],
+          ['Todo dia, 10 min', 'Mente em 3 Lugares', 'página da esquerda de cada dia'],
+          ['Todo dia, 3 min', 'Meu dia sem sobrecarga', 'página da direita de cada dia'],
+          ['Uma vez por semana', 'Semana leve + Revisão', 'abrem e fecham cada semana'],
           ['Quando apertar', 'Modo Mente Acelerada', 'uma página só, para os momentos difíceis'],
-          ['Quando o “e se…” não para', 'Organizador de preocupações', 'separe o real do imaginado'],
+          ['No começo do mês', 'Meu mês, hábitos e contas', '15 minutos, uma vez por mês'],
           ['Depois de dias difíceis', 'Página de recomeço', 'volte sem culpa'],
         ].map(([q, t, d]) => `<div style="display:flex;gap:2.6mm;align-items:baseline"><span class="lbl" style="width:27mm;flex-shrink:0;color:${C.terEsc}">${q}</span><p style="font-size:7.8pt"><b>${t}</b> <span class="mini it">· ${d}</span></p></div>`).join('')}
       </div>` })}
@@ -223,12 +227,9 @@ export function planner(modo) {
       const grupos = [
         ['Início', [['Boas-vindas', 'boasvindas'], ['Como usar', 'comousar'], ['Sua primeira semana', 'primeirasemana'], ['Meu ponto de partida', 'partida']]],
         ['O Método', [['Mente em 3 Lugares', 'metodo1'], ['Exemplo preenchido', 'exemplo'], ['Isso vai para onde?', 'fluxo'], ['Perguntas que acalmam', 'perguntas']]],
-        ['Dia a dia', [...(modo === 'dig' ? [['Jornada de 30 dias', 'jornada']] : []), ['Mente em 3 Lugares', 'tpl-metodo'], ['Meu dia sem sobrecarga', 'tpl-dia']]],
-        ['Semana e mês', [['Semana leve', 'tpl-semana'], ['Revisão da semana', 'tpl-revisao'], ['Meu mês', 'tpl-mes'], ['Calendário sem datas', 'tpl-cal']]],
-        ['Preocupações', [['Organizador de preocupações', 'tpl-preoc'], ['Horário da preocupação', 'tpl-horario'], ['Modo Mente Acelerada', 'tpl-acelerada']]],
-        ['Hábitos e autocuidado', [['Hábitos e ansiedade do mês', 'tpl-habitos'], ['Sono e energia', 'tpl-sono'], ['Menu de autocuidado', 'autocuidado']]],
-        ['Finanças', [['Contas do mês', 'tpl-contas'], ['Meu dinheiro sem susto', 'tpl-dinheiro']]],
-        ['Recomeço', [['Página de recomeço', 'tpl-recomeco'], ['Minha evolução em 30 dias', 'evolucao']]],
+        ['Começo do mês', [['Meu mês', 'tpl-mes'], ['Calendário sem datas', 'tpl-cal'], ['Hábitos e ansiedade', 'tpl-habitos'], ['Sono e energia', 'tpl-sono'], ['Contas do mês', 'tpl-contas'], ['Meu dinheiro sem susto', 'tpl-dinheiro']]],
+        ['Jornada de 30 dias', [['Mapa da jornada', 'jornada'], ['Semana 1 · dias 1 a 7', 's1-plano'], ['Semana 2 · dias 8 a 14', 's2-plano'], ['Semana 3 · dias 15 a 21', 's3-plano'], ['Semana 4 · dias 22 a 28', 's4-plano'], ['Dias 29 e 30', 'd29-m']]],
+        ['Para quando precisar', [['Modo Mente Acelerada', 'acelerada-1'], ['Horário da preocupação', 'tpl-horario'], ['Menu de autocuidado', 'autocuidado'], ['Página de recomeço', 'recomeco-1'], ['Minha evolução em 30 dias', 'evolucao']]],
         ['Notas', [['Pautada', 'tpl-pautada'], ['Pontilhada', 'tpl-pontilhada']]],
       ];
       return `<div style="columns:2;column-gap:5mm;flex:1">
@@ -246,14 +247,15 @@ export function planner(modo) {
 
   add({
     key: 'primeirasemana', sp: true, sec: 'inicio', eb: 'Comece por aqui', t: 'Sua primeira semana: <span class="gr">só 2 páginas</span>', body: (x) => `
-    <p class="tx">Começar com tudo é o jeito mais rápido de desistir. Na primeira semana, use <b>apenas duas páginas por dia</b>: a <b>Mente em 3 Lugares</b> ${modo === 'imp' ? `(p. ${x.pn('tpl-metodo')})` : ''} e o <b>Meu dia sem sobrecarga</b> ${modo === 'imp' ? `(p. ${x.pn('tpl-dia')})` : ''}. Marque abaixo e anote a ansiedade antes e depois do método: você vai <b>ver a diferença no papel</b>.</p>
+    <p class="tx">Começar com tudo é o jeito mais rápido de desistir. Na primeira semana, use <b>apenas as duas páginas de cada dia</b>: a <b>Mente em 3 Lugares</b> e o <b>Meu dia sem sobrecarga</b>${modo === 'imp' ? ` (a partir da p. ${x.pn('d1-m')})` : ''}. Pode pular a Semana leve e o Organizador por enquanto. Marque abaixo e anote a ansiedade antes e depois do método: você vai <b>ver a diferença no papel</b>.</p>
     <table class="tb" style="flex:0 0 auto">
       <tr><th>Dia</th><th style="text-align:center">Mente em 3 Lugares</th><th style="text-align:center">Meu dia</th><th style="text-align:center">Ansiedade antes</th><th style="text-align:center">Depois</th></tr>
       ${Array.from({ length: 7 }, (_, i) => `<tr style="height:10.6mm"><td><b style="font-family:Mont;color:${C.pet};font-size:9pt">${i + 1}</b></td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center;color:${C.gra}55">___ /10</td><td style="text-align:center;color:${C.gra}55">___ /10</td></tr>`).join('')}
     </table>
     ${box({ icon: 'Sprout', t: 'Da segunda semana em diante, se quiser', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:1.2mm;margin-top:1.4mm;font-size:7.8pt">
-      <p><b>+ Semana leve e Revisão</b>, uma vez por semana.</p>
+      <p><b>+ Semana leve e Revisão</b>, que abrem e fecham cada semana.</p>
       <p><b>+ Organizador de preocupações</b>, quando o “e se…” não parar.</p>
+      <p><b>+ Começo do mês</b>: hábitos, sono e contas, se fizer sentido para você.</p>
       <p><b>+ Ritual antes de dormir</b> (bônus), se a cabeça não desliga à noite.</p>
     </div>` })}
     <div class="box b-pet" style="flex-direction:row;gap:3mm;align-items:center;flex:0 0 auto">
@@ -356,38 +358,35 @@ export function planner(modo) {
     ${box({ icon: 'PenLine', t: 'Minhas frases', s: 'as que funcionam para você', cor: 'line', cls: 'grow', body: fill() })}`,
   });
 
-  // ---------- DIA (modelos) ----------
-  add({ key: 'tpl-metodo', sec: 'dia', anchor: true, eb: 'Mente em 3 Lugares', t: 'Tire tudo da cabeça', sub: '10 minutos · sempre que a cabeça encher', data: true, refil: true, body: () => paginaMetodo() });
-  add({ key: 'tpl-dia', sec: 'dia', eb: 'Diário', t: 'Meu dia <span class="gr">sem sobrecarga</span>', sub: 'o dia não precisa caber numa lista interminável', data: true, refil: true, body: () => paginaDia() });
+  // ---------- MODELOS (registrados; a ordem final é montada no fim) ----------
+  const T = {};
+  const reg = (p) => (T[p.key] = p);
+  reg({ key: 'tpl-metodo', sec: 'dia', eb: 'Mente em 3 Lugares', t: 'Tire tudo da cabeça', sub: '10 minutos · sempre que a cabeça encher', data: true, refil: true, body: () => paginaMetodo() });
+  reg({ key: 'tpl-dia', sec: 'dia', eb: 'Diário', t: 'Meu dia <span class="gr">sem sobrecarga</span>', sub: 'o dia não precisa caber numa lista interminável', data: true, refil: true, body: () => paginaDia() });
+  reg({ key: 'tpl-semana', sec: 'semana', eb: 'Planejamento semanal', t: 'Semana <span class="gr">leve</span>', sub: 'sem datas · comece em qualquer dia', refil: true, body: () => paginaSemana() });
+  reg({ key: 'tpl-revisao', sec: 'semana', eb: 'Fechamento da semana', t: 'Revisão da semana', sub: '15 minutos para fechar a semana com leveza', data: true, refil: true, body: () => paginaRevisao() });
+  reg({
+    key: 'jornada', sec: 'dia', eb: 'Seu mapa', t: 'Jornada de <span class="gr">30 dias</span>', sub: 'o “Dia 1” é o dia em que você começar', body: (x) => `
+    <p class="tx">Cada dia tem <b>2 páginas lado a lado</b>: à esquerda a <b>Mente em 3 Lugares</b>, à direita o <b>Meu dia</b>. Cada semana começa com a <b>Semana leve</b> e termina com a <b>Revisão</b>. ${modo === 'dig' ? 'Toque no número para ir direto ao dia.' : 'Marque o círculo de cada dia feito.'} Pulou um dia? Siga do próximo número, sem culpa.</p>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:2mm">
+      ${[0, 1, 2, 3, 4].map((s) => {
+        const dias = s < 4 ? Array.from({ length: 7 }, (_, i) => s * 7 + i + 1) : [29, 30];
+        return `<div style="display:flex;gap:1.6mm;align-items:stretch">
+          <${modo === 'dig' && s < 4 ? `a href="#p-s${s + 1}-plano"` : 'div'} style="width:15mm;flex-shrink:0;border-radius:2.4mm;background:${s < 4 ? C.pet : C.terEsc};color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.6mm 0"><span style="font-family:Mont;font-weight:700;font-size:5.4pt;letter-spacing:.12em;opacity:.8">${s < 4 ? 'SEMANA' : 'FINAL'}</span><span style="font-family:Mont;font-weight:700;font-size:13pt;line-height:1">${s < 4 ? s + 1 : '✦'}</span></${modo === 'dig' && s < 4 ? 'a' : 'div'}>
+          ${dias.map((d) => `<${modo === 'dig' ? `a href="#p-d${d}-m"` : 'div'} style="flex:1;max-width:13.4mm;border-radius:2.4mm;background:${s % 2 ? C.cre : C.salBg};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8mm;padding:1.6mm 0;min-height:13mm">
+            <span style="font-family:Mont;font-weight:700;font-size:11pt;color:${C.pet};line-height:1">${d}</span>
+            ${modo === 'dig' ? `<span style="font-size:5pt;color:${C.gra}77">abrir ›</span>` : `<span style="width:3.4mm;height:3.4mm;border-radius:50%;border:.3mm solid ${C.pet};background:#fff"></span><span style="font-size:5pt;color:${C.gra}77">p. ${x.pn(`d${d}-m`)}</span>`}
+          </${modo === 'dig' ? 'a' : 'div'}>`).join('')}
+          ${s === 4 ? `<${modo === 'dig' ? 'a href="#p-evolucao"' : 'div'} style="flex:3;border-radius:2.4mm;background:${C.terCl};display:flex;align-items:center;gap:2mm;padding:0 3mm;color:${C.terEsc}">${ic('TrendingUp', 16)}<span style="font-size:7.4pt;color:${C.gra}"><b>Dia 30:</b> preencha “Minha evolução”${modo === 'dig' ? '' : ` (p. ${x.pn('evolucao')})`} e compare com o seu ponto de partida.</span></${modo === 'dig' ? 'a' : 'div'}>` : ''}
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="box b-cre" style="flex-direction:row;gap:3mm;align-items:center;flex:0 0 auto">${ic('Repeat', 16, C.pet)}<p style="font-size:7.6pt;line-height:1.45"><b>Terminou os 30 dias?</b> ${modo === 'dig' ? 'Duplique as páginas da semana no seu app ou importe o arquivo de novo em branco para um novo ciclo.' : 'Imprima o arquivo de novo para um novo ciclo, ou só os <b>Refis</b> das páginas que você mais usa.'}</p></div>`,
+  });
 
-  // JORNADA DE 30 DIAS (só tablet)
-  if (modo === 'dig') {
-    add({
-      key: 'jornada', sec: 'dia', eb: 'Tablet', t: 'Jornada de <span class="gr">30 dias</span>', sub: 'cada dia tem 2 páginas: Mente em 3 Lugares e Meu dia', body: () => `
-      <p class="tx">Toque no dia para ir direto à página. Não precisa seguir o calendário: <b>o “Dia 1” é o dia em que você começar</b>. Pulou um dia? Continue no próximo número, sem culpa.</p>
-      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2.2mm;flex:1;grid-auto-rows:1fr">
-        ${Array.from({ length: 30 }, (_, i) => `<a href="#p-d${i + 1}-m" style="border-radius:3mm;background:${i % 7 === 6 ? C.terCl : i < 7 ? C.salBg : '#fff'};border:.3mm solid ${C.creEsc};display:flex;flex-direction:column;align-items:center;justify-content:center"><span class="lbl" style="font-size:5.4pt">Dia</span><span style="font-family:Mont;font-weight:700;font-size:15pt;color:${C.pet};line-height:1">${i + 1}</span></a>`).join('')}
-      </div>
-      <div class="row" style="flex:0 0 auto">
-        <a href="#p-evolucao" class="box b-pet" style="flex-direction:row;align-items:center;gap:2.4mm">${ic('TrendingUp', 15, C.ter)}<span style="font-size:7.6pt"><b>No dia 30:</b> preencha a página “Minha evolução”.</span></a>
-      </div>`,
-    });
-    for (let d = 1; d <= 30; d++) {
-      add({ key: `d${d}-m`, sec: 'dia', voltar: 'jornada', eb: `Dia ${d} · Mente em 3 Lugares`, t: 'Tire tudo da cabeça', sub: '10 minutos · sempre que a cabeça encher', data: true, body: () => paginaMetodo() });
-      add({ key: `d${d}-d`, sec: 'dia', voltar: 'jornada', eb: `Dia ${d} · Meu dia`, t: 'Meu dia <span class="gr">sem sobrecarga</span>', sub: 'o dia não precisa caber numa lista interminável', data: true, body: () => paginaDia() });
-    }
-  }
-
-  // ---------- SEMANA ----------
-  const nSem = modo === 'dig' ? 4 : 1;
-  for (let s = 1; s <= nSem; s++) {
-    const suf = s === 1 ? '' : `-${s}`;
-    add({ key: `tpl-semana${suf}`, sec: 'semana', anchor: s === 1, eb: modo === 'dig' ? `Semana ${s}` : 'Planejamento semanal', t: 'Semana <span class="gr">leve</span>', sub: 'sem datas · comece em qualquer dia', refil: s === 1, body: () => paginaSemana() });
-    add({ key: `tpl-revisao${suf}`, sec: 'semana', eb: modo === 'dig' ? `Semana ${s} · fechamento` : 'Fechamento da semana', t: 'Revisão da semana', sub: '15 minutos para fechar a semana com leveza', data: true, refil: s === 1, body: () => paginaRevisao() });
-  }
 
   // ---------- MÊS ----------
-  add({
+  reg({
     key: 'tpl-mes', sec: 'mes', anchor: true, eb: 'Visão do mês', t: 'Meu mês', sub: 'poucas metas, bem escolhidas', body: () => `
     <div class="row" style="flex:0 0 auto;align-items:flex-end">${campo('Mês:', '40mm')}${campo('Ano:', '18mm')}</div>
     ${box({ icon: 'Target', t: 'Meu foco deste mês', s: 'uma palavra ou uma frase', cor: 'pet', style: 'flex:0 0 auto', body: linhas(2) })}
@@ -400,7 +399,7 @@ export function planner(modo) {
       </div>
     </div>`,
   });
-  add({
+  reg({
     key: 'tpl-cal', sec: 'mes', eb: 'Calendário', t: 'Mês sem datas', sub: 'escreva os números no cantinho de cada dia', body: () => `
     <div class="row" style="flex:0 0 auto">${campo('Mês:', '40mm')}</div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1.1mm;flex:0 0 auto">
@@ -413,7 +412,7 @@ export function planner(modo) {
   });
 
   // ---------- PREOCUPAÇÕES ----------
-  add({
+  reg({
     key: 'tpl-preoc', sec: 'preoc', anchor: true, eb: 'Organizador', t: 'Organizador de <span class="gr">preocupações</span>', sub: 'separe o que é real do que é antecipação', data: true, refil: true, body: () => `
     <div class="g3" style="flex:0 0 auto">
       ${[['R', 'Problema real', 'está acontecendo e tem ação', 'sal'], ['F', 'Situação futura', 'pode acontecer, ganha data', 'cre'], ['P', 'Pensamento repetitivo', 'volta e volta, sem ação', 'ter']].map(([l, t, d, c]) => `<div class="box b-${c}" style="padding:2mm 2.4mm;flex-direction:row;gap:2mm;align-items:center"><span class="num" style="flex-shrink:0;background:${c === 'ter' ? C.terEsc : C.pet}">${l}</span><span><b style="font-size:7pt;line-height:1.2;display:block">${t}</b><span class="mini it" style="font-size:6.2pt">${d}</span></span></div>`).join('')}
@@ -425,7 +424,7 @@ export function planner(modo) {
     ${box({ icon: 'Footprints', t: 'O que eu posso fazer hoje?', s: 'só o que depende de mim', cor: 'dash', cls: 'grow', body: fill() })}
     <p class="quote" style="font-size:7.6pt;flex:0 0 auto">Preocupação anotada é preocupação que você não precisa ficar segurando.</p>`,
   });
-  add({
+  reg({
     key: 'tpl-horario', sec: 'preoc', eb: 'Técnica', t: 'Horário da preocupação', sub: 'em vez de se preocupar o dia todo, marque um horário para isso', refil: true, body: () => `
     <div class="box b-sal" style="flex:0 0 auto">
       <div class="bt">${ic('AlarmClock', 11)}<span>Como funciona</span></div>
@@ -440,10 +439,10 @@ export function planner(modo) {
     </table>`,
   });
 
-  add({ key: 'tpl-acelerada', sec: 'preoc', eb: 'Para os dias difíceis', t: 'Modo <span class="gr">Mente Acelerada</span>', sub: 'uma página só, para quando a cabeça estiver a mil', data: true, refil: true, body: (x) => bonus(modo).b1.find((p) => p.key === 'b1-sos').body(x) });
+  reg({ key: 'tpl-acelerada', sec: 'preoc', eb: 'Para os dias difíceis', t: 'Modo <span class="gr">Mente Acelerada</span>', sub: 'uma página só, para quando a cabeça estiver a mil', data: true, refil: true, body: (x) => bonus(modo).b1.find((p) => p.key === 'b1-sos').body(x) });
 
   // ---------- HÁBITOS ----------
-  add({
+  reg({
     key: 'tpl-habitos', sec: 'habitos', anchor: true, eb: 'Rastreador do mês', t: 'Hábitos e ansiedade', sub: 'pinte o que fez. não precisa ser todo dia', refil: true, body: () => {
       const cols = 6;
       return `
@@ -456,7 +455,7 @@ export function planner(modo) {
       </div>`;
     },
   });
-  add({
+  reg({
     key: 'tpl-sono', sec: 'habitos', eb: 'Rastreador do mês', t: 'Sono e energia', sub: 'descobrir padrões ajuda a cuidar melhor de você', refil: true, body: () => `
       <div class="row" style="flex:0 0 auto">${campo('Mês:', '34mm')}</div>
       <table class="tb" style="flex:1">
@@ -465,7 +464,7 @@ export function planner(modo) {
         ${Array.from({ length: 31 }, (_, d) => `<tr><td style="font-family:Mont;font-weight:700;color:${C.pet};font-size:6pt">${d + 1}</td><td style="color:${C.gra}44;text-align:center;font-size:6pt">__:__</td><td style="color:${C.gra}44;text-align:center;font-size:6pt">__:__</td>${[0, 1, 2].map((c) => `<td style="text-align:center">${[0, 1, 2].map(() => `<span style="display:inline-block;width:2.8mm;height:2.8mm;border-radius:50%;border:.28mm solid ${c === 2 ? C.ter : C.sal};margin:0 .9mm;vertical-align:middle"></span>`).join('')}</td>`).join('')}</tr>`).join('')}
       </table>`,
   });
-  add({
+  reg({
     key: 'autocuidado', sec: 'habitos', eb: 'Para os dias pesados', t: 'Menu de <span class="gr">autocuidado</span>', sub: 'escolha um item quando não souber o que fazer por você', body: () => `
     <div class="row" style="flex:1;min-height:0">
       ${[['Zap', '2 minutos', 'sal', ['beber um copo d’água', 'respirar 4-4-6, 4 vezes', 'lavar o rosto', 'abrir a janela', 'alongar o pescoço', 'colocar uma música']], ['Timer', '15 minutos', 'cre', ['caminhar no quarteirão', 'tomar um banho sem pressa', 'ligar para alguém querido', 'arrumar só uma gaveta', 'tomar sol', 'escrever no planner']], ['Sun', '1 hora ou mais', 'ter', ['cozinhar algo gostoso', 'ver um filme sem celular', 'cochilar sem culpa', 'encontrar uma amiga', 'fazer algo manual', 'ficar em contato com a natureza']]].map(([i, t, c, l]) => `
@@ -478,7 +477,7 @@ export function planner(modo) {
   });
 
   // ---------- FINANÇAS ----------
-  add({
+  reg({
     key: 'tpl-contas', sec: 'financas', anchor: true, eb: 'Finanças', t: 'Contas do mês', sub: 'conta anotada não fica martelando na cabeça', refil: true, body: () => `
     <div class="row" style="flex:0 0 auto">${campo('Mês:', '34mm')}</div>
     <table class="tb" style="flex:1">
@@ -488,7 +487,7 @@ export function planner(modo) {
     </table>
     ${box({ icon: 'BellRing', t: 'Ação desta semana', s: 'ex.: renegociar, cancelar, pedir 2ª via', cor: 'dash', style: 'flex:0 0 auto', body: linhas(2) })}`,
   });
-  add({
+  reg({
     key: 'tpl-dinheiro', sec: 'financas', eb: 'Finanças', t: 'Meu dinheiro <span class="gr">sem susto</span>', sub: 'olhar o número real assusta menos que imaginar', refil: true, body: () => `
     <div class="row" style="flex:0 0 auto">${campo('Mês:', '34mm')}</div>
     <div class="g3" style="flex:0 0 auto">
@@ -502,7 +501,7 @@ export function planner(modo) {
   });
 
   // ---------- RECOMEÇO ----------
-  add({
+  reg({
     key: 'tpl-recomeco', sec: 'recomeco', anchor: true, eb: 'Sem culpa', t: 'Página de <span class="gr">recomeço</span>', sub: 'pulou dias? tudo bem. recomece daqui.', data: true, refil: true, body: () => `
     <div class="box b-pet" style="flex-direction:row;gap:3mm;align-items:center;flex:0 0 auto">${ic('RefreshCcw', 18, C.ter)}<p style="font-size:7.8pt;line-height:1.45">Você <b>não</b> precisa preencher as páginas que ficaram em branco. Ninguém está contando. Hoje é um bom dia para voltar.</p></div>
     ${box({ icon: 'Archive', t: 'O que ficou para trás', s: 'sem culpa, só para tirar da cabeça', cor: 'cre', cls: 'grow', body: fill() })}
@@ -510,7 +509,7 @@ export function planner(modo) {
     ${box({ icon: 'Wind', t: 'O que eu posso soltar', cor: 'ter', cls: 'grow', body: fill() })}
     ${box({ icon: 'Footprints', t: 'Recomeço por aqui', s: 'uma ação, hoje', cor: 'dash', style: 'flex:0 0 auto', body: linhas(2) })}`,
   });
-  add({
+  reg({
     key: 'evolucao', sec: 'recomeco', eb: '30 dias depois', t: 'Minha <span class="gr">evolução</span>', sub: 'compare com o “Meu ponto de partida”', data: true, body: () => `
     ${box({ icon: 'Gauge', t: 'Como estou hoje', s: '0 = nada · 10 = muito', cor: 'white', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:2.2mm;margin-top:2mm">
       ${['Minha cabeça está cheia', 'A ansiedade atrapalha o meu dia', 'Tenho dificuldade para dormir', 'Me sinto perdida(o) sobre por onde começar', 'Me cobro por não dar conta'].map((t) => `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:7.6pt">${t}</span>${escala('', 0, 10)}</div>`).join('')}
@@ -520,16 +519,61 @@ export function planner(modo) {
     ${box({ icon: 'Mail', t: 'Um recado para mim daqui a 30 dias', cor: 'ter', cls: 'grow', body: fill() })}`,
   });
 
-  // ---------- NOTAS ----------
-  const nNotas = modo === 'dig' ? 4 : 1;
-  for (let n = 1; n <= nNotas; n++) {
-    add({ key: n === 1 ? 'tpl-pautada' : `pautada-${n}`, sec: 'notas', anchor: n === 1, eb: 'Notas', t: 'Anotações', data: true, refil: n === 1, body: () => `<div style="flex:1;display:flex;flex-direction:column">${fill(7)}</div>` });
-  }
-  for (let n = 1; n <= nNotas; n++) {
-    add({ key: n === 1 ? 'tpl-pontilhada' : `pontilhada-${n}`, sec: 'notas', eb: 'Notas', t: 'Ideias e rabiscos', data: true, refil: n === 1, body: () => `<div style="flex:1;display:flex;flex-direction:column">${dots(5)}</div>` });
-  }
+  reg({
+    key: 'despejo', sec: 'dia', eb: 'Antes do Dia 1', t: 'O grande <span class="gr">despejo</span>', sub: 'esvazie tudo de uma vez. sem ordem, sem filtro, sem julgar', data: true, body: () => `
+    <p class="tx" style="font-size:8pt">Antes de começar a jornada, tire da cabeça <b>tudo</b> o que está aí guardado: tarefas, medos, contas, conversas pendentes, ideias. Use as dicas como gatilho. Depois, nos próximos dias, você distribui aos poucos nos 3 lugares.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:1.4mm;flex:0 0 auto">${['trabalho', 'casa', 'contas', 'saúde', 'família', 'amigos', 'estudos', 'compras', 'documentos', 'consultas', '“e se…”', 'o que eu evito', 'o que me tira o sono'].map((t) => `<span class="chip c-cre" style="text-transform:none;letter-spacing:.02em;font-weight:600;font-size:6.6pt">${t}</span>`).join('')}</div>
+    <div class="box b-cre grow" style="padding:2.4mm 3mm">${fill(6.6)}</div>
+    <p class="quote" style="font-size:7.8pt;flex:0 0 auto">Pronto. Tudo isso agora está no papel, e não mais só na sua cabeça.</p>`,
+  });
 
+  // ---------- NOTAS ----------
+  reg({ key: 'tpl-pautada', sec: 'notas', eb: 'Notas', t: 'Anotações', data: true, refil: true, body: () => `<div style="flex:1;display:flex;flex-direction:column">${fill(7)}</div>` });
+  reg({ key: 'tpl-pontilhada', sec: 'notas', eb: 'Notas', t: 'Ideias e rabiscos', data: true, refil: true, body: () => `<div style="flex:1;display:flex;flex-direction:column">${dots(5)}</div>` });
+
+  /* ---------- ORDEM FINAL ----------
+     Impresso: cada dia ocupa uma página dupla (Mente em 3 Lugares à esquerda, Meu dia à direita).
+     Para isso a jornada começa sempre numa página par (lado esquerdo do caderno aberto). */
+  const usar = (k, extra = {}) => add({ ...T[k], refil: false, ...extra });
+  const parEsquerda = (sec) => {
+    if (modo === 'imp' && P.length % 2 === 0) usar('despejo', { sec });
+  };
+
+  // Começo do mês
+  usar('tpl-mes', { anchor: true });
+  usar('tpl-cal');
+  usar('tpl-habitos', { anchor: true });
+  usar('tpl-sono');
+  usar('tpl-contas', { anchor: true });
+  usar('tpl-dinheiro');
+  // Jornada
+  usar('jornada', { anchor: true });
+  parEsquerda('dia');
+  const dia = (d, s) => {
+    usar('tpl-metodo', { key: `d${d}-m`, dia: d, voltar: 'jornada', eb: `Dia ${d} · Mente em 3 Lugares` });
+    usar('tpl-dia', { key: `d${d}-d`, dia: d, voltar: 'jornada', eb: `Dia ${d} · Meu dia` });
+  };
+  for (let s = 1; s <= 4; s++) {
+    usar('tpl-semana', { key: `s${s}-plano`, anchor: s === 1, voltar: 'jornada', eb: `Semana ${s} de 4`, semana: s });
+    usar('tpl-preoc', { key: `s${s}-preoc`, anchor: s === 1, voltar: 'jornada', eb: `Semana ${s} · Organizador` });
+    for (let d = s * 7 - 6; d <= s * 7; d++) dia(d, s);
+    usar('tpl-revisao', { key: `s${s}-revisao`, voltar: 'jornada', eb: `Semana ${s} · fechamento` });
+    usar('tpl-pautada', { key: `s${s}-notas`, voltar: 'jornada', eb: `Semana ${s} · notas`, t: 'Notas da semana' });
+  }
+  dia(29); dia(30);
+  // Ferramentas para quando precisar
+  usar('tpl-acelerada', { key: 'acelerada-1' });
+  usar('tpl-acelerada', { key: 'acelerada-2' });
+  usar('tpl-horario');
+  usar('autocuidado');
+  usar('tpl-recomeco', { key: 'recomeco-1', anchor: true });
+  usar('tpl-recomeco', { key: 'recomeco-2' });
+  usar('evolucao');
+  usar('tpl-pautada', { anchor: true });
+  usar('tpl-pontilhada');
+  if (modo === 'dig') for (let n = 2; n <= 4; n++) { usar('tpl-pautada', { key: `pautada-${n}` }); usar('tpl-pontilhada', { key: `pontilhada-${n}` }); }
   if (modo === 'imp') add({ key: 'contracapa', sec: 'notas', raw: () => contracapa() });
+  P.tpl = T;
   return P;
 }
 

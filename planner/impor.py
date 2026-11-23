@@ -55,7 +55,9 @@ def refil(src, marcas_pdf, out):
 
 def meta(w, r):
     w.add_metadata({'/Title': (r.metadata or {}).get('/Title', 'Planner Mente Calma'), '/Author': 'Planner Mente Calma'})
-    w.compress_identical_objects(remove_identicals=True, remove_orphans=True)
+    for pg in w.pages:
+        pg.compress_content_streams(level=9)
+    w.compress_identical_objects(remove_duplicates=True, remove_unreferenced=True)
 
 
 if __name__ == '__main__':
