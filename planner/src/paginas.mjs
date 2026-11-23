@@ -162,6 +162,8 @@ export function planner(modo) {
   const P = [];
   const add = (p) => P.push(p);
 
+  const T0 = {};
+  const reg0 = (p) => (T0[p.key] = p);
   // CAPA
   add({ key: 'capa', sec: 'inicio', raw: () => capa({}) });
   // VERSO DA CAPA
@@ -236,11 +238,12 @@ export function planner(modo) {
   add({
     key: 'indice', sec: 'inicio', anchor: true, eb: 'Índice', t: 'O que tem aqui dentro', body: (x) => {
       const grupos = [
-        ['Início', [['Boas-vindas', 'boasvindas'], ['Como usar', 'comousar'], ['Sua primeira semana', 'primeirasemana'], ['Meu ponto de partida', 'partida']]],
+        ['Início', [['Boas-vindas', 'boasvindas'], ['Como usar', 'comousar']]],
         ['O Método', [['Mente em 3 Lugares', 'metodo1'], ['Exemplo preenchido', 'exemplo'], ['Isso vai para onde?', 'fluxo'], ['Perguntas que acalmam', 'perguntas']]],
+        ['Antes de começar', [['Meu ponto de partida', 'partida'], ['Sua primeira semana', 'primeirasemana']]],
         ['Começo do mês', [['Meu mês', 'tpl-mes'], ['Calendário sem datas', 'tpl-cal'], ['Hábitos e ansiedade', 'tpl-habitos'], ['Sono e energia', 'tpl-sono'], ['Contas do mês', 'tpl-contas'], ['Meu dinheiro sem susto', 'tpl-dinheiro']]],
-        ['Jornada de 30 dias', [['Mapa da jornada', 'jornada'], ['Semana 1 · dias 1 a 7', 's1-plano'], ['Semana 2 · dias 8 a 14', 's2-plano'], ['Semana 3 · dias 15 a 21', 's3-plano'], ['Semana 4 · dias 22 a 28', 's4-plano'], ['Dias 29 e 30', 'd29-m']]],
-        ['Para quando precisar', [['Modo Mente Acelerada', 'acelerada-1'], ['Horário da preocupação', 'tpl-horario'], ['Menu de autocuidado', 'autocuidado'], ['Página de recomeço', 'recomeco-1'], ['Minha evolução em 30 dias', 'evolucao']]],
+        ['Jornada de 30 dias', [['Mapa da jornada', 'jornada'], ['Semana 1 · dias 1 a 7', 's1-plano'], ['Semana 2 · dias 8 a 14', 's2-plano'], ['Semana 3 · dias 15 a 21', 's3-plano'], ['Semana 4 · dias 22 a 28', 's4-plano'], ['Dias 29 e 30', 'd29-m'], ['Minha evolução em 30 dias', 'evolucao']]],
+        ['Para quando precisar', [['Modo Mente Acelerada', 'acelerada-1'], ['Horário da preocupação', 'tpl-horario'], ['Menu de autocuidado', 'autocuidado'], ['Página de recomeço', 'recomeco-1']]],
         ['Notas', [['Pautada', 'tpl-pautada'], ['Pontilhada', 'tpl-pontilhada']]],
       ];
       return `<div style="columns:2;column-gap:5mm;flex:1">
@@ -248,15 +251,15 @@ export function planner(modo) {
           <p class="lbl" style="color:var(--t-tx);margin-bottom:1mm">${g}</p>
           ${it.map(([n, k]) => `<a href="#p-${k}" style="display:flex;align-items:baseline;gap:1mm;font-size:8.5pt;padding:1.25mm 0;border-bottom:.25mm dotted ${C.gra}33"><span>${n}</span><span style="flex:1"></span><b style="font-family:Mont;font-size:7pt;color:var(--p)">${modo === 'dig' ? '›' : x.pn(k)}</b></a>`).join('')}
         </div>`).join('')}
-        ${modo === 'dig' ? `<div style="break-inside:avoid;margin-bottom:3mm">
+        ${false ? `<div style="break-inside:avoid;margin-bottom:3mm">
           <p class="lbl" style="color:var(--t-tx);margin-bottom:1mm">Bônus</p>
           ${[['SOS Mente Acelerada', 'b1-capa'], ['Desligando a Cabeça', 'b2-capa'], ['Diário da Ansiedade', 'b3-capa'], ['Kit Rotina Sem Sobrecarga', 'b4-capa']].map(([n, k]) => `<a href="#p-${k}" style="display:flex;align-items:baseline;gap:1mm;font-size:8.5pt;padding:1.25mm 0;border-bottom:.25mm dotted ${C.gra}33"><span>${n}</span><span style="flex:1"></span><b style="font-family:Mont;font-size:7pt;color:var(--p)">›</b></a>`).join('')}
-        </div>` : `<div class="box b-ter" style="break-inside:avoid"><div class="bt">${ic('Gift', 10)}<span>Seus 4 bônus</span></div><p class="mini" style="margin-top:.8mm">SOS Mente Acelerada · Desligando a Cabeça Antes de Dormir · Diário da Ansiedade · Kit Rotina Sem Sobrecarga. Cada um em um arquivo separado.</p></div>`}
+        </div>` : `<div class="box b-ter" style="break-inside:avoid"><div class="bt">${ic('Gift', 10)}<span>Seus 4 bônus</span></div><p class="mini" style="margin-top:.8mm">SOS Mente Acelerada · Desligando a Cabeça Antes de Dormir · Diário da Ansiedade · Kit Rotina Sem Sobrecarga. Cada um em um arquivo próprio, que chegou junto no seu e-mail.</p></div>`}
       </div>`;
     },
   });
 
-  add({
+  reg0({
     key: 'primeirasemana', sp: true, sec: 'inicio', eb: 'Comece por aqui', t: 'Sua primeira semana: <span class="gr">só 2 páginas</span>', body: (x) => `
     <p class="tx">Começar com tudo é o jeito mais rápido de desistir. Na primeira semana, use <b>apenas as duas páginas de cada dia</b>: a <b>Mente em 3 Lugares</b> e o <b>Meu dia sem sobrecarga</b>${modo === 'imp' ? ` (a partir da p. ${x.pn('d1-m')})` : ''}. Pode pular a Semana leve e o Organizador por enquanto. Marque abaixo e anote a ansiedade antes e depois do método: você vai <b>ver a diferença no papel</b>.</p>
     <table class="tb" style="flex:0 0 auto">
@@ -275,7 +278,7 @@ export function planner(modo) {
     </div>`,
   });
 
-  add({
+  reg0({
     key: 'partida', sec: 'inicio', eb: 'Antes do primeiro dia', t: 'Meu ponto de partida', sub: 'daqui a 30 dias você vai comparar com a página “Minha evolução”', data: true, body: () => `
     ${box({ icon: 'Gauge', t: 'Como estou hoje', s: '0 = nada · 10 = muito', cor: 'white', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:2.2mm;margin-top:2mm">
       ${['Minha cabeça está cheia', 'A ansiedade atrapalha o meu dia', 'Tenho dificuldade para dormir', 'Me sinto perdida(o) sobre por onde começar', 'Me cobro por não dar conta'].map((t) => `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:7.6pt">${t}</span>${escala('', 0, 10)}</div>`).join('')}
@@ -550,6 +553,9 @@ export function planner(modo) {
     if (modo === 'imp' && P.length % 2 === 0) usar('despejo', { sec });
   };
 
+  // Antes de começar: ponto de partida e plano da primeira semana
+  add(T0.partida);
+  add(T0.primeirasemana);
   // Começo do mês
   usar('tpl-mes', { anchor: true });
   usar('tpl-cal');
@@ -574,6 +580,7 @@ export function planner(modo) {
     usar('tpl-pautada', { key: `s${s}-notas`, tema, voltar: 'jornada', eb: `Semana ${s} · notas`, t: 'Notas da semana' });
   }
   dia(29, 5); dia(30, 5);
+  usar('evolucao', { tema: 'brand', voltar: 'jornada' });
   // Ferramentas para quando precisar
   usar('tpl-acelerada', { key: 'acelerada-1' });
   usar('tpl-acelerada', { key: 'acelerada-2' });
@@ -581,7 +588,6 @@ export function planner(modo) {
   usar('autocuidado', { tema: 'mant' });
   usar('tpl-recomeco', { key: 'recomeco-1', anchor: true });
   usar('tpl-recomeco', { key: 'recomeco-2' });
-  usar('evolucao', { tema: 'brand' });
   usar('tpl-pautada', { anchor: true });
   usar('tpl-pontilhada');
   if (modo === 'dig') for (let n = 2; n <= 4; n++) { usar('tpl-pautada', { key: `pautada-${n}` }); usar('tpl-pontilhada', { key: `pontilhada-${n}` }); }

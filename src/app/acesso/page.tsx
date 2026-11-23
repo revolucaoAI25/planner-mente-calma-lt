@@ -44,7 +44,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
           <h2 className="font-display text-[17px] font-bold">Por onde começar</h2>
           <ol className="mt-3 space-y-2 text-[15px] leading-relaxed text-grafite/80">
             <li>
-              <b className="text-grafite">1.</b> Escolha <b>um</b> jeito de usar: <b>tablet</b> (um arquivo só, com tudo) ou <b>imprimir</b> (A4 em casa ou A5 na gráfica).
+              <b className="text-grafite">1.</b> Escolha <b>um</b> jeito de usar: <b>tablet</b> ou <b>imprimir</b> (A4 em casa ou A5 na gráfica).
             </li>
             <li>
               <b className="text-grafite">2.</b> Leia as páginas <b>Boas-vindas</b> e <b>Método Mente em 3 Lugares</b> (5 minutos).
@@ -72,13 +72,14 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
               <div className="mt-4 space-y-2.5">
                 {g === 'bonus'
                   ? [...new Set(lista.map((x) => x.titulo))].map((titulo) => {
-                      const [a4, a5] = lista.filter((x) => x.titulo === titulo);
+                      const fs = lista.filter((x) => x.titulo === titulo);
                       return (
                         <div key={titulo} className="rounded-2xl bg-creme/70 p-3.5">
                           <p className="font-display text-[15px] font-bold">{titulo}</p>
                           <div className="mt-2 flex flex-wrap gap-2">
-                            <Botao href={link(a4.id)} t="A4 (em casa)" />
-                            <Botao href={link(a5.id)} t="A5 (gráfica)" />
+                            {fs.map((x) => (
+                              <Botao key={x.id} href={link(x.id)} t={x.desc} />
+                            ))}
                           </div>
                         </div>
                       );

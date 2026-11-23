@@ -34,11 +34,11 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
 
   const html = pags
     .map((p, i) => {
-      const lado = ((i + 1) % 2 ? 'r' : 'l') + ` th-${p.tema || SECOES[p.sec].tema || 'brand'}`;
+      const lado = ((i + 1) % 2 ? 'r' : 'l') + ` th-${p.tema || SECOES[p.sec].tema || 'brand'}` + (modo === 'dig' && !secoes.length ? ' semtabs' : '');
       const cor = SECOES[p.sec].cor;
       const id = `id="p-${p.key}"`;
       if (p.raw) {
-        const comTabs = modo === 'dig' && p.key !== 'capa';
+        const comTabs = modo === 'dig' && p.key !== 'capa' && secoes.length;
         return `<section ${id} class="pg ${modo} ${lado}">${p.raw(x)}${comTabs ? tabs(p.sec) : ''}</section>`;
       }
       const voltar = p.voltar || (SECOES[p.sec].bonus ? anc[p.sec] : 'indice');
@@ -54,7 +54,7 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
     <div class="bd${p.sp ? ' sp' : ''}">${p.body(x)}</div>
     <footer class="ft">${rodapeEsq}<span class="mt">${mantra(i)}</span><span class="lg">${p.data ? mark(13) : ''}<span>PLANNER MENTE CALMA</span></span></footer>
   </div>
-  ${modo === 'dig' ? tabs(p.sec) : ''}
+  ${modo === 'dig' && secoes.length ? tabs(p.sec) : ''}
 </section>`;
     })
     .join('\n');
@@ -107,12 +107,17 @@ const py = (...a) => execFileSync('python3', ['-I', path.join(DIR, 'impor.py'), 
     b4: 'Bonus 4 - Kit Rotina Sem Sobrecarga',
   };
 
-  // ---------- TABLET (tudo em um arquivo, com abas clicáveis) ----------
+  // ---------- TABLET: planner com abas clicáveis; cada bônus no seu próprio arquivo ----------
   const dig = planner('dig');
   const bd = bonus('dig');
-  const tudo = [...dig, ...bd.b1, ...bd.b2, ...bd.b3, ...bd.b4];
-  const tab = await pdf('tablet', montar(tudo, 'dig', { secoes: Object.keys(SECOES), titulo: 'Planner Mente Calma · Tablet' }), { png: previa });
-  fs.copyFileSync(tab, path.join(OUT, 'Planner Mente Calma - TABLET (com abas e 4 bonus).pdf'));
+  const secPlanner = Object.keys(SECOES).filter((k) => !SECOES[k].bonus);
+  const tab = await pdf('tablet', montar(dig, 'dig', { secoes: secPlanner, titulo: 'Planner Mente Calma · Tablet' }), { png: previa });
+  fs.copyFileSync(tab, path.join(OUT, 'Planner Mente Calma - TABLET (abas clicaveis).pdf'));
+  const NOMES_B = { b1: 'Bonus 1 - SOS Mente Acelerada', b2: 'Bonus 2 - Desligando a Cabeca Antes de Dormir', b3: 'Bonus 3 - Diario da Ansiedade', b4: 'Bonus 4 - Kit Rotina Sem Sobrecarga' };
+  for (const k of ['b1', 'b2', 'b3', 'b4']) {
+    const f = await pdf(`tablet-${k}`, montar(bd[k], 'dig', { secoes: [], titulo: NOMES_B[k] }), { png: previa });
+    fs.copyFileSync(f, path.join(OUT, `${NOMES_B[k]} - TABLET.pdf`));
+  }
 
   // ---------- marcas de corte (A4 deitada) ----------
   const MARCAS = await pdf('marcas', `<!doctype html><html><head><style>@page{size:297mm 210mm;margin:0}body{margin:0}</style></head><body><div style="position:relative;width:297mm;height:210mm"><div style="position:absolute;left:148.35mm;top:0;bottom:0;width:0;border-left:.3mm dashed #9aa9a3"></div></div></body></html>`, { largura: '297mm', altura: '210mm' });

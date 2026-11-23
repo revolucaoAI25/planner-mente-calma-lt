@@ -77,6 +77,7 @@ a{color:inherit;text-decoration:none}
 .imp.r .ct{left:14mm;right:9mm}
 .imp.l .ct{left:9mm;right:14mm}
 .dig .ct{top:9mm;bottom:8mm;left:9mm;right:18.5mm}
+.dig.semtabs .ct{right:9mm}
 .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:4mm;padding-bottom:2.6mm;margin-bottom:3mm;border-bottom:.35mm solid ${C.creEsc}}
 .eb{font-family:Mont;font-weight:700;font-size:6.2pt;letter-spacing:.24em;text-transform:uppercase;color:var(--c)}
 h1{font-family:Mont;font-weight:700;font-size:16.5pt;line-height:1.08;letter-spacing:-.01em;color:${C.gra};margin-top:1mm}

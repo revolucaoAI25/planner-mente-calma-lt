@@ -22,7 +22,7 @@ export type Arquivo = {
 
 export const ARQUIVOS: Arquivo[] = [
   { id: 'guia', grupo: 'comece', titulo: 'Leia primeiro: guia de impressão e uso no tablet', desc: 'Qual arquivo usar, como imprimir e como abrir no seu app.', arquivo: 'LEIA PRIMEIRO - Guia de impressao e uso no tablet.pdf' },
-  { id: 'tablet', grupo: 'tablet', titulo: 'Planner completo para tablet (com os 4 bônus)', desc: 'Abas e índice clicáveis, Jornada de 30 dias. GoodNotes, Notability, Samsung Notes, Xodo…', arquivo: 'Planner Mente Calma - TABLET (com abas e 4 bonus).pdf' },
+  { id: 'tablet', grupo: 'tablet', titulo: 'Planner completo para tablet', desc: 'Abas e índice clicáveis, Jornada de 30 dias. GoodNotes, Notability, Samsung Notes, Xodo…', arquivo: 'Planner Mente Calma - TABLET (abas clicaveis).pdf' },
   { id: 'a4', grupo: 'imprimir', titulo: 'Planner para imprimir em casa (A4, 2 páginas por folha)', desc: 'Imprima frente e verso, corte ao meio e empilhe.', arquivo: 'Planner Mente Calma - A4 2 por folha (frente e verso, cortar ao meio).pdf' },
   { id: 'a5', grupo: 'imprimir', titulo: 'Planner em A5 (gráfica ou impressora A5)', desc: 'Para levar à gráfica/copiadora e encadernar em espiral.', arquivo: 'Planner Mente Calma - A5 (grafica ou impressora A5).pdf' },
   { id: 'refis', grupo: 'imprimir', titulo: 'Refis: páginas do dia a dia', desc: 'As páginas que você mais usa, 2 cópias por folha A4.', arquivo: 'Refis - paginas do dia a dia (A4, 2 copias por folha).pdf' },
@@ -35,16 +35,17 @@ export const ARQUIVOS: Arquivo[] = [
       ['b4', 'Bônus 4 · Kit Rotina Sem Sobrecarga', 'Bonus 4 - Kit Rotina Sem Sobrecarga'],
     ] as const
   ).flatMap(([id, titulo, base]) => [
-    { id: `${id}-a4`, grupo: 'bonus' as const, titulo, desc: 'Imprimir em casa (A4, 2 por folha)', arquivo: `${base} - A4 2 por folha (frente e verso, cortar ao meio).pdf` },
+    { id: `${id}-tablet`, grupo: 'bonus' as const, titulo, desc: 'Tablet', arquivo: `${base} - TABLET.pdf` },
+    { id: `${id}-a4`, grupo: 'bonus' as const, titulo, desc: 'A4 (em casa)', arquivo:`${base} - A4 2 por folha (frente e verso, cortar ao meio).pdf` },
     { id: `${id}-a5`, grupo: 'bonus' as const, titulo, desc: 'A5 (gráfica)', arquivo: `${base} - A5 (grafica ou impressora A5).pdf` },
   ]),
 ];
 
 export const GRUPOS: Record<Grupo, { titulo: string; desc: string }> = {
   comece: { titulo: 'Comece por aqui', desc: '' },
-  tablet: { titulo: 'Para usar no tablet ou celular', desc: 'Um arquivo só, com o planner e os 4 bônus.' },
+  tablet: { titulo: 'Para usar no tablet ou celular', desc: 'O planner completo, com abas clicáveis.' },
   imprimir: { titulo: 'Para imprimir', desc: 'Escolha um formato: A4 (em casa) ou A5 (gráfica).' },
-  bonus: { titulo: 'Seus 4 bônus para imprimir', desc: 'No tablet eles já estão dentro do arquivo acima.' },
+  bonus: { titulo: 'Seus 4 bônus', desc: 'Cada bônus em um arquivo próprio: escolha tablet, A4 ou A5.' },
 };
 
 export function urlArquivo(a: Arquivo, site: string): string {

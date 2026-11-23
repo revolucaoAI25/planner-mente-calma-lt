@@ -55,8 +55,8 @@ function html(nome: string, t: string): string {
       g === 'bonus'
         ? [...new Set(lista.map((a) => a.titulo))]
             .map((titulo) => {
-              const [a4, a5] = lista.filter((a) => a.titulo === titulo);
-              return `<tr><td style="padding:10px 0;border-bottom:1px solid #EFE9DC"><span style="font-weight:bold;font-size:15px;color:#263431">${esc(titulo)}</span><br><a href="${linkArquivo(a4.id, t)}" style="color:#315F5A;font-size:14px;font-weight:bold">⬇ A4 (em casa)</a> &nbsp;·&nbsp; <a href="${linkArquivo(a5.id, t)}" style="color:#315F5A;font-size:14px;font-weight:bold">⬇ A5 (gráfica)</a></td></tr>`;
+              const fs = lista.filter((a) => a.titulo === titulo);
+              return `<tr><td style="padding:10px 0;border-bottom:1px solid #EFE9DC"><span style="font-weight:bold;font-size:15px;color:#263431">${esc(titulo)}</span><br>${fs.map((a) => `<a href="${linkArquivo(a.id, t)}" style="color:#315F5A;font-size:14px;font-weight:bold">⬇ ${esc(a.desc)}</a>`).join(' &nbsp;·&nbsp; ')}</td></tr>`;
             })
             .join('')
         : lista.map((a) => item(a.id, a.titulo, a.desc)).join('');
@@ -70,7 +70,7 @@ function html(nome: string, t: string): string {
 <tr><td align="center" style="padding-top:16px;font-size:24px;font-weight:bold;line-height:1.25">${primeiro ? `${esc(primeiro)}, seu` : 'Seu'} planner chegou 💚</td></tr>
 <tr><td align="center" style="padding-top:10px;font-size:16px;line-height:1.55;color:#3d4a47">Que bom ter você aqui! Aqui estão o <b>Planner Mente Calma</b> e os <b>4 bônus</b>. Os links ficam sempre disponíveis: guarde este e-mail.</td></tr>
 <tr><td align="center" style="padding-top:22px"><a href="${acesso}" style="background:#B5694A;color:#ffffff;text-decoration:none;font-weight:bold;font-size:17px;padding:15px 28px;border-radius:14px;display:inline-block">Abrir minha área de downloads</a></td></tr>
-<tr><td style="padding-top:22px;font-size:15px;line-height:1.55;background:#EAF1EC;border-radius:14px;padding:14px 16px"><b>Por onde começar:</b> no tablet, baixe o arquivo <b>“Planner completo para tablet”</b>. Para imprimir em casa, baixe o <b>“A4”</b> e imprima antes a folha de teste. Depois, leia as páginas <b>Boas-vindas</b> e <b>Método</b> (5 minutos) e faça o <b>Dia 1</b>.</td></tr>
+<tr><td style="padding-top:22px;font-size:15px;line-height:1.55;background:#EAF1EC;border-radius:14px;padding:14px 16px"><b>Por onde começar:</b> no tablet, baixe o <b>“Planner completo para tablet”</b> e, na seção de bônus, a versão <b>Tablet</b> de cada um. Para imprimir em casa, baixe o <b>“A4”</b> e imprima antes a folha de teste. Depois, leia as páginas <b>Boas-vindas</b> e <b>Método</b> (5 minutos) e faça o <b>Dia 1</b>.</td></tr>
 ${grupo('comece')}${grupo('tablet')}${grupo('imprimir')}${grupo('bonus')}
 <tr><td style="padding-top:24px;font-size:13px;line-height:1.5;color:#6b7572">Algum link não abriu? Use o botão acima ou responda este e-mail${marca.suporte ? ` / escreva para ${esc(marca.suporte)}` : ''}.</td></tr>
 </table>
