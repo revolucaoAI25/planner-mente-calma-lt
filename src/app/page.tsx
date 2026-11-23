@@ -132,15 +132,13 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Mockups: tablet atrás, planner espiral na frente */}
-          <div className="relative mx-auto aspect-[1/0.92] w-full max-w-[470px]">
-            <div className="absolute inset-[12%] rounded-full bg-gradient-to-br from-salvia/70 to-terracota/50 blur-3xl" />
-            <Image src={imagens.tablet} alt="Planner Mente Calma no tablet" width={820} height={990} priority sizes="(max-width:768px) 62vw, 300px" className="absolute right-0 top-0 h-auto w-[62%] rotate-[4deg]" />
-            <div className="absolute bottom-0 left-0 w-[64%] -rotate-[5deg] animate-flutua">
-              <Image src={imagens.capa} alt="Planner Mente Calma impresso" width={700} height={847} priority sizes="(max-width:768px) 64vw, 310px" className="h-auto w-full" />
-            </div>
-            <span className="absolute left-[2%] top-[6%] rotate-[-6deg] rounded-full bg-white px-3 py-1.5 font-display text-[12px] font-bold text-petroleo shadow-suave">⏱ 10 min por dia</span>
-            <span className="absolute bottom-[10%] right-[2%] rotate-[5deg] rounded-full bg-terracota-escuro px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">+ 4 bônus</span>
+          {/* Mockup: páginas reais do planner (tablet com exemplo preenchido, mapa da jornada e o caderno impresso) */}
+          <div className="relative mx-auto w-full max-w-[500px]">
+            <div className="absolute inset-[10%] rounded-full bg-gradient-to-br from-salvia/60 to-terracota/40 blur-3xl" />
+            <Image src={imagens.hero} alt="Planner Mente Calma impresso e no tablet, com páginas preenchidas" width={980} height={874} priority sizes="(max-width:768px) 92vw, 500px" className="relative h-auto w-full" />
+            <span className="absolute -left-1 bottom-[14%] rotate-[-6deg] rounded-full bg-white px-3 py-1.5 font-display text-[12px] font-bold text-petroleo shadow-suave">⏱ 10 min por dia</span>
+            <span className="absolute right-[1%] top-[2%] rotate-[5deg] rounded-full bg-grafite px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">30 dias prontos</span>
+            <span className="absolute bottom-[22%] right-[2%] rotate-[5deg] rounded-full bg-terracota-escuro px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">+ 4 bônus</span>
           </div>
 
           <div className="md:hidden">
@@ -442,10 +440,7 @@ export default function Page() {
               <span className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-terracota px-2.5 py-1 font-display text-[11px] font-bold text-grafite">-{Math.round((1 - preco / precoDe) * 100)}%</span>
             </div>
             <div className="p-5 sm:p-8">
-              <div className="relative mx-auto aspect-[1/0.75] w-full max-w-[380px]">
-                <Image src={imagens.tablet} alt="" width={820} height={990} sizes="200px" className="absolute right-[4%] top-0 h-auto w-[44%] rotate-[5deg] drop-shadow-[0_16px_20px_rgba(38,52,49,.25)]" />
-                <Image src={imagens.capa} alt="" width={700} height={847} sizes="200px" className="absolute bottom-0 left-[4%] h-auto w-[48%] -rotate-[4deg] drop-shadow-[0_18px_22px_rgba(38,52,49,.3)]" />
-              </div>
+              <Image src={imagens.hero} alt="" width={980} height={874} sizes="(max-width:640px) 80vw, 380px" className="mx-auto h-auto w-full max-w-[380px]" />
               <ul className="mt-6 divide-y divide-grafite/10 rounded-2xl bg-creme/70 px-4">
                 <Linha t="Planner Mente Calma completo + Método Mente em 3 Lugares" v={valores.planner} />
                 {BONUS.map((b, i) => (

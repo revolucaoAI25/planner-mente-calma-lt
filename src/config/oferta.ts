@@ -23,6 +23,8 @@ export const valores = { planner: 97, bonus: [27, 27, 24, 24] };
 export const garantiaDias = 7;
 
 export const imagens = {
+  /** Composição do topo e da oferta: páginas reais (tablet + mapa da jornada + caderno). */
+  hero: '/img/mockups/hero-planner.webp',
   /** Mockups do planner (fundo transparente). */
   capa: '/img/mockups/planner-espiral-frente.webp',
   verso: '/img/mockups/planner-espiral-verso.webp',
