@@ -38,3 +38,8 @@
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Modo teste: o botão liga/desliga o conteúdo fictício */
+.sem-teste .so-teste { display: none !important; }
+.so-placeholder { display: none; }
+.sem-teste .so-placeholder { display: grid; }

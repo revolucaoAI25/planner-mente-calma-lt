@@ -13,6 +13,11 @@ export const marca = {
 export const checkout = process.env.NEXT_PUBLIC_CHECKOUT ?? '';
 
 export const preco = 37;
+/** Preço "de" (riscado). */
+export const precoDe = 97;
+
+/** Valor de cada entregável na pilha de valor da oferta (o planner vale o preço "de"; os bônus saem de graça). */
+export const valores = { planner: 97, bonus: [27, 27, 24, 24] };
 
 /** Garantia em dias (precisa bater com o que está configurado na Kiwify). */
 export const garantiaDias = 7;
@@ -43,3 +48,33 @@ export const imagens = {
 
 /** Esconde os espaços reservados (prints, depoimentos) quando a página for ao ar sem eles. */
 export const mostrarPlaceholders = process.env.NEXT_PUBLIC_ESCONDER_PLACEHOLDERS !== '1';
+
+/**
+ * MODO TESTE: mostra conteúdo fictício (criadora e depoimentos de exemplo) só para validar o layout.
+ * Desligue antes de rodar anúncios: NEXT_PUBLIC_MODO_TESTE=0 na Vercel (ou troque aqui para false).
+ * Com o modo teste ligado, aparece um botão flutuante para mostrar/esconder o conteúdo fictício.
+ */
+export const modoTeste = process.env.NEXT_PUBLIC_MODO_TESTE !== '0';
+
+/** Seção "quem criou". No modo teste usa a persona fictícia abaixo; troque pelos dados reais antes de ir ao ar. */
+export const criadora = {
+  nome: 'Helena Prado',
+  papel: 'Criadora do Método Mente em 3 Lugares',
+  foto: '/img/teste/criadora.webp',
+  historia: [
+    'Durante anos, eu fui a pessoa que “dava conta de tudo”. Por fora, organizada. Por dentro, uma cabeça que não desligava: deitava e repassava o dia inteiro, ensaiava conversas, acordava às 3h lembrando de uma conta.',
+    'Testei agenda, aplicativo, bullet journal, listas coloridas. Todos funcionavam por uma semana. O problema não era falta de disciplina: nenhum deles tinha lugar para o que mais pesava, as preocupações.',
+    'Foi numa madrugada, despejando tudo num caderno, que percebi: metade do que me tirava o sono eu podia resolver, uma parte podia esperar, e o resto eu só estava antecipando. Separar isso em três lugares mudou meus dias.',
+    'Transformei esse jeito de pensar em método e o método em planner. Hoje ele ajuda pessoas que, como eu, pensam demais e só precisavam de um lugar para colocar tudo.',
+  ],
+};
+
+/** Depoimentos fictícios para validar o layout (só aparecem no modo teste). */
+export const depoimentosTeste = [
+  { nome: 'Juliana, 34 anos', avatar: '/img/teste/avatar-1.webp', texto: 'Eu deitava e ficava repassando tudo. Agora faço a página do Mente em 3 Lugares antes de dormir e', destaque: 'durmo sabendo que nada ficou solto', fim: '.' },
+  { nome: 'Fernanda, 41 anos', avatar: '/img/teste/avatar-2.webp', texto: 'O “Desocupar” foi a coisa mais simples e mais útil que já fiz.', destaque: 'Metade do que me preocupava nem era para agora', fim: '.' },
+  { nome: 'Rafael, 29 anos', avatar: '/img/teste/avatar-3.webp', texto: 'Já larguei umas cinco agendas. Essa não tem data, então quando eu sumo uns dias', destaque: 'só volto pela página de recomeço', fim: ', sem culpa.' },
+  { nome: 'Camila, 26 anos', avatar: '/img/teste/avatar-4.webp', texto: 'Nos dias em que a cabeça fica a mil, abro o Modo Mente Acelerada.', destaque: 'Uma página só e eu já sei o próximo passo', fim: '.' },
+  { nome: 'Marcos, 38 anos', avatar: '/img/teste/avatar-5.webp', texto: 'Achei que era “mais um planner”. Mas separar o que é problema do que é preocupação', destaque: 'tirou um peso enorme das minhas manhãs', fim: '.' },
+  { nome: 'Patrícia, 45 anos', avatar: '/img/teste/avatar-6.webp', texto: 'Imprimi só as páginas que uso. Dez minutos de manhã e', destaque: 'o dia deixou de parecer uma lista sem fim', fim: '.' },
+];
