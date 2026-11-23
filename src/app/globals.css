@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-creme text-grafite antialiased; }
+  h1, h2, h3, h4 { @apply font-display; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: #D7A58D55; }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-[1080px] px-5 sm:px-8; }
+  .estreito { @apply mx-auto w-full max-w-[680px] px-5 sm:px-8; }
+  .eyebrow { @apply font-display text-[11px] font-bold uppercase tracking-[.28em] text-terracota-escuro; }
+  .titulo { @apply font-display text-[30px] font-bold leading-[1.12] tracking-tight text-grafite sm:text-[42px]; }
+  .sub { @apply text-[17px] leading-relaxed text-grafite/75 sm:text-lg; }
+  .btn {
+    @apply relative inline-flex min-h-[58px] w-full items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-center font-display text-[15.5px] font-bold uppercase tracking-wide transition active:scale-[.98] sm:w-auto sm:min-w-[340px];
+  }
+  .btn-principal { @apply btn bg-terracota-escuro text-white shadow-[0_12px_28px_-10px_rgba(181,105,74,.75)] hover:bg-[#A65D40]; }
+  .btn-principal::after {
+    content: ''; position: absolute; inset: 0; width: 40%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+    @apply animate-brilho;
+  }
+  .btn-verde { @apply btn bg-petroleo text-creme hover:bg-petroleo-escuro; }
+  .card { @apply rounded-[22px] bg-white/80 shadow-suave ring-1 ring-grafite/5; }
+  .chip { @apply inline-flex items-center rounded-full border border-grafite/10 bg-white px-3 py-1.5 text-[13px] text-grafite/80; }
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.visivel { opacity: 1; transform: none; }
+  .grifo { background: linear-gradient(transparent 58%, rgba(215,165,141,.45) 58%, rgba(215,165,141,.45) 92%, transparent 92%); padding: 0 .08em; }
+  .onda-topo { mask: radial-gradient(60% 30px at 50% 0, transparent 98%, #000) top; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
