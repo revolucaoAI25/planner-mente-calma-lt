@@ -106,7 +106,7 @@ export default function Page() {
 
       {/* Faixa */}
       <div className="bg-petroleo px-4 py-2 text-center text-[12.5px] leading-snug text-creme">
-        Mente a mil? <b className="font-bold">10 minutos por dia</b> para tirar tudo da cabeça e voltar a respirar.
+        <b className="font-bold">Chega de ansiedade:</b> o planner desenvolvido para quem tem a mente sobrecarregada.
       </div>
 
       {/* ======= TOPO ======= */}
@@ -138,7 +138,7 @@ export default function Page() {
             <Image src={imagens.hero} alt="Planner Mente Calma impresso e no tablet, com páginas preenchidas" width={1000} height={838} priority sizes="(max-width:768px) 92vw, 500px" className="relative h-auto w-full" />
             <span className="absolute left-0 top-[4%] rotate-[-5deg] rounded-full bg-grafite px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">30 dias prontos</span>
             <span className="absolute right-0 top-[52%] rotate-[5deg] rounded-full bg-terracota-escuro px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">+ 4 bônus</span>
-            <span className="absolute bottom-[3%] left-[3%] rotate-[-4deg] rounded-full bg-white px-3 py-1.5 font-display text-[12px] font-bold text-petroleo shadow-suave">✓ Mente mais leve</span>
+            <span className="absolute bottom-[3%] left-[3%] rotate-[-4deg] rounded-full bg-white px-3 py-1.5 font-display text-[12px] font-bold text-petroleo shadow-suave">✓ Sem ansiedade, sem preocupação</span>
           </div>
 
           <div className="md:hidden">
@@ -578,7 +578,7 @@ function ProvaSocial() {
   if (!mostraProva) return null;
   return (
     <div className={`${provaSocial.real ? '' : 'so-ex'} mt-5 flex items-center justify-center gap-3 md:justify-start`}>
-      <div className="flex -space-x-2.5">
+      <div className="flex shrink-0 -space-x-2.5">
         {depoimentosTeste.slice(0, 4).map((d) => (
           <Image key={d.avatar} src={d.avatar} alt="" width={36} height={36} className="h-9 w-9 rounded-full object-cover ring-2 ring-creme" />
         ))}
