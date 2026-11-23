@@ -13,6 +13,11 @@ export function Cta({ children, className = '', verde = false }: { children: Rea
       onClick={(e) => {
         if (!checkout) return;
         e.preventDefault();
+        try {
+          sessionStorage.setItem('pmc:checkout', '1');
+        } catch {
+          /* ignore */
+        }
         track('InitiateCheckout', { value: preco, currency: 'BRL', content_name: 'Planner Mente Calma' });
         window.location.href = checkoutUrl(checkout);
       }}

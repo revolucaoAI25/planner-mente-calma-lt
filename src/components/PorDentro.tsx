@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { imagens } from '@/config/oferta';
-import { PaginaMock } from './PaginaMock';
+import { PaginaLazy as PaginaMock } from './PaginaLazy';
 
 /** Carrossel "Veja por dentro": prints reais quando houver (campo img), senão a ilustração da página. */
 export function PorDentro() {

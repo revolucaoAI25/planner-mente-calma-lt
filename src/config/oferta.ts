@@ -25,6 +25,8 @@ export const garantiaDias = 7;
 export const imagens = {
   /** Mockup do planner (topo e oferta). */
   capa: '/img/planner-capa.webp',
+  /** Mockup do planner aberto (seção "Veja por dentro"). Vazio = composição desenhada (tablet + página impressa). */
+  mockupPorDentro: '',
   /**
    * Páginas do planner para o carrossel "Veja por dentro".
    * `img` vazio = ilustração provisória da página. Troque pelos prints/fotos reais do produto.
@@ -37,6 +39,15 @@ export const imagens = {
     { id: 'semana', img: '', legenda: 'Semana leve: compromissos, contas e o que pode esperar' },
     { id: 'recomeco', img: '', legenda: 'Página de recomeço: voltar sem precisar preencher o que ficou para trás' },
   ],
+  /**
+   * Fotos reais do planner (capa impressa, alguém folheando, página preenchida).
+   * Vazio = a seção só aparece como espaço reservado na pré-visualização do /admin.
+   */
+  fotosReais: [
+    { img: '', legenda: 'O planner impresso: a capa' },
+    { img: '', legenda: 'Folheando as páginas' },
+    { img: '', legenda: 'Uma página preenchida na mesa' },
+  ],
   /** Capas dos bônus (vazio = capa provisória desenhada). */
   bonus: ['', '', '', ''] as string[],
   /**
@@ -46,15 +57,16 @@ export const imagens = {
   depoimentos: [] as { img: string; w: number; h: number }[],
 };
 
-/** Esconde os espaços reservados (prints, depoimentos) quando a página for ao ar sem eles. */
-export const mostrarPlaceholders = process.env.NEXT_PUBLIC_ESCONDER_PLACEHOLDERS !== '1';
 
 /**
- * MODO TESTE: mostra conteúdo fictício (criadora e depoimentos de exemplo) só para validar o layout.
- * Desligue antes de rodar anúncios: NEXT_PUBLIC_MODO_TESTE=0 na Vercel (ou troque aqui para false).
- * Com o modo teste ligado, aparece um botão flutuante para mostrar/esconder o conteúdo fictício.
+ * CONTEÚDO DE EXEMPLO (criadora e depoimentos fictícios) para validar o layout.
+ * Fica no código, mas NUNCA aparece para o visitante: só no navegador onde você ligar a pré-visualização em /admin.
+ * Para tirar de vez do site: NEXT_PUBLIC_MODO_TESTE=0 na Vercel.
  */
 export const modoTeste = process.env.NEXT_PUBLIC_MODO_TESTE !== '0';
+
+/** true quando a seção "quem criou" tiver dados reais (aí ela aparece para todos). */
+export const criadoraReal = false;
 
 /** Seção "quem criou". No modo teste usa a persona fictícia abaixo; troque pelos dados reais antes de ir ao ar. */
 export const criadora = {
@@ -69,12 +81,51 @@ export const criadora = {
   ],
 };
 
-/** Depoimentos fictícios para validar o layout (só aparecem no modo teste). */
+/**
+ * Depoimentos fictícios para validar o layout (só aparecem no modo teste).
+ * Trechos entre **asteriscos** ficam grifados. Troque pelos reais antes de rodar.
+ */
 export const depoimentosTeste = [
-  { nome: 'Juliana, 34 anos', avatar: '/img/teste/avatar-1.webp', texto: 'Eu deitava e ficava repassando tudo. Agora faço a página do Mente em 3 Lugares antes de dormir e', destaque: 'durmo sabendo que nada ficou solto', fim: '.' },
-  { nome: 'Fernanda, 41 anos', avatar: '/img/teste/avatar-2.webp', texto: 'O “Desocupar” foi a coisa mais simples e mais útil que já fiz.', destaque: 'Metade do que me preocupava nem era para agora', fim: '.' },
-  { nome: 'Rafael, 29 anos', avatar: '/img/teste/avatar-3.webp', texto: 'Já larguei umas cinco agendas. Essa não tem data, então quando eu sumo uns dias', destaque: 'só volto pela página de recomeço', fim: ', sem culpa.' },
-  { nome: 'Camila, 26 anos', avatar: '/img/teste/avatar-4.webp', texto: 'Nos dias em que a cabeça fica a mil, abro o Modo Mente Acelerada.', destaque: 'Uma página só e eu já sei o próximo passo', fim: '.' },
-  { nome: 'Marcos, 38 anos', avatar: '/img/teste/avatar-5.webp', texto: 'Achei que era “mais um planner”. Mas separar o que é problema do que é preocupação', destaque: 'tirou um peso enorme das minhas manhãs', fim: '.' },
-  { nome: 'Patrícia, 45 anos', avatar: '/img/teste/avatar-6.webp', texto: 'Imprimi só as páginas que uso. Dez minutos de manhã e', destaque: 'o dia deixou de parecer uma lista sem fim', fim: '.' },
+  {
+    nome: 'Juliana Ribeiro',
+    info: '34 anos · Campinas, SP',
+    avatar: '/img/teste/avatar-1.webp',
+    titulo: 'Voltei a dormir sem repassar o dia inteiro',
+    texto:
+      'Eu achava normal deitar e ficar uma hora repassando tudo: o que falei, o que esqueci, o que podia dar errado. Comecei a fazer a página do Mente em 3 Lugares antes de dormir e na primeira semana percebi que metade do que me tirava o sono estava no “Desocupar”. Não é mágica, mas **hoje eu deito sabendo que nada ficou solto**, e isso mudou muito o meu sono.',
+  },
+  {
+    nome: 'Fernanda Lopes',
+    info: '48 anos · Belo Horizonte, MG',
+    avatar: '/img/teste/avatar-2.webp',
+    texto: 'Simples demais. **Dez minutos de manhã e eu já sei por onde começar.** Pronto, o dia anda.',
+  },
+  {
+    nome: 'Rafael Souza',
+    info: '31 anos · Curitiba, PR',
+    avatar: '/img/teste/avatar-3.webp',
+    texto:
+      'Já larguei umas cinco agendas porque bastava uma semana ruim pra ficar tudo em branco. Esse não tem data. Sumi uns dias, voltei pela página de recomeço e **segui sem aquela culpa de começar do zero**.',
+  },
+  {
+    nome: 'Camila Teixeira',
+    info: '24 anos · Recife, PE',
+    avatar: '/img/teste/avatar-4.webp',
+    titulo: 'Minha página de emergência',
+    texto:
+      'Trabalho com atendimento e chego em casa com a cabeça a mil. O Modo Mente Acelerada é uma página só: escrevo o que está pesando, vejo se é pra agora e escolho um passo. **A sensação de sufoco diminui na hora.**',
+  },
+  {
+    nome: 'Marcos Vinícius',
+    info: '38 anos · São Paulo, SP',
+    avatar: '/img/teste/avatar-5.webp',
+    texto:
+      'Comprei pra minha esposa e acabei usando também. Sou do tipo que guarda tudo na cabeça “pra não esquecer”. Separar o que é problema do que é só preocupação **tirou um peso enorme das minhas manhãs**. E parei de pagar conta atrasada, de quebra.',
+  },
+  {
+    nome: 'Patrícia Almeida',
+    info: '39 anos · Porto Alegre, RS',
+    avatar: '/img/teste/avatar-6.webp',
+    texto: 'Imprimi só as páginas que uso e deixei na mesa da cozinha. **O dia deixou de parecer uma lista sem fim.**',
+  },
 ];

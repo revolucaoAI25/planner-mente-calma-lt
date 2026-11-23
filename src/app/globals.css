@@ -39,7 +39,9 @@
   .reveal { opacity: 1; transform: none; }
 }
 
-/* Modo teste: o botão liga/desliga o conteúdo fictício */
-.sem-teste .so-teste { display: none !important; }
-.so-placeholder { display: none; }
-.sem-teste .so-placeholder { display: grid; }
+/* Pré-visualização (ligada só no navegador do admin, em /admin): conteúdo de exemplo e espaços reservados.
+   Para o visitante, nada disso aparece (e as imagens escondidas nem são baixadas). */
+.so-ex, .so-ph, .so-pv { display: none !important; }
+html.pv-ex .so-ex { display: block !important; }
+html.pv-ph .so-ph { display: grid !important; }
+html.pv-ex .so-pv, html.pv-ph .so-pv { display: block !important; }

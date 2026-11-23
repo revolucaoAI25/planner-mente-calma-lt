@@ -29,6 +29,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`${montserrat.variable} ${lato.variable}`}>
       <head>
+        {/* Pré-visualização do admin (só neste navegador): liga antes de pintar, sem piscar. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var v=JSON.parse(localStorage.getItem('pmc:pv')||'{}');var c=document.documentElement.classList;if(v.ex)c.add('pv-ex');if(v.ph)c.add('pv-ph')}catch(e){}`,
+          }}
+        />
         <link rel="dns-prefetch" href="https://pay.kiwify.com.br" />
         <link rel="preconnect" href="https://pay.kiwify.com.br" crossOrigin="" />
         {pixelId ? (

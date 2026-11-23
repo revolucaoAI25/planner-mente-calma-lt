@@ -26,12 +26,13 @@ import { CapaBonus } from '@/components/CapaBonus';
 import { Cta } from '@/components/Cta';
 import { Faq } from '@/components/Faq';
 import { Logo, LogoMark } from '@/components/Logo';
-import { MetodoDemo } from '@/components/MetodoDemo';
+import { Quiz } from '@/components/Quiz';
 import { PorDentro } from '@/components/PorDentro';
+import { Vitrine } from '@/components/Vitrine';
+import { ExitPopup } from '@/components/ExitPopup';
 import { Reveal } from '@/components/Reveal';
 import { StickyBar } from '@/components/StickyBar';
-import { BotaoTeste } from '@/components/Teste';
-import { criadora, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, mostrarPlaceholders, preco, precoDe, valores } from '@/config/oferta';
+import { criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, preco, precoDe, valores } from '@/config/oferta';
 
 const brl = (n: number) => `R$ ${n}`;
 
@@ -103,7 +104,6 @@ export default function Page() {
   return (
     <main className="overflow-x-clip">
       <Reveal />
-      {modoTeste && <BotaoTeste />}
 
       {/* Faixa */}
       <div className="bg-petroleo px-4 py-2 text-center text-[12.5px] leading-snug text-creme">
@@ -119,12 +119,12 @@ export default function Page() {
         </div>
         <div className="wrap relative grid items-center gap-8 pb-10 pt-7 md:grid-cols-[1.1fr_.9fr] md:gap-12 md:pb-16 md:pt-12">
           <div className="animate-entra">
-            <p className="eyebrow">Desenvolvido especificamente para quem vive com ansiedade</p>
-            <h1 className="mt-4 text-[31px] font-bold leading-[1.08] tracking-tight text-grafite min-[400px]:text-[34px] sm:text-[48px]">
-              Sua cabeça não desliga? Conheça o planner criado para quem vive com <span className="grifo">ansiedade</span>.
+            <p className="eyebrow">Para quem pensa demais e se preocupa com tudo</p>
+            <h1 className="mt-4 text-[33px] font-bold leading-[1.06] tracking-tight text-grafite min-[400px]:text-[36px] sm:text-[52px]">
+              Finalmente, um planner desenvolvido para o <span className="grifo">cérebro com ansiedade</span>.
             </h1>
             <p className="sub mt-5">
-              Com o <b className="text-grafite">Método Mente em 3 Lugares</b>, em apenas 10 minutos por dia você tira as preocupações da cabeça, organiza a rotina e sabe exatamente por onde começar, mesmo quando tudo parece urgente.
+              Pare de lutar contra uma cabeça que não desliga. Com o <b className="text-grafite">Método Mente em 3 Lugares</b>, em 10 minutos por dia você tira tudo da cabeça, separa o que precisa resolver do que é só preocupação e termina com <b className="text-grafite">um primeiro passo claro</b>. Menos peso na mente, mais clareza no dia.
             </p>
             <div className="mt-7 hidden md:block">
               <Cta>Quero minha mente mais calma</Cta>
@@ -162,8 +162,34 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ======= VEJA POR DENTRO ======= */}
+      <section id="por-dentro" className="bg-white/60 py-16 sm:py-20">
+        <div className="wrap">
+          <div className="reveal mx-auto max-w-[640px] text-center">
+            <span className="inline-block rounded-full bg-grafite px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">Veja por dentro</span>
+            <h2 className="titulo mt-4">Páginas feitas para riscar, rabiscar e recomeçar.</h2>
+            <p className="sub mt-3">Nada de páginas perfeitas que dão medo de estragar. Use no tablet ou imprima, quantas vezes quiser.</p>
+          </div>
+          <div className="reveal mt-10">
+            <Vitrine />
+          </div>
+          <div className="reveal mx-auto mt-8 flex max-w-[760px] flex-wrap justify-center gap-2">
+            {['Sem datas: comece hoje', 'PDF em A4', 'Imprima quantas vezes quiser', 'GoodNotes, Notability, Xodo', 'Páginas guiadas com exemplo'].map((t) => (
+              <span key={t} className="chip gap-1.5">
+                <Check size={14} strokeWidth={3} className="text-petroleo" /> {t}
+              </span>
+            ))}
+          </div>
+          <FotosReais />
+          <div className="reveal mt-12">
+            <p className="mb-5 text-center font-display text-[13px] font-bold uppercase tracking-[.22em] text-grafite/50">Arraste para ver as páginas</p>
+            <PorDentro />
+          </div>
+        </div>
+      </section>
+
       {/* ======= IDENTIFICAÇÃO ======= */}
-      <section className="bg-white/60 py-16 sm:py-20">
+      <section className="py-16 sm:py-20">
         <div className="estreito text-center">
           <h2 className="titulo reveal">Se a sua mente fosse um navegador, teria 47 abas abertas.</h2>
           <p className="sub reveal mt-3">E todas tocando música ao mesmo tempo.</p>
@@ -181,7 +207,11 @@ export default function Page() {
             </div>
           ))}
         </div>
-        <div className="estreito reveal mt-10 text-center">
+        <div id="teste" className="reveal mx-auto mt-12 max-w-[640px] px-5">
+          <p className="mb-4 text-center font-display text-[17px] font-bold text-grafite">Se identificou? Descubra o quanto a sua mente está sobrecarregada:</p>
+          <Quiz />
+        </div>
+        <div className="estreito reveal mt-12 text-center">
           <p className="text-[18px] leading-relaxed text-grafite/80">
             Não é falta de força de vontade. <b className="text-grafite">Uma cabeça sobrecarregada não consegue simplesmente sentar, planejar e seguir uma lista.</b>
           </p>
@@ -266,11 +296,6 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="reveal mx-auto mt-10 max-w-[860px]">
-            <p className="mb-4 text-center font-display text-[13px] font-bold uppercase tracking-[.22em] text-grafite/50">Veja o método funcionando</p>
-            <MetodoDemo />
-          </div>
-
           <div className="reveal mx-auto mt-10 max-w-[640px] text-center">
             <p className="text-[18px] leading-relaxed text-grafite/80">
               Em 10 minutos: <b className="text-grafite">preocupações separadas</b>, <b className="text-grafite">pendências encaminhadas</b> e <b className="text-grafite">uma primeira ação definida</b>.
@@ -278,20 +303,6 @@ export default function Page() {
             <div className="mt-7 flex justify-center">
               <Cta>Quero aplicar o método</Cta>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ======= VEJA POR DENTRO ======= */}
-      <section className="bg-white/60 py-16 sm:py-20">
-        <div className="wrap">
-          <div className="reveal mx-auto max-w-[640px] text-center">
-            <span className="inline-block rounded-full bg-grafite px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">Veja por dentro</span>
-            <h2 className="titulo mt-4">Páginas feitas para riscar, rabiscar e recomeçar.</h2>
-            <p className="sub mt-3">Nada de páginas perfeitas que dão medo de estragar. Aqui é para usar de verdade.</p>
-          </div>
-          <div className="reveal mt-9">
-            <PorDentro />
           </div>
         </div>
       </section>
@@ -375,8 +386,8 @@ export default function Page() {
       <Depoimentos />
 
       {/* ======= QUEM CRIOU ======= */}
-      {modoTeste && (
-        <section className="so-teste bg-white/60 py-16 sm:py-20">
+      {(modoTeste || criadoraReal) && (
+        <section className={`${criadoraReal ? '' : 'so-ex'} bg-white/60 py-16 sm:py-20`}>
           <div className="wrap grid items-center gap-8 md:grid-cols-[.8fr_1.2fr] md:gap-12">
             <div className="reveal relative mx-auto w-[74%] max-w-[340px] md:w-full">
               <div className="absolute -inset-3 rotate-[-3deg] rounded-[30px] bg-salvia/50" />
@@ -493,13 +504,14 @@ export default function Page() {
             O Planner Mente Calma é uma ferramenta de organização pessoal. Não é tratamento psicológico ou médico e não substitui o acompanhamento de um profissional de saúde. Se você está em sofrimento intenso, procure ajuda: CVV, ligue 188 (gratuito, 24h).
           </p>
           <p className="mt-4">
-            <Link href="/termos" className="underline-offset-2 hover:underline">Termos de uso</Link> · <Link href="/privacidade" className="underline-offset-2 hover:underline">Privacidade</Link> · {marca.suporte}
+            <Link href="/termos" className="inline-block py-2 underline-offset-2 hover:underline">Termos de uso</Link> · <Link href="/privacidade" className="inline-block py-2 underline-offset-2 hover:underline">Privacidade</Link> · {marca.suporte}
           </p>
           <p className="mt-3 text-creme/45">© {new Date().getFullYear()} {marca.nome}. Este site não é afiliado ao Facebook ou à Meta.</p>
         </div>
       </footer>
 
       <StickyBar />
+      <ExitPopup />
     </main>
   );
 }
@@ -527,9 +539,8 @@ function Linha({ t, v, gratis = false }: { t: string; v: number; gratis?: boolea
 
 function Depoimentos() {
   const reais = imagens.depoimentos;
-  if (!reais.length && !modoTeste && !mostrarPlaceholders) return null;
   return (
-    <section className="py-16 sm:py-20">
+    <section className={`${reais.length ? '' : 'so-pv'} py-16 sm:py-20`}>
       <div className="wrap">
         <div className="reveal mx-auto max-w-[640px] text-center">
           <p className="eyebrow">Quem já usa</p>
@@ -544,24 +555,38 @@ function Depoimentos() {
         ) : (
           <>
             {modoTeste && (
-              <div className="so-teste mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {depoimentosTeste.map((d, i) => (
-                  <figure key={d.nome} className="reveal card flex flex-col p-5" style={{ transitionDelay: `${(i % 3) * 80}ms` }}>
-                    <p className="text-[15px] tracking-[.2em] text-terracota-escuro">★★★★★</p>
-                    <blockquote className="mt-2 flex-1 text-[16px] leading-relaxed text-grafite/85">
-                      “{d.texto} <span className="grifo font-bold text-grafite">{d.destaque}</span>
-                      {d.fim}”
-                    </blockquote>
-                    <figcaption className="mt-4 flex items-center gap-3">
-                      <Image src={d.avatar} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
-                      <span className="font-display text-[14px] font-bold">{d.nome}</span>
-                    </figcaption>
-                  </figure>
-                ))}
+              <div className="so-ex">
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px] text-grafite/70">
+                  <span className="text-[18px] tracking-[.15em] text-terracota-escuro">★★★★★</span>
+                  <span>
+                    <b className="text-grafite">4,9 de 5</b> · avaliação de quem já usa
+                  </span>
+                </div>
+                <div className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">
+                  {depoimentosTeste.map((d, i) => (
+                    <figure key={d.nome} className={`reveal mb-4 break-inside-avoid rounded-[22px] p-5 shadow-suave ring-1 ring-grafite/5 ${i === 0 ? 'bg-petroleo text-creme' : i === 3 ? 'bg-terracota-claro' : 'bg-white'}`}>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[14px] tracking-[.18em] ${i === 0 ? 'text-terracota' : 'text-terracota-escuro'}`}>★★★★★</span>
+                        <span className={`font-display text-[40px] leading-[0] ${i === 0 ? 'text-white/25' : 'text-grafite/10'}`}>”</span>
+                      </div>
+                      {d.titulo && <p className="mt-2 font-display text-[17px] font-bold leading-snug">{d.titulo}</p>}
+                      <blockquote className={`mt-2 text-[15.5px] leading-relaxed ${i === 0 ? 'text-creme/90' : 'text-grafite/85'}`}>
+                        {d.texto.split('**').map((t, k) => (k % 2 ? <b key={k} className={i === 0 ? 'text-white underline decoration-terracota decoration-2 underline-offset-4' : 'grifo text-grafite'}>{t}</b> : <span key={k}>{t}</span>))}
+                      </blockquote>
+                      <figcaption className="mt-4 flex items-center gap-3">
+                        <Image src={d.avatar} alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover ring-2 ring-white" />
+                        <span className="leading-tight">
+                          <span className="block font-display text-[14.5px] font-bold">{d.nome}</span>
+                          <span className={`text-[12.5px] ${i === 0 ? 'text-creme/65' : 'text-grafite/55'}`}>{d.info}</span>
+                        </span>
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
               </div>
             )}
-            {mostrarPlaceholders && (
-              <div className={`${modoTeste ? 'so-placeholder' : 'grid'} mt-10 grid-cols-2 gap-4 sm:grid-cols-3`}>
+            {(
+              <div className="so-ph mt-10 grid-cols-2 gap-4 sm:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div key={i} className="grid aspect-[9/14] place-items-center rounded-2xl border-2 border-dashed border-grafite/15 bg-white/50 p-4 text-center text-[13px] text-grafite/45">
                     Espaço para print de depoimento real {i + 1}
@@ -573,6 +598,33 @@ function Depoimentos() {
         )}
       </div>
     </section>
+  );
+}
+
+/** Fotos reais do planner (capa impressa, alguém folheando…). Sem fotos: só espaço reservado na pré-visualização do /admin. */
+function FotosReais() {
+  const fotos = imagens.fotosReais;
+  const temReal = fotos.some((f) => f.img);
+  return (
+    <div className={`${temReal ? '' : 'so-pv'} reveal mt-12`}>
+      <p className="mb-5 text-center font-display text-[13px] font-bold uppercase tracking-[.22em] text-grafite/50">Na vida real</p>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        {fotos.map((f, i) => (
+          <figure key={f.legenda} className={i === 0 ? 'col-span-2 sm:col-span-1' : ''}>
+            {f.img ? (
+              <div className={`relative overflow-hidden rounded-[20px] shadow-papel ${i === 0 ? 'aspect-[4/3] sm:aspect-[4/5]' : 'aspect-[4/5]'}`}>
+                <Image src={f.img} alt={f.legenda} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover" />
+              </div>
+            ) : (
+              <div className={`grid place-items-center rounded-[20px] border-2 border-dashed border-grafite/20 bg-white/60 p-4 text-center text-[13px] text-grafite/50 ${i === 0 ? 'aspect-[4/3] sm:aspect-[4/5]' : 'aspect-[4/5]'}`}>
+                Foto real {i + 1}: {f.legenda}
+              </div>
+            )}
+            <figcaption className="mt-2 text-center text-[13px] text-grafite/60">{f.legenda}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
   );
 }
 
