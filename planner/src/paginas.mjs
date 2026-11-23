@@ -1,22 +1,33 @@
 // Conteúdo de todas as páginas do Planner Mente Calma e dos 4 bônus.
 import { C, ic, mark, ondas, fill, dots, linhas, box, escala, chk, chkLinha, campo, hand, chip } from './ui.mjs';
 
+/* ---------------- Temas de cor (paleta pastel estendida) ---------------- */
+export const TEMAS = {
+  brand: { sbg: '#EAF1EC', stx: '#315F5A', tbg: '#F6E6DC', ttx: '#B5694A', p: '#315F5A', ln: '#A8BDB0' },
+  azul: { sbg: '#E2EDF6', stx: '#36678A', tbg: '#F8E3E6', ttx: '#AE5468', p: '#36678A', ln: '#A9C4DA' },
+  lav: { sbg: '#ECE8F6', stx: '#5B4E8C', tbg: '#FBEFD6', ttx: '#9C7226', p: '#5B4E8C', ln: '#BEB4DE' },
+  rosa: { sbg: '#F8E3E6', stx: '#A54C64', tbg: '#ECE8F6', ttx: '#5B4E8C', p: '#A54C64', ln: '#E2B5C0' },
+  mant: { sbg: '#FBF0D4', stx: '#87651B', tbg: '#E2EDF6', ttx: '#36678A', p: '#87651B', ln: '#E6CF95' },
+};
+/** Cor de cada semana da jornada (índice 0..3 = semanas 1..4, 4 = dias 29 e 30). */
+export const TEMA_SEMANA = ['brand', 'azul', 'lav', 'rosa', 'mant'];
+
 /* ---------------- Seções (abas do tablet) ---------------- */
 export const SECOES = {
-  inicio: { nome: 'Início', cor: C.pet },
-  metodo: { nome: 'Método', cor: C.pet },
-  dia: { nome: '30 dias', cor: C.terEsc },
-  semana: { nome: 'Semana', cor: C.salEsc },
-  mes: { nome: 'Mês', cor: C.pet },
-  preoc: { nome: 'Preocupações', cor: C.terEsc },
-  habitos: { nome: 'Hábitos', cor: C.salEsc },
-  financas: { nome: 'Finanças', cor: C.pet },
-  recomeco: { nome: 'Recomeço', cor: C.terEsc },
-  notas: { nome: 'Notas', cor: C.gra },
-  b1: { nome: 'SOS', cor: C.terEsc, bonus: true },
-  b2: { nome: 'Noite', cor: C.petEsc, bonus: true },
-  b3: { nome: 'Diário', cor: C.salEsc, bonus: true },
-  b4: { nome: 'Rotina', cor: C.terEsc, bonus: true },
+  inicio: { nome: 'Início', cor: TEMAS.brand.p, tema: 'brand'},
+  metodo: { nome: 'Método', cor: TEMAS.brand.p, tema: 'brand'},
+  dia: { nome: '30 dias', cor: TEMAS.brand.p, tema: 'brand'},
+  semana: { nome: 'Semana', cor: TEMAS.azul.p, tema: 'azul'},
+  mes: { nome: 'Mês', cor: TEMAS.lav.p, tema: 'lav'},
+  preoc: { nome: 'Preocupações', cor: TEMAS.rosa.p, tema: 'rosa'},
+  habitos: { nome: 'Hábitos', cor: TEMAS.mant.p, tema: 'mant'},
+  financas: { nome: 'Finanças', cor: TEMAS.azul.p, tema: 'azul'},
+  recomeco: { nome: 'Recomeço', cor: TEMAS.lav.p, tema: 'lav'},
+  notas: { nome: 'Notas', cor: TEMAS.brand.p, tema: 'brand'},
+  b1: { nome: 'SOS', cor: TEMAS.rosa.p, tema: 'rosa', bonus: true },
+  b2: { nome: 'Noite', cor: TEMAS.lav.p, tema: 'lav', bonus: true },
+  b3: { nome: 'Diário', cor: TEMAS.azul.p, tema: 'azul', bonus: true },
+  b4: { nome: 'Rotina', cor: TEMAS.mant.p, tema: 'mant', bonus: true },
 };
 
 const MANTRAS = [
@@ -37,7 +48,7 @@ const LUGAR = {
 
 const lugarCol = (k, conteudo) => {
   const l = LUGAR[k];
-  return `<div class="box b-${l.cor}" style="padding:2.2mm 2.2mm 2.4mm">
+  return `<div class="box ${l.cor === 'line' ? 'b-line fx-line' : 'fx-' + l.cor}" style="padding:2.2mm 2.2mm 2.4mm">
     <div class="bt" style="font-size:6.4pt;letter-spacing:.1em"><span class="bi">${ic(l.icon, 10)}</span>${l.nome}</div>
     <p class="mini it" style="margin-top:.6mm">${l.d}</p>
     ${conteudo}
@@ -121,10 +132,10 @@ const grafico7 = (h = 30) => {
   return `<div style="display:flex;gap:1.6mm;margin-top:1.4mm;height:${h}mm">
     <div style="display:flex;flex-direction:column;justify-content:space-between;font-size:5.6pt;color:${C.gra}77;font-family:Mont;font-weight:600;padding-bottom:4mm">${[10, 8, 6, 4, 2, 0].map((n) => `<span>${n}</span>`).join('')}</div>
     <div style="flex:1;display:flex;flex-direction:column">
-      <div style="flex:1;display:grid;grid-template-columns:repeat(7,1fr);background:repeating-linear-gradient(to bottom, ${C.salBg} 0, ${C.salBg} .25mm, transparent .25mm, transparent calc((100% - .25mm)/5));border-bottom:.3mm solid ${C.sal}">
+      <div style="flex:1;display:grid;grid-template-columns:repeat(7,1fr);background:repeating-linear-gradient(to bottom, var(--s-bg) 0, var(--s-bg) .25mm, transparent .25mm, transparent calc((100% - .25mm)/5));border-bottom:.3mm solid var(--ln)">
         ${dias.map(() => `<div style="border-left:.25mm dashed ${C.gra}22"></div>`).join('')}
       </div>
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);font-family:Mont;font-weight:700;font-size:6pt;color:${C.pet};margin-top:.8mm">${dias.map((d) => `<span style="padding-left:.6mm">${d}</span>`).join('')}</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);font-family:Mont;font-weight:700;font-size:6pt;color:var(--p);margin-top:.8mm">${dias.map((d) => `<span style="padding-left:.6mm">${d}</span>`).join('')}</div>
     </div>
   </div>`;
 };
@@ -135,7 +146,7 @@ export const capa = ({ titulo = 'mente calma', topo = 'PLANNER', tag = 'Organize
   <div style="position:absolute;left:0;right:0;top:19%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 14mm">
     ${selo ? `<span class="chip c-ter" style="margin-bottom:5mm;font-size:6.6pt;padding:1mm 3.2mm">${selo}</span>` : ''}
     ${mark(selo ? 62 : 78)}
-    <p style="font-family:Mont;font-weight:600;font-size:${selo ? 7.5 : 9}pt;letter-spacing:.55em;color:${C.pet};margin-top:${selo ? 5 : 7}mm;padding-left:.55em">${topo}</p>
+    <p style="font-family:Mont;font-weight:600;font-size:${selo ? 7.5 : 9}pt;letter-spacing:.55em;color:var(--p);margin-top:${selo ? 5 : 7}mm;padding-left:.55em">${topo}</p>
     <p style="font-family:Mont;font-weight:700;font-size:${selo ? 25 : 34}pt;line-height:1.02;letter-spacing:-.02em;color:${C.petEsc};margin-top:1.2mm">${titulo}</p>
     <p class="it" style="font-size:9pt;line-height:1.45;color:${C.gra}cc;margin-top:5mm;max-width:80mm">${tag}</p>
     <span style="display:block;width:14mm;height:.5mm;background:${C.ter};border-radius:1mm;margin-top:5mm"></span>
@@ -164,7 +175,7 @@ export function planner(modo) {
       <div style="display:flex;gap:2mm;align-items:flex-end;margin-top:1mm;font-family:Mont;color:${C.gra}66"><i style="display:inline-block;width:10mm;border-bottom:.3mm solid ${C.gra}55;height:7mm"></i>/<i style="display:inline-block;width:10mm;border-bottom:.3mm solid ${C.gra}55;height:7mm"></i>/<i style="display:inline-block;width:14mm;border-bottom:.3mm solid ${C.gra}55;height:7mm"></i></div>
       <p class="quote" style="margin-top:14mm;max-width:85mm;font-size:10pt">“Você não precisa guardar tudo na cabeça. Só precisa de um lugar para colocar.”</p>
       <div class="box b-cre" style="margin-top:16mm;max-width:100mm;text-align:left;flex-direction:row;gap:2.6mm;align-items:flex-start">
-        <span style="color:${C.terEsc};flex-shrink:0;margin-top:.4mm">${ic('HeartHandshake', 14)}</span>
+        <span style="color:var(--t-tx);flex-shrink:0;margin-top:.4mm">${ic('HeartHandshake', 14)}</span>
         <p class="mini" style="font-size:6.8pt">Este planner é uma ferramenta de organização pessoal e não substitui acompanhamento psicológico ou médico. Se a ansiedade estiver forte demais ou você pensar em se machucar, procure ajuda: <b>CVV, ligue 188</b> (gratuito, 24h) ou um serviço de saúde.</p>
       </div>
     </div>`,
@@ -190,7 +201,7 @@ export function planner(modo) {
     </div>
     <div style="display:flex;align-items:center;gap:3mm">
       ${mark(26)}
-      <p class="it" style="font-size:8.4pt;color:${C.gra}bb">Leve o tempo que precisar. Comece pequeno.<br>E volte sempre que a cabeça encher.<br><b style="font-style:normal;color:${C.pet}">Com carinho, equipe Planner Mente Calma</b></p>
+      <p class="it" style="font-size:8.4pt;color:${C.gra}bb">Leve o tempo que precisar. Comece pequeno.<br>E volte sempre que a cabeça encher.<br><b style="font-style:normal;color:var(--p)">Com carinho, equipe Planner Mente Calma</b></p>
     </div>`,
   });
 
@@ -201,7 +212,7 @@ export function planner(modo) {
         ['Printer', 'Imprimir em A5', 'Arquivo “A5”. Em gráfica ou em impressora com papel A5. Encaderne com espiral ou use em fichário.'],
         ['Scissors', 'A4 cortada ao meio', 'Arquivo “A4 · 2 por folha”. Imprima frente e verso, corte ao meio e empilhe. Instruções no guia.'],
         ['Tablet', 'No tablet', 'Arquivo “Tablet”. Abas clicáveis. Funciona no GoodNotes, Notability, Samsung Notes, Noteshelf, Xodo e outros.'],
-      ].map(([i, t, d]) => `<div class="box b-cre" style="padding:2.6mm"><span class="bi" style="background:${C.pet};color:#fff;width:6mm;height:6mm">${ic(i, 12)}</span><p class="h2" style="font-size:8.2pt;margin-top:1.6mm">${t}</p><p class="mini" style="margin-top:.8mm;font-size:6.6pt">${d}</p></div>`).join('')}
+      ].map(([i, t, d]) => `<div class="box b-cre" style="padding:2.6mm"><span class="bi" style="background:var(--p);color:#fff;width:6mm;height:6mm">${ic(i, 12)}</span><p class="h2" style="font-size:8.2pt;margin-top:1.6mm">${t}</p><p class="mini" style="margin-top:.8mm;font-size:6.6pt">${d}</p></div>`).join('')}
     </div>
     ${box({ icon: 'PenLine', t: 'Como preencher', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:1.2mm;margin-top:1.4mm;font-size:7.6pt;line-height:1.42">
       <p><b>À caneta mesmo.</b> Cada página é usada uma vez. O planner já vem com <b>30 dias prontos</b>: cada dia ocupa uma página dupla, e cada semana abre com o planejamento e fecha com a revisão.</p>
@@ -217,7 +228,7 @@ export function planner(modo) {
           ['Quando apertar', 'Modo Mente Acelerada', 'uma página só, para os momentos difíceis'],
           ['No começo do mês', 'Meu mês, hábitos e contas', '15 minutos, uma vez por mês'],
           ['Depois de dias difíceis', 'Página de recomeço', 'volte sem culpa'],
-        ].map(([q, t, d]) => `<div style="display:flex;gap:2.6mm;align-items:baseline"><span class="lbl" style="width:27mm;flex-shrink:0;color:${C.terEsc}">${q}</span><p style="font-size:7.8pt"><b>${t}</b> <span class="mini it">· ${d}</span></p></div>`).join('')}
+        ].map(([q, t, d]) => `<div style="display:flex;gap:2.6mm;align-items:baseline"><span class="lbl" style="width:27mm;flex-shrink:0;color:var(--t-tx)">${q}</span><p style="font-size:7.8pt"><b>${t}</b> <span class="mini it">· ${d}</span></p></div>`).join('')}
       </div>` })}
     ${modo === 'dig' ? box({ icon: 'MousePointerClick', t: 'Dica para tablet', cor: 'ter', style: 'flex:0 0 auto', body: `<p class="mini" style="font-size:7pt;margin-top:.8mm">Toque nas abas à direita para navegar. Para usar uma página de novo, duplique-a no seu app (no GoodNotes: toque no título da página › Duplicar). A <b>Jornada de 30 dias</b> já traz 60 páginas prontas.</p>` }) : box({ icon: 'FileText', t: 'Dica de impressão', cor: 'ter', style: 'flex:0 0 auto', body: `<p class="mini" style="font-size:7pt;margin-top:.8mm">Imprima sempre em <b>tamanho real (100%)</b>, sem “ajustar à página”. Papel 75 g funciona; 90 g deixa a escrita mais gostosa e não marca o verso.</p>` })}`,
   });
@@ -234,12 +245,12 @@ export function planner(modo) {
       ];
       return `<div style="columns:2;column-gap:5mm;flex:1">
         ${grupos.map(([g, it]) => `<div style="break-inside:avoid;margin-bottom:4.4mm">
-          <p class="lbl" style="color:${C.terEsc};margin-bottom:1mm">${g}</p>
-          ${it.map(([n, k]) => `<a href="#p-${k}" style="display:flex;align-items:baseline;gap:1mm;font-size:8.5pt;padding:1.25mm 0;border-bottom:.25mm dotted ${C.gra}33"><span>${n}</span><span style="flex:1"></span><b style="font-family:Mont;font-size:7pt;color:${C.pet}">${modo === 'dig' ? '›' : x.pn(k)}</b></a>`).join('')}
+          <p class="lbl" style="color:var(--t-tx);margin-bottom:1mm">${g}</p>
+          ${it.map(([n, k]) => `<a href="#p-${k}" style="display:flex;align-items:baseline;gap:1mm;font-size:8.5pt;padding:1.25mm 0;border-bottom:.25mm dotted ${C.gra}33"><span>${n}</span><span style="flex:1"></span><b style="font-family:Mont;font-size:7pt;color:var(--p)">${modo === 'dig' ? '›' : x.pn(k)}</b></a>`).join('')}
         </div>`).join('')}
         ${modo === 'dig' ? `<div style="break-inside:avoid;margin-bottom:3mm">
-          <p class="lbl" style="color:${C.terEsc};margin-bottom:1mm">Bônus</p>
-          ${[['SOS Mente Acelerada', 'b1-capa'], ['Desligando a Cabeça', 'b2-capa'], ['Diário da Ansiedade', 'b3-capa'], ['Kit Rotina Sem Sobrecarga', 'b4-capa']].map(([n, k]) => `<a href="#p-${k}" style="display:flex;align-items:baseline;gap:1mm;font-size:8.5pt;padding:1.25mm 0;border-bottom:.25mm dotted ${C.gra}33"><span>${n}</span><span style="flex:1"></span><b style="font-family:Mont;font-size:7pt;color:${C.pet}">›</b></a>`).join('')}
+          <p class="lbl" style="color:var(--t-tx);margin-bottom:1mm">Bônus</p>
+          ${[['SOS Mente Acelerada', 'b1-capa'], ['Desligando a Cabeça', 'b2-capa'], ['Diário da Ansiedade', 'b3-capa'], ['Kit Rotina Sem Sobrecarga', 'b4-capa']].map(([n, k]) => `<a href="#p-${k}" style="display:flex;align-items:baseline;gap:1mm;font-size:8.5pt;padding:1.25mm 0;border-bottom:.25mm dotted ${C.gra}33"><span>${n}</span><span style="flex:1"></span><b style="font-family:Mont;font-size:7pt;color:var(--p)">›</b></a>`).join('')}
         </div>` : `<div class="box b-ter" style="break-inside:avoid"><div class="bt">${ic('Gift', 10)}<span>Seus 4 bônus</span></div><p class="mini" style="margin-top:.8mm">SOS Mente Acelerada · Desligando a Cabeça Antes de Dormir · Diário da Ansiedade · Kit Rotina Sem Sobrecarga. Cada um em um arquivo separado.</p></div>`}
       </div>`;
     },
@@ -250,7 +261,7 @@ export function planner(modo) {
     <p class="tx">Começar com tudo é o jeito mais rápido de desistir. Na primeira semana, use <b>apenas as duas páginas de cada dia</b>: a <b>Mente em 3 Lugares</b> e o <b>Meu dia sem sobrecarga</b>${modo === 'imp' ? ` (a partir da p. ${x.pn('d1-m')})` : ''}. Pode pular a Semana leve e o Organizador por enquanto. Marque abaixo e anote a ansiedade antes e depois do método: você vai <b>ver a diferença no papel</b>.</p>
     <table class="tb" style="flex:0 0 auto">
       <tr><th>Dia</th><th style="text-align:center">Mente em 3 Lugares</th><th style="text-align:center">Meu dia</th><th style="text-align:center">Ansiedade antes</th><th style="text-align:center">Depois</th></tr>
-      ${Array.from({ length: 7 }, (_, i) => `<tr style="height:10.6mm"><td><b style="font-family:Mont;color:${C.pet};font-size:9pt">${i + 1}</b></td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center;color:${C.gra}55">___ /10</td><td style="text-align:center;color:${C.gra}55">___ /10</td></tr>`).join('')}
+      ${Array.from({ length: 7 }, (_, i) => `<tr style="height:10.6mm"><td><b style="font-family:Mont;color:var(--p);font-size:9pt">${i + 1}</b></td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center;color:${C.gra}55">___ /10</td><td style="text-align:center;color:${C.gra}55">___ /10</td></tr>`).join('')}
     </table>
     ${box({ icon: 'Sprout', t: 'Da segunda semana em diante, se quiser', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:1.2mm;margin-top:1.4mm;font-size:7.8pt">
       <p><b>+ Semana leve e Revisão</b>, que abrem e fecham cada semana.</p>
@@ -283,18 +294,18 @@ export function planner(modo) {
         ['resolver', 'O que depende de mim e pede uma ação concreta.', '“Pagar a conta de luz.”'],
         ['programar', 'O que é importante, mas não precisa ser agora. Ganha um dia.', '“Marcar a consulta.” → quinta'],
         ['desocupar', 'Preocupações e “e se…” sobre o que ainda não aconteceu.', '“E se eu for mal na reunião?”'],
-      ].map(([k, d, e]) => { const l = LUGAR[k]; return `<div class="box b-${l.cor}" style="padding:2.6mm"><span class="bi" style="width:6mm;height:6mm;background:${k === 'desocupar' ? C.terEsc : C.pet};color:#fff">${ic(l.icon, 12)}</span><p class="h2" style="margin-top:1.6mm">${l.nome}</p><p class="mini" style="margin-top:.8mm;font-size:6.9pt;color:${C.gra}cc">${d}</p><p class="mini it" style="margin-top:1.2mm">${e}</p></div>`; }).join('')}
+      ].map(([k, d, e]) => { const l = LUGAR[k]; return `<div class="box ${l.cor === 'line' ? 'b-line fx-line' : 'fx-' + l.cor}" style="padding:2.6mm"><span class="bi" style="width:6mm;height:6mm;background:${k === 'desocupar' ? C.terEsc : C.pet};color:#fff">${ic(l.icon, 12)}</span><p class="h2" style="margin-top:1.6mm">${l.nome}</p><p class="mini" style="margin-top:.8mm;font-size:6.9pt;color:${C.gra}cc">${d}</p><p class="mini it" style="margin-top:1.2mm">${e}</p></div>`; }).join('')}
     </div>
     <div>
-    <p class="h2" style="margin-bottom:2.6mm;font-size:11pt">Os 3 passos · <span style="color:${C.terEsc}">10 minutos</span></p>
+    <p class="h2" style="margin-bottom:2.6mm;font-size:11pt">Os 3 passos · <span style="color:var(--t-tx)">10 minutos</span></p>
     <div style="display:flex;flex-direction:column;gap:1mm;flex:0 0 auto;position:relative">
       ${[
         ['Despejar', '3 min', 'Escreva tudo o que está na sua cabeça: tarefas, medos, lembretes, frases soltas. Sem filtro e sem ordem. Se veio à mente, vai para o papel.'],
         ['Distribuir', '5 min', 'Leia item por item e leve cada um para um dos 3 lugares. Na dúvida, use o fluxograma da próxima página.'],
         ['Definir', '2 min', 'Olhe para o “Resolver” e escolha uma única ação pequena para começar. Só uma. É ela que tira você da paralisia.'],
       ].map(([t, m, d], i) => `<div style="display:flex;gap:3mm;padding-bottom:2.6mm">
-        <div style="display:flex;flex-direction:column;align-items:center"><span class="num" style="width:6.4mm;height:6.4mm;font-size:8pt;background:${C.terEsc}">${i + 1}</span>${i < 2 ? `<span style="flex:1;width:.4mm;background:${C.ter}88;margin-top:1mm"></span>` : ''}</div>
-        <div><p class="h2" style="font-size:9.6pt">${t} <span style="font-size:7.4pt;color:${C.terEsc}">${m}</span></p><p class="tx" style="font-size:8.4pt">${d}</p></div>
+        <div style="display:flex;flex-direction:column;align-items:center"><span class="num" style="width:6.4mm;height:6.4mm;font-size:8pt;background:var(--t-tx)">${i + 1}</span>${i < 2 ? `<span style="flex:1;width:.4mm;background:${C.ter}88;margin-top:1mm"></span>` : ''}</div>
+        <div><p class="h2" style="font-size:9.6pt">${t} <span style="font-size:7.4pt;color:var(--t-tx)">${m}</span></p><p class="tx" style="font-size:8.4pt">${d}</p></div>
       </div>`).join('')}
     </div>
     </div>
@@ -317,12 +328,12 @@ export function planner(modo) {
 
   add({
     key: 'fluxo', sp: true, sec: 'metodo', eb: 'Na dúvida', t: 'Isso vai para onde?', sub: 'siga as perguntas com cada item que você despejou', body: () => {
-      const q = (t, n) => `<div style="display:flex;align-items:center;gap:2.4mm;background:#fff;border:.35mm solid ${C.sal};border-radius:3mm;padding:2.4mm 3mm"><span class="num" style="width:5.4mm;height:5.4mm;font-size:7pt">${n}</span><p style="font-family:Mont;font-weight:700;font-size:8.6pt;line-height:1.25">${t}</p></div>`;
+      const q = (t, n) => `<div style="display:flex;align-items:center;gap:2.4mm;background:#fff;border:.35mm solid var(--ln);border-radius:3mm;padding:2.4mm 3mm"><span class="num" style="width:5.4mm;height:5.4mm;font-size:7pt">${n}</span><p style="font-family:Mont;font-weight:700;font-size:8.6pt;line-height:1.25">${t}</p></div>`;
       const dest = (k, t) => { const l = LUGAR[k]; return `<div style="display:flex;align-items:center;gap:2mm;border-radius:3mm;padding:2mm 2.6mm;background:${k === 'desocupar' ? C.terCl : k === 'resolver' ? C.salBg : C.creEsc}"><span style="color:${k === 'desocupar' ? C.terEsc : C.pet}">${ic(l.icon, 13)}</span><p style="font-size:7.4pt;line-height:1.3"><b style="font-family:Mont;letter-spacing:.06em;text-transform:uppercase;font-size:7pt;color:${k === 'desocupar' ? C.terEsc : C.pet}">${l.nome}</b><br>${t}</p></div>`; };
-      const seta = (t) => `<div style="display:flex;align-items:center;gap:1.6mm;padding-left:5.5mm;color:${C.terEsc};font-family:Mont;font-weight:700;font-size:6.6pt;letter-spacing:.08em;text-transform:uppercase">${ic('CornerDownRight', 11)}${t}</div>`;
+      const seta = (t) => `<div style="display:flex;align-items:center;gap:1.6mm;padding-left:5.5mm;color:var(--t-tx);font-family:Mont;font-weight:700;font-size:6.6pt;letter-spacing:.08em;text-transform:uppercase">${ic('CornerDownRight', 11)}${t}</div>`;
       return `
-      <div style="background:${C.pet};color:#fff;border-radius:3mm;padding:2.4mm 3mm;display:flex;align-items:center;gap:2.4mm">${ic('Brain', 14, C.ter)}<p style="font-family:Mont;font-weight:700;font-size:8.6pt">Um pensamento, tarefa ou preocupação</p></div>
-      <div style="display:flex;justify-content:center;color:${C.sal}">${ic('ArrowDown', 14)}</div>
+      <div style="background:var(--p);color:#fff;border-radius:3mm;padding:2.4mm 3mm;display:flex;align-items:center;gap:2.4mm">${ic('Brain', 14, C.ter)}<p style="font-family:Mont;font-weight:700;font-size:8.6pt">Um pensamento, tarefa ou preocupação</p></div>
+      <div style="display:flex;justify-content:center;color:var(--ln)">${ic('ArrowDown', 14)}</div>
       ${q('Isso já está acontecendo ou é um “e se…” sobre o futuro?', 1)}
       <div class="row">${seta('É um “e se…”')}${dest('desocupar', 'Registre e solte. Use as Perguntas que acalmam.')}</div>
       ${seta('Está acontecendo / é real')}
@@ -350,7 +361,7 @@ export function planner(modo) {
         ['O que eu diria a uma amiga?', 'Use com você a mesma gentileza.'],
         ['Isso vai importar daqui a 1 ano?', 'E daqui a 1 mês? E daqui a 1 semana?'],
         ['Qual pedaço depende de mim?', 'Ele vai para o Resolver. O resto, solte.'],
-      ].map(([a, b]) => `<div class="box b-cre" style="padding:2.6mm"><p style="font-family:Mont;font-weight:700;font-size:8pt;color:${C.pet};line-height:1.25">${a}</p><p class="mini" style="margin-top:.8mm;font-size:6.9pt">${b}</p></div>`).join('')}
+      ].map(([a, b]) => `<div class="box b-cre" style="padding:2.6mm"><p style="font-family:Mont;font-weight:700;font-size:8pt;color:var(--p);line-height:1.25">${a}</p><p class="mini" style="margin-top:.8mm;font-size:6.9pt">${b}</p></div>`).join('')}
     </div>
     ${box({ icon: 'Feather', t: 'Frases para soltar', s: 'leia em voz alta, se quiser', cor: 'ter', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:1.4mm;margin-top:1.6mm">
       ${['Eu registrei. Não preciso segurar isso agora.', 'Pensar não é o mesmo que acontecer.', 'Eu cuido disso quando (e se) chegar a hora.', 'Hoje eu escolho o próximo passo, não o problema inteiro.', 'Eu fiz o que dava. O resto não depende de mim.'].map((f) => `<p style="font-family:Mont;font-weight:600;font-size:8pt;color:${C.gra}">“${f}”</p>`).join('')}
@@ -372,12 +383,12 @@ export function planner(modo) {
       ${[0, 1, 2, 3, 4].map((s) => {
         const dias = s < 4 ? Array.from({ length: 7 }, (_, i) => s * 7 + i + 1) : [29, 30];
         return `<div style="display:flex;gap:1.6mm;align-items:stretch">
-          <${modo === 'dig' && s < 4 ? `a href="#p-s${s + 1}-plano"` : 'div'} style="width:15mm;flex-shrink:0;border-radius:2.4mm;background:${s < 4 ? C.pet : C.terEsc};color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.6mm 0"><span style="font-family:Mont;font-weight:700;font-size:5.4pt;letter-spacing:.12em;opacity:.8">${s < 4 ? 'SEMANA' : 'FINAL'}</span><span style="font-family:Mont;font-weight:700;font-size:13pt;line-height:1">${s < 4 ? s + 1 : '✦'}</span></${modo === 'dig' && s < 4 ? 'a' : 'div'}>
-          ${dias.map((d) => `<${modo === 'dig' ? `a href="#p-d${d}-m"` : 'div'} style="flex:1;max-width:13.4mm;border-radius:2.4mm;background:${s % 2 ? C.cre : C.salBg};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8mm;padding:1.6mm 0;min-height:13mm">
-            <span style="font-family:Mont;font-weight:700;font-size:11pt;color:${C.pet};line-height:1">${d}</span>
-            ${modo === 'dig' ? `<span style="font-size:5pt;color:${C.gra}77">abrir ›</span>` : `<span style="width:3.4mm;height:3.4mm;border-radius:50%;border:.3mm solid ${C.pet};background:#fff"></span><span style="font-size:5pt;color:${C.gra}77">p. ${x.pn(`d${d}-m`)}</span>`}
+          <${modo === 'dig' && s < 4 ? `a href="#p-s${s + 1}-plano"` : 'div'} style="width:15mm;flex-shrink:0;border-radius:2.4mm;background:${TEMAS[TEMA_SEMANA[s]].p};color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.6mm 0"><span style="font-family:Mont;font-weight:700;font-size:5.4pt;letter-spacing:.12em;opacity:.8">${s < 4 ? 'SEMANA' : 'FINAL'}</span><span style="font-family:Mont;font-weight:700;font-size:13pt;line-height:1">${s < 4 ? s + 1 : '✦'}</span></${modo === 'dig' && s < 4 ? 'a' : 'div'}>
+          ${dias.map((d) => `<${modo === 'dig' ? `a href="#p-d${d}-m"` : 'div'} style="flex:1;max-width:13.4mm;border-radius:2.4mm;background:${TEMAS[TEMA_SEMANA[s]].sbg};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8mm;padding:1.6mm 0;min-height:13mm">
+            <span style="font-family:Mont;font-weight:700;font-size:11pt;color:${TEMAS[TEMA_SEMANA[s]].stx};line-height:1">${d}</span>
+            ${modo === 'dig' ? `<span style="font-size:5pt;color:${C.gra}77">abrir ›</span>` : `<span style="width:3.4mm;height:3.4mm;border-radius:50%;border:.3mm solid var(--p);background:#fff"></span><span style="font-size:5pt;color:${C.gra}77">p. ${x.pn(`d${d}-m`)}</span>`}
           </${modo === 'dig' ? 'a' : 'div'}>`).join('')}
-          ${s === 4 ? `<${modo === 'dig' ? 'a href="#p-evolucao"' : 'div'} style="flex:3;border-radius:2.4mm;background:${C.terCl};display:flex;align-items:center;gap:2mm;padding:0 3mm;color:${C.terEsc}">${ic('TrendingUp', 16)}<span style="font-size:7.4pt;color:${C.gra}"><b>Dia 30:</b> preencha “Minha evolução”${modo === 'dig' ? '' : ` (p. ${x.pn('evolucao')})`} e compare com o seu ponto de partida.</span></${modo === 'dig' ? 'a' : 'div'}>` : ''}
+          ${s === 4 ? `<${modo === 'dig' ? 'a href="#p-evolucao"' : 'div'} style="flex:3;border-radius:2.4mm;background:var(--t-bg);display:flex;align-items:center;gap:2mm;padding:0 3mm;color:var(--t-tx)">${ic('TrendingUp', 16)}<span style="font-size:7.4pt;color:${C.gra}"><b>Dia 30:</b> preencha “Minha evolução”${modo === 'dig' ? '' : ` (p. ${x.pn('evolucao')})`} e compare com o seu ponto de partida.</span></${modo === 'dig' ? 'a' : 'div'}>` : ''}
         </div>`;
       }).join('')}
     </div>
@@ -403,7 +414,7 @@ export function planner(modo) {
     key: 'tpl-cal', sec: 'mes', eb: 'Calendário', t: 'Mês sem datas', sub: 'escreva os números no cantinho de cada dia', body: () => `
     <div class="row" style="flex:0 0 auto">${campo('Mês:', '40mm')}</div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1.1mm;flex:0 0 auto">
-      ${['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((d, i) => `<span style="text-align:center;font-family:Mont;font-weight:700;font-size:6.4pt;letter-spacing:.08em;text-transform:uppercase;padding:1mm 0;border-radius:1.6mm;background:${i > 4 ? C.terCl : C.salBg};color:${i > 4 ? C.terEsc : C.pet}">${d}</span>`).join('')}
+      ${['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((d, i) => `<span style="text-align:center;font-family:Mont;font-weight:700;font-size:6.4pt;letter-spacing:.08em;text-transform:uppercase;padding:1mm 0;border-radius:1.6mm;background:${i > 4 ? 'var(--t-bg)' : 'var(--s-bg)'};color:${i > 4 ? 'var(--t-tx)' : 'var(--s-tx)'}">${d}</span>`).join('')}
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(6,1fr);gap:1.1mm;flex:1;min-height:0">
       ${Array.from({ length: 42 }, (_, i) => `<div style="border:.3mm solid ${C.creEsc};border-radius:1.8mm;position:relative;background:#fff"><span style="position:absolute;top:.8mm;left:.8mm;width:4mm;height:3.6mm;border-radius:1mm;background:${(i % 7) > 4 ? C.terCl : C.cre}"></span></div>`).join('')}
@@ -415,11 +426,11 @@ export function planner(modo) {
   reg({
     key: 'tpl-preoc', sec: 'preoc', anchor: true, eb: 'Organizador', t: 'Organizador de <span class="gr">preocupações</span>', sub: 'separe o que é real do que é antecipação', data: true, refil: true, body: () => `
     <div class="g3" style="flex:0 0 auto">
-      ${[['R', 'Problema real', 'está acontecendo e tem ação', 'sal'], ['F', 'Situação futura', 'pode acontecer, ganha data', 'cre'], ['P', 'Pensamento repetitivo', 'volta e volta, sem ação', 'ter']].map(([l, t, d, c]) => `<div class="box b-${c}" style="padding:2mm 2.4mm;flex-direction:row;gap:2mm;align-items:center"><span class="num" style="flex-shrink:0;background:${c === 'ter' ? C.terEsc : C.pet}">${l}</span><span><b style="font-size:7pt;line-height:1.2;display:block">${t}</b><span class="mini it" style="font-size:6.2pt">${d}</span></span></div>`).join('')}
+      ${[['R', 'Problema real', 'está acontecendo e tem ação', 'sal'], ['F', 'Situação futura', 'pode acontecer, ganha data', 'cre'], ['P', 'Pensamento repetitivo', 'volta e volta, sem ação', 'ter']].map(([l, t, d, c]) => `<div class="box b-${c}" style="padding:2mm 2.4mm;flex-direction:row;gap:2mm;align-items:center"><span class="num" style="flex-shrink:0;background:${c === 'ter' ? 'var(--t-tx)' : 'var(--p)'}">${l}</span><span><b style="font-size:7pt;line-height:1.2;display:block">${t}</b><span class="mini it" style="font-size:6.2pt">${d}</span></span></div>`).join('')}
     </div>
     <table class="tb" style="flex:0 0 auto">
       <tr><th style="width:46%">O que está me preocupando</th><th style="text-align:center;width:16%">R · F · P</th><th>O que eu posso fazer?</th></tr>
-      ${Array.from({ length: 9 }, () => `<tr style="height:9.4mm"><td style="border-right:.25mm solid ${C.gra}18"></td><td style="text-align:center;white-space:nowrap;border-right:.25mm solid ${C.gra}18">${['R', 'F', 'P'].map((l) => `<span style="display:inline-grid;place-items:center;width:4.2mm;height:4.2mm;border-radius:50%;border:.3mm solid ${C.sal};font-family:Mont;font-size:5.6pt;font-weight:700;color:${C.gra}88;margin:0 .3mm">${l}</span>`).join('')}</td><td></td></tr>`).join('')}
+      ${Array.from({ length: 9 }, () => `<tr style="height:9.4mm"><td style="border-right:.25mm solid ${C.gra}18"></td><td style="text-align:center;white-space:nowrap;border-right:.25mm solid ${C.gra}18">${['R', 'F', 'P'].map((l) => `<span style="display:inline-grid;place-items:center;width:4.2mm;height:4.2mm;border-radius:50%;border:.3mm solid var(--ln);font-family:Mont;font-size:5.6pt;font-weight:700;color:${C.gra}88;margin:0 .3mm">${l}</span>`).join('')}</td><td></td></tr>`).join('')}
     </table>
     ${box({ icon: 'Footprints', t: 'O que eu posso fazer hoje?', s: 'só o que depende de mim', cor: 'dash', cls: 'grow', body: fill() })}
     <p class="quote" style="font-size:7.6pt;flex:0 0 auto">Preocupação anotada é preocupação que você não precisa ficar segurando.</p>`,
@@ -449,9 +460,9 @@ export function planner(modo) {
       <div class="row" style="flex:0 0 auto;align-items:flex-end">${campo('Mês:', '34mm')}<span class="mini it" style="text-align:right">sugestões: água · remédio · caminhar · dormir até 23h · método do dia · 10 min sem celular</span></div>
       <div style="flex:1;display:grid;grid-template-columns:7mm repeat(${cols},1fr) 25mm;grid-template-rows:18mm repeat(31,1fr);min-height:0;font-size:6pt">
         <span></span>
-        ${Array.from({ length: cols }, (_, i) => `<div style="border-radius:1.6mm 1.6mm 0 0;background:${i % 2 ? C.cre : C.salBg};margin:0 .4mm;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1mm"><span style="font-family:Mont;font-size:5pt;color:${C.gra}55">hábito ${i + 1}</span></div>`).join('')}
-        <div style="border-radius:1.6mm 1.6mm 0 0;background:${C.terCl};margin-left:1mm;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:1mm"><span style="font-family:Mont;font-weight:700;font-size:5.4pt;letter-spacing:.06em;color:${C.terEsc}">ANSIEDADE</span><span style="font-size:5pt;color:${C.gra}88">baixa · média · alta</span></div>
-        ${Array.from({ length: 31 }, (_, d) => `<span style="display:flex;align-items:center;font-family:Mont;font-weight:700;color:${C.pet};font-size:6pt">${d + 1}</span>${Array.from({ length: cols }, (_, i) => `<div style="background:${i % 2 ? C.cre : C.salBg};margin:0 .4mm;display:flex;align-items:center;justify-content:center;border-top:.2mm solid #fff"><span style="width:3.1mm;height:3.1mm;border-radius:50%;border:.28mm solid ${C.sal};background:#fff"></span></div>`).join('')}<div style="background:${C.terCl};margin-left:1mm;display:flex;align-items:center;justify-content:space-around;border-top:.2mm solid #fff">${[0, 1, 2].map((k) => `<span style="width:3mm;height:3mm;border-radius:50%;border:.28mm solid ${C.ter};background:${['#fff', '#fff', '#fff'][k]}"></span>`).join('')}</div>`).join('')}
+        ${Array.from({ length: cols }, (_, i) => `<div style="border-radius:1.6mm 1.6mm 0 0;background:${i % 2 ? C.cre : 'var(--s-bg)'};margin:0 .4mm;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1mm"><span style="font-family:Mont;font-size:5pt;color:${C.gra}55">hábito ${i + 1}</span></div>`).join('')}
+        <div style="border-radius:1.6mm 1.6mm 0 0;background:var(--t-bg);margin-left:1mm;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:1mm"><span style="font-family:Mont;font-weight:700;font-size:5.4pt;letter-spacing:.06em;color:var(--t-tx)">ANSIEDADE</span><span style="font-size:5pt;color:${C.gra}88">baixa · média · alta</span></div>
+        ${Array.from({ length: 31 }, (_, d) => `<span style="display:flex;align-items:center;font-family:Mont;font-weight:700;color:var(--p);font-size:6pt">${d + 1}</span>${Array.from({ length: cols }, (_, i) => `<div style="background:${i % 2 ? C.cre : 'var(--s-bg)'};margin:0 .4mm;display:flex;align-items:center;justify-content:center;border-top:.2mm solid #fff"><span style="width:3.1mm;height:3.1mm;border-radius:50%;border:.28mm solid var(--ln);background:#fff"></span></div>`).join('')}<div style="background:var(--t-bg);margin-left:1mm;display:flex;align-items:center;justify-content:space-around;border-top:.2mm solid #fff">${[0, 1, 2].map((k) => `<span style="width:3mm;height:3mm;border-radius:50%;border:.28mm solid ${C.ter};background:${['#fff', '#fff', '#fff'][k]}"></span>`).join('')}</div>`).join('')}
       </div>`;
     },
   });
@@ -461,7 +472,7 @@ export function planner(modo) {
       <table class="tb" style="flex:1">
         <tr><th style="width:7%">Dia</th><th style="text-align:center">Deitei</th><th style="text-align:center">Acordei</th><th style="text-align:center">Sono</th><th style="text-align:center">Energia</th><th style="text-align:center">Cabeça ao deitar</th></tr>
         <tr><td></td><td></td><td></td><td style="text-align:center;font-size:5.4pt;color:${C.gra}88">ruim · ok · bom</td><td style="text-align:center;font-size:5.4pt;color:${C.gra}88">baixa · média · alta</td><td style="text-align:center;font-size:5.4pt;color:${C.gra}88">calma · cheia · a mil</td></tr>
-        ${Array.from({ length: 31 }, (_, d) => `<tr><td style="font-family:Mont;font-weight:700;color:${C.pet};font-size:6pt">${d + 1}</td><td style="color:${C.gra}44;text-align:center;font-size:6pt">__:__</td><td style="color:${C.gra}44;text-align:center;font-size:6pt">__:__</td>${[0, 1, 2].map((c) => `<td style="text-align:center">${[0, 1, 2].map(() => `<span style="display:inline-block;width:2.8mm;height:2.8mm;border-radius:50%;border:.28mm solid ${c === 2 ? C.ter : C.sal};margin:0 .9mm;vertical-align:middle"></span>`).join('')}</td>`).join('')}</tr>`).join('')}
+        ${Array.from({ length: 31 }, (_, d) => `<tr><td style="font-family:Mont;font-weight:700;color:var(--p);font-size:6pt">${d + 1}</td><td style="color:${C.gra}44;text-align:center;font-size:6pt">__:__</td><td style="color:${C.gra}44;text-align:center;font-size:6pt">__:__</td>${[0, 1, 2].map((c) => `<td style="text-align:center">${[0, 1, 2].map(() => `<span style="display:inline-block;width:2.8mm;height:2.8mm;border-radius:50%;border:.28mm solid ${c === 2 ? C.ter : C.sal};margin:0 .9mm;vertical-align:middle"></span>`).join('')}</td>`).join('')}</tr>`).join('')}
       </table>`,
   });
   reg({
@@ -473,7 +484,7 @@ export function planner(modo) {
           ${fill()}
         </div>`).join('')}
     </div>
-    ${box({ icon: 'Users', t: 'Pessoas com quem eu posso contar', cor: 'white', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 4mm">${Array.from({ length: 4 }, () => `<div class="chk cl"><span style="color:${C.terEsc}">${ic('Phone', 9)}</span><span class="ln"></span></div>`).join('')}</div><p class="mini" style="margin-top:1.4mm">Em uma crise, ligue <b>188 (CVV)</b>, gratuito e 24 horas.</p>` })}`,
+    ${box({ icon: 'Users', t: 'Pessoas com quem eu posso contar', cor: 'white', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 4mm">${Array.from({ length: 4 }, () => `<div class="chk cl"><span style="color:var(--t-tx)">${ic('Phone', 9)}</span><span class="ln"></span></div>`).join('')}</div><p class="mini" style="margin-top:1.4mm">Em uma crise, ligue <b>188 (CVV)</b>, gratuito e 24 horas.</p>` })}`,
   });
 
   // ---------- FINANÇAS ----------
@@ -483,7 +494,7 @@ export function planner(modo) {
     <table class="tb" style="flex:1">
       <tr><th>Conta</th><th style="width:15%;text-align:center">Vence dia</th><th style="width:20%">Valor</th><th style="width:12%;text-align:center">Paga</th></tr>
       ${Array.from({ length: 13 }, () => `<tr style="height:8.4mm"><td></td><td></td><td style="color:${C.gra}55">R$</td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td></tr>`).join('')}
-      <tr style="height:8.4mm"><td style="font-family:Mont;font-weight:700;color:${C.pet};font-size:7pt">TOTAL</td><td></td><td style="color:${C.gra}55">R$</td><td></td></tr>
+      <tr style="height:8.4mm"><td style="font-family:Mont;font-weight:700;color:var(--p);font-size:7pt">TOTAL</td><td></td><td style="color:${C.gra}55">R$</td><td></td></tr>
     </table>
     ${box({ icon: 'BellRing', t: 'Ação desta semana', s: 'ex.: renegociar, cancelar, pedir 2ª via', cor: 'dash', style: 'flex:0 0 auto', body: linhas(2) })}`,
   });
@@ -550,25 +561,27 @@ export function planner(modo) {
   usar('jornada', { anchor: true });
   parEsquerda('dia');
   const dia = (d, s) => {
-    usar('tpl-metodo', { key: `d${d}-m`, dia: d, voltar: 'jornada', eb: `Dia ${d} · Mente em 3 Lugares` });
-    usar('tpl-dia', { key: `d${d}-d`, dia: d, voltar: 'jornada', eb: `Dia ${d} · Meu dia` });
+    const tema = TEMA_SEMANA[s - 1];
+    usar('tpl-metodo', { key: `d${d}-m`, dia: d, tema, voltar: 'jornada', eb: `Dia ${d} · Mente em 3 Lugares` });
+    usar('tpl-dia', { key: `d${d}-d`, dia: d, tema, voltar: 'jornada', eb: `Dia ${d} · Meu dia` });
   };
   for (let s = 1; s <= 4; s++) {
-    usar('tpl-semana', { key: `s${s}-plano`, anchor: s === 1, voltar: 'jornada', eb: `Semana ${s} de 4`, semana: s });
-    usar('tpl-preoc', { key: `s${s}-preoc`, anchor: s === 1, voltar: 'jornada', eb: `Semana ${s} · Organizador` });
+    const tema = TEMA_SEMANA[s - 1];
+    usar('tpl-semana', { key: `s${s}-plano`, tema, anchor: s === 1, voltar: 'jornada', eb: `Semana ${s} de 4`, semana: s });
+    usar('tpl-preoc', { key: `s${s}-preoc`, tema, anchor: s === 1, voltar: 'jornada', eb: `Semana ${s} · Organizador` });
     for (let d = s * 7 - 6; d <= s * 7; d++) dia(d, s);
-    usar('tpl-revisao', { key: `s${s}-revisao`, voltar: 'jornada', eb: `Semana ${s} · fechamento` });
-    usar('tpl-pautada', { key: `s${s}-notas`, voltar: 'jornada', eb: `Semana ${s} · notas`, t: 'Notas da semana' });
+    usar('tpl-revisao', { key: `s${s}-revisao`, tema, voltar: 'jornada', eb: `Semana ${s} · fechamento` });
+    usar('tpl-pautada', { key: `s${s}-notas`, tema, voltar: 'jornada', eb: `Semana ${s} · notas`, t: 'Notas da semana' });
   }
-  dia(29); dia(30);
+  dia(29, 5); dia(30, 5);
   // Ferramentas para quando precisar
   usar('tpl-acelerada', { key: 'acelerada-1' });
   usar('tpl-acelerada', { key: 'acelerada-2' });
-  usar('tpl-horario');
-  usar('autocuidado');
+  usar('tpl-horario', { tema: 'lav' });
+  usar('autocuidado', { tema: 'mant' });
   usar('tpl-recomeco', { key: 'recomeco-1', anchor: true });
   usar('tpl-recomeco', { key: 'recomeco-2' });
-  usar('evolucao');
+  usar('evolucao', { tema: 'brand' });
   usar('tpl-pautada', { anchor: true });
   usar('tpl-pontilhada');
   if (modo === 'dig') for (let n = 2; n <= 4; n++) { usar('tpl-pautada', { key: `pautada-${n}` }); usar('tpl-pontilhada', { key: `pontilhada-${n}` }); }
@@ -581,7 +594,7 @@ export const contracapa = (t = 'Menos peso na mente. Mais clareza no dia.') => `
 <div style="position:absolute;inset:0;background:${C.cre};display:flex;flex-direction:column;align-items:center;text-align:center;color:${C.gra}">
   <div style="margin-top:50mm;display:flex;flex-direction:column;align-items:center">
     ${mark(50)}
-    <p style="font-family:Mont;font-weight:600;font-size:7pt;letter-spacing:.5em;margin-top:6mm;padding-left:.5em;color:${C.pet}">PLANNER</p>
+    <p style="font-family:Mont;font-weight:600;font-size:7pt;letter-spacing:.5em;margin-top:6mm;padding-left:.5em;color:var(--p)">PLANNER</p>
     <p style="font-family:Mont;font-weight:700;font-size:22pt;letter-spacing:-.02em;line-height:1;color:${C.petEsc}">mente calma</p>
     <p class="it" style="font-size:9pt;margin-top:6mm;color:${C.gra}bb">${t}</p>
   </div>
@@ -598,7 +611,7 @@ export function bonus(modo) {
 
   /* ---------- BÔNUS 1 · SOS MENTE ACELERADA ---------- */
   const b1 = B.b1;
-  b1.push({ key: 'b1-capa', sec: 'b1', anchor: true, raw: () => capaBonus(1, 'SOS Mente<br>Acelerada', 'Páginas rápidas para quando a cabeça estiver a mil: respirar, voltar ao presente e escolher um próximo passo.', ['terCl', 'ter', 'terEsc', 'pet']) });
+  b1.push({ key: 'b1-capa', sec: 'b1', anchor: true, raw: () => capaBonus(1, 'SOS Mente<br>Acelerada', 'Páginas rápidas para quando a cabeça estiver a mil: respirar, voltar ao presente e escolher um próximo passo.', ['#F8E3E6', '#E2B5C0', '#A54C64', '#315F5A']) });
   b1.push({
     key: 'b1-comece', sp: true, sec: 'b1', eb: 'SOS · Comece por aqui', t: 'Quando a cabeça <span class="gr">estiver a mil</span>', sub: 'três passos, menos de 5 minutos', body: (x) => `
     <p class="tx">Na crise, a mente quer resolver tudo de uma vez. O caminho é o contrário: <b>primeiro acalmar o corpo, depois voltar ao presente, e só então escolher uma coisa pequena</b>. Siga a ordem.</p>
@@ -607,8 +620,8 @@ export function bonus(modo) {
       ['Eye', 'Volte ao presente', '2 min', 'Técnica 5-4-3-2-1: use os sentidos para tirar a mente do “e se…” e trazer de volta para onde você está agora.', 'b1-ancora'],
       ['Footprints', 'Um próximo passo', '2 min', 'Preencha a Página SOS: o que está pesando, se é para agora e qual a menor ação possível.', 'b1-sos'],
     ].map(([i, t, m, d, k], n) => `<div class="box ${n === 1 ? 'b-cre' : n === 2 ? 'b-ter' : 'b-sal'}" style="flex-direction:row;gap:3mm;align-items:flex-start;flex:0 0 auto">
-      <span class="num" style="width:7mm;height:7mm;font-size:9pt;flex-shrink:0;${n === 2 ? `background:${C.terEsc}` : ''}">${n + 1}</span>
-      <div><p class="h2">${t} <span style="font-size:7pt;color:${C.terEsc}">${m}</span></p><p class="tx" style="font-size:7.8pt;margin-top:.6mm">${d}</p><p class="mini" style="margin-top:.8mm;color:${C.pet};font-weight:700">${modo === 'dig' ? `<a href="#p-${k}">ir para a página ›</a>` : `página ${x.pn(k)}`}</p></div>
+      <span class="num" style="width:7mm;height:7mm;font-size:9pt;flex-shrink:0;${n === 2 ? `background:var(--t-tx)` : ''}">${n + 1}</span>
+      <div><p class="h2">${t} <span style="font-size:7pt;color:var(--t-tx)">${m}</span></p><p class="tx" style="font-size:7.8pt;margin-top:.6mm">${d}</p><p class="mini" style="margin-top:.8mm;color:var(--p);font-weight:700">${modo === 'dig' ? `<a href="#p-${k}">ir para a página ›</a>` : `página ${x.pn(k)}`}</p></div>
     </div>`).join('')}
     <div class="box b-pet" style="flex-direction:row;gap:3mm;align-items:center">${ic('HeartHandshake', 18, C.ter)}<p style="font-size:7.4pt;line-height:1.45">Se a crise for muito forte, não passar ou você pensar em se machucar, procure ajuda agora: <b>CVV 188</b> (24h, gratuito), <b>SAMU 192</b> ou o pronto-socorro mais próximo.</p></div>`,
   });
@@ -616,8 +629,8 @@ export function bonus(modo) {
     key: 'b1-resp', sec: 'b1', eb: 'SOS · Passo 1', t: 'Respiração <span class="gr">4-4-6</span>', sub: 'siga o quadrado com o dedo ou com os olhos', body: () => `
     <div style="display:flex;justify-content:center;flex:0 0 auto;padding:3mm 0">
       <div style="position:relative;width:74mm;height:74mm">
-        <div style="position:absolute;inset:8mm;border-radius:6mm;border:1.2mm solid ${C.sal};background:${C.salBg}"></div>
-        <div style="position:absolute;inset:8mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">${ic('Wind', 22, C.pet)}<p style="font-family:Mont;font-weight:700;font-size:11pt;color:${C.pet};margin-top:2mm">repita 4 vezes</p><p class="mini it">devagar, sem forçar</p></div>
+        <div style="position:absolute;inset:8mm;border-radius:6mm;border:1.2mm solid var(--ln);background:var(--s-bg)"></div>
+        <div style="position:absolute;inset:8mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">${ic('Wind', 22, C.pet)}<p style="font-family:Mont;font-weight:700;font-size:11pt;color:var(--p);margin-top:2mm">repita 4 vezes</p><p class="mini it">devagar, sem forçar</p></div>
         <span style="position:absolute;top:0;left:50%;transform:translateX(-50%)" class="chip c-pet">Inspire · 4</span>
         <span style="position:absolute;right:-5mm;top:50%;transform:translateY(-50%) rotate(90deg)" class="chip c-sal">Segure · 4</span>
         <span style="position:absolute;bottom:0;left:50%;transform:translateX(-50%)" class="chip c-ter">Solte · 6</span>
@@ -628,7 +641,7 @@ export function bonus(modo) {
       ${box({ icon: 'Sparkles', t: 'Suspiro duplo', cor: 'cre', body: `<p class="mini" style="font-size:7pt;margin-top:1mm">Puxe o ar pelo nariz, puxe mais um pouquinho por cima, e solte tudo bem devagar pela boca. Uma ou duas vezes já acalmam.</p>` })}
       ${box({ icon: 'Hand', t: 'Mão no peito', cor: 'ter', body: `<p class="mini" style="font-size:7pt;margin-top:1mm">Coloque a mão no peito, sinta o ar entrar e sair e diga por dentro: “agora eu estou segura(o)”.</p>` })}
     </div>
-    ${box({ icon: 'ClipboardCheck', t: 'Registro', s: 'marque cada vez que usar', cor: 'white', cls: 'grow', body: `<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:1.6mm;margin-top:2mm">${Array.from({ length: 40 }, () => `<span style="aspect-ratio:1;border-radius:50%;border:.3mm solid ${C.sal}"></span>`).join('')}</div>` })}`,
+    ${box({ icon: 'ClipboardCheck', t: 'Registro', s: 'marque cada vez que usar', cor: 'white', cls: 'grow', body: `<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:1.6mm;margin-top:2mm">${Array.from({ length: 40 }, () => `<span style="aspect-ratio:1;border-radius:50%;border:.3mm solid var(--ln)"></span>`).join('')}</div>` })}`,
   });
   b1.push({
     key: 'b1-ancora', sec: 'b1', eb: 'SOS · Passo 2', t: 'Volte ao presente: <span class="gr">5-4-3-2-1</span>', sub: 'devagar, um sentido de cada vez', data: true, refil: true, body: () => `
@@ -659,7 +672,7 @@ export function bonus(modo) {
 
   /* ---------- BÔNUS 2 · DESLIGANDO A CABEÇA ---------- */
   const b2 = B.b2;
-  b2.push({ key: 'b2-capa', sec: 'b2', anchor: true, raw: () => capaBonus(2, 'Desligando a Cabeça<br>Antes de Dormir', 'Um ritual de 10 minutos para encerrar o dia: descarregar, preparar o amanhã e deitar mais leve.', ['salCl', 'sal', 'petEsc', 'ter']) });
+  b2.push({ key: 'b2-capa', sec: 'b2', anchor: true, raw: () => capaBonus(2, 'Desligando a Cabeça<br>Antes de Dormir', 'Um ritual de 10 minutos para encerrar o dia: descarregar, preparar o amanhã e deitar mais leve.', ['#ECE8F6', '#BEB4DE', '#4A3F78', '#F6E6DC']) });
   b2.push({
     key: 'b2-ritual', sp: true, sec: 'b2', eb: 'Ritual noturno', t: 'O ritual de <span class="gr">10 minutos</span>', sub: 'faça 30 a 60 minutos antes de deitar, longe da cama', body: () => `
     <p class="tx">A cabeça não desliga porque ainda está tentando <b>lembrar</b>, <b>resolver</b> e <b>prevenir</b>. Este ritual entrega para o papel cada uma dessas tarefas. Quando a mente entende que nada vai se perder, ela pode descansar.</p>
@@ -668,13 +681,13 @@ export function bonus(modo) {
       ['CalendarCheck', 'Preparar o amanhã', '3 min', 'Escolha as 3 prioridades de amanhã e o primeiro passo. Pronto: ninguém precisa ficar “lembrando” durante a noite.'],
       ['Feather', 'Soltar', '2 min', 'Escreva o que você solta hoje e uma coisa boa que aconteceu. Fechar o dia no positivo muda a última imagem da mente.'],
       ['Moon', 'Desacelerar', '2 min', 'Respiração 4-4-6 e luz baixa. A partir daqui: tela longe e nada de resolver problemas.'],
-    ].map(([i, t, m, d], n) => `<div style="display:flex;gap:3mm;align-items:flex-start;flex:0 0 auto"><span class="bi" style="width:8mm;height:8mm;background:${n % 2 ? C.terCl : C.salBg};color:${n % 2 ? C.terEsc : C.pet};flex-shrink:0">${ic(i, 15)}</span><div><p class="h2" style="font-size:10pt">${n + 1}. ${t} <span style="font-size:7.4pt;color:${C.terEsc}">${m}</span></p><p class="tx" style="font-size:8.6pt">${d}</p></div></div>`).join('')}
+    ].map(([i, t, m, d], n) => `<div style="display:flex;gap:3mm;align-items:flex-start;flex:0 0 auto"><span class="bi" style="width:8mm;height:8mm;background:${n % 2 ? C.terCl : C.salBg};color:${n % 2 ? C.terEsc : C.pet};flex-shrink:0">${ic(i, 15)}</span><div><p class="h2" style="font-size:10pt">${n + 1}. ${t} <span style="font-size:7.4pt;color:var(--t-tx)">${m}</span></p><p class="tx" style="font-size:8.6pt">${d}</p></div></div>`).join('')}
     ${box({ icon: 'BedDouble', t: 'Para dormir melhor', cor: 'pet', body: `<div class="g2" style="gap:1mm 4mm;margin-top:1.6mm;font-size:7.2pt">${['mesmo horário para deitar, até no fim de semana', 'celular fora do alcance da cama', 'café só até o meio da tarde', 'quarto escuro e mais fresco', 'cama é para dormir, não para resolver', 'perdeu o sono? levante e volte com sono'].map((t) => `<p style="display:flex;gap:1.4mm">${ic('Check', 9, C.ter, 3)}<span>${t}</span></p>`).join('')}</div>` })}`,
   });
   b2.push({
     key: 'b2-noite', sec: 'b2', eb: 'Ritual noturno', t: 'Desligando a cabeça', sub: '10 minutos para o dia terminar aqui', data: true, refil: true, body: () => `
     ${box({ num: '1', t: 'Descarregar', s: 'o que ficou rodando hoje', cor: 'cre', cls: 'grow', style: 'flex:1.3', body: fill() })}
-    ${box({ num: '2', t: 'Amanhã', s: 'só 3 prioridades', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="margin-top:.6mm">${chkLinha(3)}<div class="chk cl"><span class="lbl" style="white-space:nowrap;color:${C.terEsc}">1º passo:</span><span class="ln"></span></div></div>` })}
+    ${box({ num: '2', t: 'Amanhã', s: 'só 3 prioridades', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="margin-top:.6mm">${chkLinha(3)}<div class="chk cl"><span class="lbl" style="white-space:nowrap;color:var(--t-tx)">1º passo:</span><span class="ln"></span></div></div>` })}
     <div class="row" style="flex:1;min-height:0">
       ${box({ num: '3', t: 'Hoje eu solto', cor: 'ter', body: fill() })}
       ${box({ icon: 'Heart', t: 'Uma coisa boa de hoje', cor: 'line', body: fill() })}
@@ -695,7 +708,7 @@ export function bonus(modo) {
     key: 'b2-sono', sec: 'b2', eb: 'Duas semanas', t: 'Diário do sono', sub: 'veja o que ajuda (e o que atrapalha) as suas noites', refil: true, body: () => `
     <table class="tb" style="flex:1">
       <tr><th style="width:9%">Dia</th><th style="text-align:center">Fiz o ritual</th><th style="text-align:center">Deitei</th><th style="text-align:center">Acordei</th><th style="text-align:center">Dormi</th><th>Observação</th></tr>
-      ${Array.from({ length: 14 }, (_, d) => `<tr style="height:8.1mm"><td style="font-family:Mont;font-weight:700;color:${C.pet}">${d + 1}</td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center;color:${C.gra}44;font-size:6pt">__:__</td><td style="text-align:center;color:${C.gra}44;font-size:6pt">__:__</td><td style="text-align:center;white-space:nowrap">${['mal', 'ok', 'bem'].map((t) => `<span style="font-size:5.6pt;color:${C.gra}88;margin:0 .6mm"><span style="display:inline-block;width:2.6mm;height:2.6mm;border-radius:50%;border:.28mm solid ${C.sal};vertical-align:middle;margin-right:.4mm"></span>${t}</span>`).join('')}</td><td></td></tr>`).join('')}
+      ${Array.from({ length: 14 }, (_, d) => `<tr style="height:8.1mm"><td style="font-family:Mont;font-weight:700;color:var(--p)">${d + 1}</td><td style="text-align:center"><span class="cb" style="display:inline-block"></span></td><td style="text-align:center;color:${C.gra}44;font-size:6pt">__:__</td><td style="text-align:center;color:${C.gra}44;font-size:6pt">__:__</td><td style="text-align:center;white-space:nowrap">${['mal', 'ok', 'bem'].map((t) => `<span style="font-size:5.6pt;color:${C.gra}88;margin:0 .6mm"><span style="display:inline-block;width:2.6mm;height:2.6mm;border-radius:50%;border:.28mm solid var(--ln);vertical-align:middle;margin-right:.4mm"></span>${t}</span>`).join('')}</td><td></td></tr>`).join('')}
     </table>
     ${box({ icon: 'Search', t: 'O que eu percebi', cor: 'ter', style: 'flex:0 0 auto', body: linhas(3) })}`,
   });
@@ -703,12 +716,12 @@ export function bonus(modo) {
 
   /* ---------- BÔNUS 3 · DIÁRIO DA ANSIEDADE ---------- */
   const b3 = B.b3;
-  b3.push({ key: 'b3-capa', sec: 'b3', anchor: true, raw: () => capaBonus(3, 'Diário da<br>Ansiedade', 'Registre o que se repete, o que aumenta a ansiedade e o que te ajuda. Conhecer o padrão é o começo do alívio.', ['creEsc', 'salCl', 'sal', 'pet']) });
+  b3.push({ key: 'b3-capa', sec: 'b3', anchor: true, raw: () => capaBonus(3, 'Diário da<br>Ansiedade', 'Registre o que se repete, o que aumenta a ansiedade e o que te ajuda. Conhecer o padrão é o começo do alívio.', ['#E2EDF6', '#A9C4DA', '#36678A', '#F8E3E6']) });
   b3.push({
     key: 'b3-como', sp: true, sec: 'b3', eb: 'Diário da Ansiedade', t: 'Conhecer o padrão <span class="gr">acalma</span>', sub: 'a ansiedade parece aleatória. quase nunca é.', body: () => `
     <p class="tx">Quando você registra os momentos de ansiedade por duas ou três semanas, começa a ver o que está por trás: <b>horários, situações, pessoas e pensamentos que se repetem</b>. E também o que realmente ajuda. Com isso, você deixa de ser pega(o) de surpresa.</p>
     <div class="g2" style="flex:0 0 auto">
-      ${[['PenLine', 'Registre logo depois', 'Não precisa ser no meio da crise. Assim que der, anote o que lembrar.'], ['Scale', 'Sem julgamento', 'Você está observando, não se avaliando. Não existe registro errado.'], ['Repeat', 'Duas semanas', 'É o tempo mínimo para começar a perceber os padrões.'], ['Search', 'Revise no fim de semana', 'Use as páginas de gatilhos e termômetro para juntar as pistas.']].map(([i, t, d]) => `<div class="box b-cre" style="padding:2.6mm"><span style="color:${C.pet}">${ic(i, 14)}</span><p style="font-weight:700;font-size:8.8pt;margin-top:1mm">${t}</p><p class="mini" style="font-size:7.6pt;margin-top:.4mm">${d}</p></div>`).join('')}
+      ${[['PenLine', 'Registre logo depois', 'Não precisa ser no meio da crise. Assim que der, anote o que lembrar.'], ['Scale', 'Sem julgamento', 'Você está observando, não se avaliando. Não existe registro errado.'], ['Repeat', 'Duas semanas', 'É o tempo mínimo para começar a perceber os padrões.'], ['Search', 'Revise no fim de semana', 'Use as páginas de gatilhos e termômetro para juntar as pistas.']].map(([i, t, d]) => `<div class="box b-cre" style="padding:2.6mm"><span style="color:var(--p)">${ic(i, 14)}</span><p style="font-weight:700;font-size:8.8pt;margin-top:1mm">${t}</p><p class="mini" style="font-size:7.6pt;margin-top:.4mm">${d}</p></div>`).join('')}
     </div>
     ${box({ icon: 'Activity', t: 'Escala de intensidade', cor: 'white', style: 'flex:0 0 auto', body: `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.6mm;margin-top:1.6mm">${[['0–2', 'tranquila', C.salBg], ['3–5', 'incômoda', C.salCl], ['6–8', 'forte', C.terCl], ['9–10', 'muito forte', C.ter]].map(([n, t, c]) => `<div style="background:${c};border-radius:2mm;padding:1.6mm;text-align:center"><p style="font-family:Mont;font-weight:700;font-size:9pt">${n}</p><p class="mini">${t}</p></div>`).join('')}</div>` })}
     <div class="box b-pet" style="flex-direction:row;gap:3mm;align-items:center">${ic('Stethoscope', 18, C.ter)}<p style="font-size:7.4pt;line-height:1.45">Se você faz acompanhamento com psicóloga(o) ou médica(o), leve este diário para as consultas. Ele mostra em minutos o que levaria semanas para contar.</p></div>`,
@@ -742,7 +755,7 @@ export function bonus(modo) {
     <div class="g2" style="flex:1;min-height:0;grid-template-rows:1fr 1fr">
       ${[['Zap', 'Em 2 minutos', 'sal', 'respirar 4-4-6 · água gelada no rosto'], ['Home', 'Em casa', 'cre', 'banho · música · arrumar algo pequeno'], ['Briefcase', 'No trabalho / na rua', 'cre', 'ir ao banheiro e respirar · caminhar'], ['MessageCircleHeart', 'Frases que me acalmam', 'ter', '“isso é ansiedade, vai passar”']].map(([i, t, c, e]) => box({ icon: i, t, cor: c, body: `<p class="hand" style="font-size:10pt;color:${C.gra}77;margin-top:.6mm">ex.: ${e}</p>${fill()}` })).join('')}
     </div>
-    ${box({ icon: 'Phone', t: 'Posso ligar para', cor: 'white', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 4mm">${Array.from({ length: 4 }, () => `<div class="chk cl"><span style="color:${C.terEsc}">${ic('User', 9)}</span><span class="ln"></span></div>`).join('')}</div><p class="mini" style="margin-top:1.4mm"><b>CVV 188</b> · 24h, gratuito, também por chat em cvv.org.br</p>` })}`,
+    ${box({ icon: 'Phone', t: 'Posso ligar para', cor: 'white', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 4mm">${Array.from({ length: 4 }, () => `<div class="chk cl"><span style="color:var(--t-tx)">${ic('User', 9)}</span><span class="ln"></span></div>`).join('')}</div><p class="mini" style="margin-top:1.4mm"><b>CVV 188</b> · 24h, gratuito, também por chat em cvv.org.br</p>` })}`,
   });
   b3.push({
     key: 'b3-termometro', sec: 'b3', eb: 'Semanal', t: 'Termômetro da semana', sub: 'marque a ansiedade média de cada dia e ligue os pontos', data: true, refil: true, body: () => `
@@ -755,10 +768,10 @@ export function bonus(modo) {
   });
   b3.push({
     key: 'b3-reformular', sec: 'b3', eb: 'Pensamentos', t: 'Pensamento → <span class="gr">nova perspectiva</span>', sub: 'não é pensar positivo. é pensar mais justo', refil: true, body: () => `
-    <div class="box b-sal" style="flex:0 0 auto;padding:2.4mm 3mm"><p class="hand" style="font-size:10.5pt;color:${C.pet}">“Vou ser demitida, fiz tudo errado.” → “Errei um detalhe. Posso corrigir e avisar. Isso não apaga o resto do meu trabalho.”</p></div>
+    <div class="box b-sal" style="flex:0 0 auto;padding:2.4mm 3mm"><p class="hand" style="font-size:10.5pt;color:var(--p)">“Vou ser demitida, fiz tudo errado.” → “Errei um detalhe. Posso corrigir e avisar. Isso não apaga o resto do meu trabalho.”</p></div>
     ${[1, 2, 3, 4].map(() => `<div class="row" style="flex:1;min-height:0;align-items:stretch">
       <div class="box b-ter" style="padding:2mm 2.4mm"><div class="bt" style="font-size:5.8pt">${ic('CloudRain', 9)}<span>O pensamento</span></div>${fill(5.8)}</div>
-      <div style="flex:0 0 5mm;display:grid;place-items:center;color:${C.terEsc}">${ic('ArrowRight', 13)}</div>
+      <div style="flex:0 0 5mm;display:grid;place-items:center;color:var(--t-tx)">${ic('ArrowRight', 13)}</div>
       <div class="box b-cre" style="padding:2mm 2.4mm"><div class="bt" style="font-size:5.8pt">${ic('Sun', 9)}<span>Um jeito mais justo</span></div>${fill(5.8)}</div>
     </div>`).join('')}`,
   });
@@ -766,7 +779,7 @@ export function bonus(modo) {
 
   /* ---------- BÔNUS 4 · KIT ROTINA SEM SOBRECARGA ---------- */
   const b4 = B.b4;
-  b4.push({ key: 'b4-capa', sec: 'b4', anchor: true, raw: () => capaBonus(4, 'Kit Rotina<br>Sem Sobrecarga', 'Modelos simples de rotina para manhã, tarde e noite, com uma versão mínima para os dias difíceis.', ['terCl', 'sal', 'pet', 'terEsc']) });
+  b4.push({ key: 'b4-capa', sec: 'b4', anchor: true, raw: () => capaBonus(4, 'Kit Rotina<br>Sem Sobrecarga', 'Modelos simples de rotina para manhã, tarde e noite, com uma versão mínima para os dias difíceis.', ['#FBF0D4', '#E6CF95', '#87651B', '#F6E6DC']) });
   b4.push({
     key: 'b4-ideia', sp: true, sec: 'b4', eb: 'Kit Rotina', t: 'Rotina possível, <span class="gr">não perfeita</span>', sub: 'o segredo é ter duas versões de cada rotina', body: () => `
     <p class="tx">Rotinas perfeitas quebram no primeiro dia ruim, e aí vem a culpa e o “recomeço na segunda”. Aqui cada rotina tem <b>duas versões</b>: a <b>completa</b>, para os dias bons, e a <b>mínima</b>, para os dias pesados. Fazer a mínima <b>conta como fazer</b>.</p>
@@ -782,15 +795,15 @@ export function bonus(modo) {
     ${box({ icon: 'Sun', t: 'Versão completa', s: 'dias com energia', cor: 'sal', cls: 'grow', style: 'flex:1.3', body: fill(6.6, 'ck min') })}
     ${box({ icon: 'CloudSun', t: 'Versão mínima', s: 'dias pesados · até 3 itens', cor: 'ter', style: 'flex:0 0 auto', body: `<div style="margin-top:.6mm">${chkLinha(3)}</div>` })}
     ${box({ icon: 'Lightbulb', t: 'Ideias', cor: 'cre', style: 'flex:0 0 auto', body: `<p class="mini" style="font-size:7pt;margin-top:.8mm">${ex}</p>` })}
-    ${box({ icon: 'CalendarCheck', t: 'Esta semana eu fiz', cor: 'white', style: 'flex:0 0 auto', body: `<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1.4mm;margin-top:1.6mm">${['S', 'T', 'Q', 'Q', 'S', 'S', 'D'].map((d) => `<div style="text-align:center"><p class="lbl" style="font-size:5.6pt">${d}</p><p style="display:flex;justify-content:center;gap:.8mm;margin-top:.6mm"><span title="completa" style="width:3.2mm;height:3.2mm;border-radius:50%;border:.3mm solid ${C.sal}"></span><span style="width:3.2mm;height:3.2mm;border-radius:50%;border:.3mm solid ${C.ter}"></span></p></div>`).join('')}</div><p class="mini" style="margin-top:1mm">verde = completa · terracota = mínima. As duas contam.</p>` })}`;
+    ${box({ icon: 'CalendarCheck', t: 'Esta semana eu fiz', cor: 'white', style: 'flex:0 0 auto', body: `<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1.4mm;margin-top:1.6mm">${['S', 'T', 'Q', 'Q', 'S', 'S', 'D'].map((d) => `<div style="text-align:center"><p class="lbl" style="font-size:5.6pt">${d}</p><p style="display:flex;justify-content:center;gap:.8mm;margin-top:.6mm"><span title="completa" style="width:3.2mm;height:3.2mm;border-radius:50%;border:.3mm solid var(--ln)"></span><span style="width:3.2mm;height:3.2mm;border-radius:50%;border:.3mm solid ${C.ter}"></span></p></div>`).join('')}</div><p class="mini" style="margin-top:1mm">verde = completa · terracota = mínima. As duas contam.</p>` })}`;
   b4.push({ key: 'b4-manha', sec: 'b4', eb: 'Kit Rotina', t: 'Minha manhã', sub: 'começar o dia sem já começar atrasada(o)', refil: true, body: rotina('manhã', 'Sunrise', 'beber água antes do celular · abrir a janela · alongar 3 min · café sentada(o) · Mente em 3 Lugares · escolher a roupa na véspera') });
   b4.push({ key: 'b4-tarde', sec: 'b4', eb: 'Kit Rotina', t: 'Minha tarde', sub: 'uma pausa no meio do dia para não chegar à noite no limite', refil: true, body: rotina('tarde', 'Sun', 'almoçar longe da tela · 5 min de caminhada · conferir as 3 prioridades · lanche · respirar 4-4-6 · beber água') });
   b4.push({ key: 'b4-noite', sec: 'b4', eb: 'Kit Rotina', t: 'Minha noite', sub: 'desacelerar de verdade antes de dormir', refil: true, body: rotina('noite', 'Moon', 'ritual Desligando a Cabeça · banho morno · preparar a bolsa · luz baixa · celular fora do quarto · leitura leve') });
   b4.push({
     key: 'b4-semana', sec: 'b4', eb: 'Kit Rotina', t: 'Minha semana <span class="gr">em um olhar</span>', sub: 'o que se repete em cada dia, sem precisar lembrar', refil: true, body: () => `
     <div style="display:grid;grid-template-columns:15mm repeat(3,1fr);grid-template-rows:auto repeat(7,1fr);gap:1.2mm;flex:1;min-height:0">
-      <span></span>${[['Manhã', 'Sunrise', C.salBg], ['Tarde', 'Sun', C.cre], ['Noite', 'Moon', C.terCl]].map(([t, i, c]) => `<div style="background:${c};border-radius:2mm;padding:1.2mm;display:flex;align-items:center;justify-content:center;gap:1mm;font-family:Mont;font-weight:700;font-size:6.4pt;letter-spacing:.08em;text-transform:uppercase;color:${C.pet}">${ic(i, 9)}${t}</div>`).join('')}
-      ${semanaDias.map((d) => `<div style="display:flex;align-items:center;font-family:Mont;font-weight:700;font-size:6.6pt;color:${C.pet}">${d}</div>${[0, 1, 2].map(() => `<div style="border:.3mm solid ${C.creEsc};border-radius:2mm;background:#fff"></div>`).join('')}`).join('')}
+      <span></span>${[['Manhã', 'Sunrise', C.salBg], ['Tarde', 'Sun', C.cre], ['Noite', 'Moon', C.terCl]].map(([t, i, c]) => `<div style="background:${c};border-radius:2mm;padding:1.2mm;display:flex;align-items:center;justify-content:center;gap:1mm;font-family:Mont;font-weight:700;font-size:6.4pt;letter-spacing:.08em;text-transform:uppercase;color:var(--p)">${ic(i, 9)}${t}</div>`).join('')}
+      ${semanaDias.map((d) => `<div style="display:flex;align-items:center;font-family:Mont;font-weight:700;font-size:6.6pt;color:var(--p)">${d}</div>${[0, 1, 2].map(() => `<div style="border:.3mm solid ${C.creEsc};border-radius:2mm;background:#fff"></div>`).join('')}`).join('')}
     </div>
     ${box({ icon: 'Home', t: 'Casa sem sobrecarga', s: 'uma tarefa pequena por dia, e só', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1.4mm;margin-top:1.4mm">${['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((d) => `<div><p class="lbl" style="font-size:5.6pt;text-align:center">${d}</p><div style="height:9mm;border-radius:1.6mm;background:#fff;margin-top:.6mm"></div></div>`).join('')}</div>` })}`,
   });

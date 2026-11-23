@@ -6,8 +6,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { CSS, FILL_JS, C, ic, mark } from './src/ui.mjs';
-import { SECOES, planner, bonus, mantra } from './src/paginas.mjs';
+import { CSS, CSS_TEMA, temasCss, FILL_JS, C, ic, mark } from './src/ui.mjs';
+import { SECOES, TEMAS, planner, bonus, mantra } from './src/paginas.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const TMP = path.join(DIR, '.build');
@@ -34,7 +34,7 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
 
   const html = pags
     .map((p, i) => {
-      const lado = (i + 1) % 2 ? 'r' : 'l';
+      const lado = ((i + 1) % 2 ? 'r' : 'l') + ` th-${p.tema || SECOES[p.sec].tema || 'brand'}`;
       const cor = SECOES[p.sec].cor;
       const id = `id="p-${p.key}"`;
       if (p.raw) {
@@ -58,7 +58,7 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
 </section>`;
     })
     .join('\n');
-  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${titulo}</title><style>${CSS}</style></head><body>${html}</body></html>`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${titulo}</title><style>${CSS}${CSS_TEMA}${temasCss(TEMAS)}</style></head><body>${html}</body></html>`;
 }
 
 let browser;

@@ -56,6 +56,9 @@ export const dataCampo = () => `<span class="data">${ic('Calendar', 9)}<i></i>/<
 export const hand = (t, cls = '') => `<span class="hand ${cls}">${t}</span>`;
 export const chip = (t, cor = 'pet') => `<span class="chip c-${cor}">${t}</span>`;
 
+const temaCss = (t) => `--s-bg:${t.sbg};--s-tx:${t.stx};--t-bg:${t.tbg};--t-tx:${t.ttx};--p:${t.p};--ln:${t.ln}`;
+export const temasCss = (TEMAS) => Object.entries(TEMAS).map(([k, t]) => `.th-${k}{${temaCss(t)}}`).join('\n');
+
 export const CSS = /* css */ `
 @font-face{font-family:Mont;src:url(../fontes/montserrat.woff2) format('woff2');font-weight:100 900}
 @font-face{font-family:Jak;src:url(../fontes/plus-jakarta-sans-latin-wght-normal.woff2) format('woff2');font-weight:200 800;font-style:normal}
@@ -159,6 +162,26 @@ table.tb th:first-child{border-radius:2mm 0 0 2mm}table.tb th:last-child{border-
 table.tb td{border-bottom:.25mm solid ${C.gra}24;padding:0 1.4mm}
 .quote{font-family:Mont;font-weight:600;font-size:8.6pt;color:${C.pet};text-align:center;line-height:1.35}
 .sep{height:.35mm;background:${C.creEsc};border-radius:1mm}
+`;
+
+/** Camada de cores por tema (vem depois do CSS base). */
+export const CSS_TEMA = /* css */ `
+.b-sal{background:var(--s-bg)}.b-ter{background:var(--t-bg)}.b-pet{background:var(--p)}
+.bt{color:var(--s-tx)}.b-ter .bt,.b-dash .bt{color:var(--t-tx)}.b-pet .bt{color:${C.cre}}
+.bi{color:var(--s-tx)}.b-ter .bi{color:var(--t-tx)}
+.num{background:var(--p)}.b-ter .num,.b-dash .num{background:var(--t-tx)}
+.b-line{border-color:var(--ln)}.b-dash{border-color:var(--t-tx)}
+.eb{color:var(--p)}
+h1 .gr{background:linear-gradient(transparent 58%, var(--t-bg) 58%, var(--t-bg) 92%, transparent 92%)}
+.hd{border-bottom-color:var(--s-bg)}
+.cb{border-color:var(--p)}.fill.ck i::before{border-color:var(--p)}
+.eo b{border-color:var(--ln)}
+.c-sal{background:var(--s-bg);color:var(--s-tx)}.c-pet{background:var(--p)}.c-ter{background:var(--t-tx)}
+table.tb th{background:var(--s-bg);color:var(--s-tx)}
+.quote{color:var(--p)}
+.fx-sal{background:${C.salBg}}.fx-ter{background:${C.terCl}}
+.fx-sal .bt,.fx-sal .bi,.fx-line .bt,.fx-line .bi{color:${C.pet}}.fx-ter .bt,.fx-ter .bi{color:${C.terEsc}}
+.fx-line{border-color:${C.sal}}
 `;
 
 /** Script que roda no navegador: completa linhas/pontos conforme o espaço disponível. */
