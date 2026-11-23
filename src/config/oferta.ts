@@ -69,6 +69,12 @@ export const modoTeste = process.env.NEXT_PUBLIC_MODO_TESTE !== '0';
 /** true quando a seção "quem criou" tiver dados reais (aí ela aparece para todos). */
 export const criadoraReal = false;
 
+/**
+ * Prova social ("milhares de pessoas"). Só aparece com o modo teste ligado enquanto `real` for false.
+ * Antes de rodar anúncios, coloque o número verdadeiro e marque `real: true` (ou deixe false para esconder).
+ */
+export const provaSocial = { real: false, pessoas: '12 mil', nota: '4,9' };
+
 /** Seção "quem criou". No modo teste usa a persona fictícia abaixo; troque pelos dados reais antes de ir ao ar. */
 export const criadora = {
   nome: 'Helena Prado',

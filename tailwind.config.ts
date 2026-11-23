@@ -12,7 +12,7 @@ export default {
         terracota: { DEFAULT: '#D7A58D', escuro: '#B5694A', claro: '#F6E4D9' },
       },
       fontFamily: {
-        sans: ['var(--font-lato)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-texto)', 'system-ui', 'sans-serif'],
         display: ['var(--font-montserrat)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {

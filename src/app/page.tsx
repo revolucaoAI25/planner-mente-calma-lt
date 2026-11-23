@@ -26,15 +26,9 @@ import { PorDentro } from '@/components/PorDentro';
 import { Quiz } from '@/components/Quiz';
 import { Reveal } from '@/components/Reveal';
 import { StickyBar } from '@/components/StickyBar';
-import { criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, preco, precoDe, valores } from '@/config/oferta';
+import { criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, preco, precoDe, provaSocial, valores } from '@/config/oferta';
 
 const brl = (n: number) => `R$ ${n}`;
-
-const PRA_VOCE = [
-  <>deita para dormir e a cabeça começa a <b>repassar tudo</b>: o que fez, o que não fez e o que pode dar errado</>,
-  <>começa três coisas ao mesmo tempo, se perde no meio e termina o dia com a sensação de que <b>não fez nada</b></>,
-  <>já comprou agenda, baixou aplicativo, fez lista… e <b>largou tudo na segunda semana</b></>,
-];
 
 const ABAS = [
   { icon: Moon, t: 'A cabeça não desliga nem na hora de dormir' },
@@ -43,10 +37,22 @@ const ABAS = [
   { icon: BatteryLow, t: 'Cansaço sem ter feito nada' },
 ];
 
-const POR_QUE_NAO: [string, React.ReactNode][] = [
-  ['Ela só organiza tarefas.', <>Mas a sua cabeça está cheia de <b className="text-creme">preocupações, lembretes e “e se…”</b>. Nenhuma agenda tem lugar para isso.</>],
-  ['Ela transforma o dia numa lista sem fim.', <>Para a mente acelerada, uma lista de 20 itens não organiza: <b className="text-creme">paralisa</b>.</>],
-  ['Ela cobra todos os dias.', <>Uma semana difícil vira páginas em branco, e página em branco vira <b className="text-creme">culpa</b>.</>],
+const VILOES: { n: string; d: string; a: React.ReactNode }[] = [
+  {
+    n: 'O Ruminador',
+    d: 'Na hora de dormir, repassa o dia inteiro: o que você falou, o que esqueceu, o que pode dar errado.',
+    a: <>o bônus <b className="text-creme">Desligando a Cabeça Antes de Dormir</b>: descarregue tudo no papel e <b className="text-creme">deite sabendo que nada ficou solto</b>.</>,
+  },
+  {
+    n: 'O “E se…”',
+    d: 'Antecipa problemas que ainda não aconteceram e, na maioria das vezes, nem vão acontecer.',
+    a: <>o lugar <b className="text-creme">Desocupar</b>: registre a preocupação e volte para o que dá para fazer hoje.</>,
+  },
+  {
+    n: 'O Incêndio',
+    d: 'Tudo parece urgente ao mesmo tempo, e você trava sem saber por onde começar.',
+    a: <>os lugares <b className="text-creme">Resolver e Programar</b>: o que é para agora, o que pode esperar e <b className="text-creme">uma única primeira ação</b>.</>,
+  },
 ];
 
 const LUGARES = [
@@ -122,6 +128,7 @@ export default function Page() {
             <div className="mt-7 hidden md:block">
               <Cta>Quero minha mente mais calma</Cta>
               <Garantias />
+              <ProvaSocial />
             </div>
           </div>
 
@@ -139,22 +146,28 @@ export default function Page() {
           <div className="md:hidden">
             <Cta>Quero minha mente mais calma</Cta>
             <Garantias />
+            <ProvaSocial />
           </div>
         </div>
 
-        <div className="estreito relative pb-16">
-          <p className="text-center font-display text-[13px] font-bold uppercase tracking-[.22em] text-grafite/45">Este planner é para você que…</p>
-          <ul className="mt-5 space-y-4">
-            {PRA_VOCE.map((t, i) => (
-              <li key={i} className="flex gap-3.5 text-[17.5px] leading-snug text-grafite/80 [&_b]:text-grafite">
-                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-petroleo text-creme">
-                  <Check size={16} strokeWidth={3} />
-                </span>
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
+      </section>
+
+      {/* ======= VEJA POR DENTRO (prints) ======= */}
+      <section id="por-dentro" className="bg-white/60 py-14 sm:py-20">
+        <div className="wrap">
+          <div className="reveal mx-auto max-w-[640px] text-center">
+            <span className="inline-block rounded-full bg-grafite px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">Veja por dentro</span>
+            <h2 className="titulo mt-4">
+              Páginas feitas para <span className="grifo">riscar, rabiscar e recomeçar</span>.
+            </h2>
+            <p className="sub mt-3">Nada de páginas perfeitas que dão medo de estragar. Use no tablet ou imprima quantas vezes quiser.</p>
+          </div>
+          <div className="reveal mt-9">
+            <PorDentro />
+          </div>
+          <FotosReais />
         </div>
+
       </section>
 
       {/* ======= QUIZ ======= */}
@@ -168,10 +181,10 @@ export default function Page() {
               <span className="h-2 w-2 animate-ping rounded-full bg-grafite" /> Teste de 1 minuto
             </span>
             <h2 className="mt-4 font-display text-[29px] font-bold leading-[1.1] sm:text-[40px]">
-              O quanto a sua mente está <span className="text-terracota">sobrecarregada</span>?
+              O quanto a sua mente está <span className="text-terracota">ansiosa e sobrecarregada</span>?
             </h2>
             <p className="mt-3 text-[17px] leading-relaxed text-creme/80">
-              Responda 5 perguntas rápidas e descubra <b className="text-creme">o que mais pesa na sua cabeça</b> e por onde começar. Resultado na hora.
+              Responda 5 perguntas rápidas e descubra <b className="text-creme">o seu nível de ansiedade e sobrecarga</b>, o que mais pesa e por onde começar. Resultado na hora.
             </p>
           </div>
           <div className="reveal mt-8">
@@ -221,23 +234,29 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ======= POR QUE A AGENDA COMUM NÃO FUNCIONA ======= */}
+      {/* ======= VILÕES E ANTÍDOTOS ======= */}
       <section className="bg-grafite py-16 text-creme sm:py-20">
         <div className="estreito">
-          <h2 className="reveal text-center font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">Por que a agenda comum não funciona para quem tem a mente acelerada</h2>
+          <h2 className="reveal text-center font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">
+            Os 3 vilões da mente ansiosa, e o <span className="text-terracota">antídoto</span> de cada um
+          </h2>
           <ol className="mt-10 space-y-8">
-            {POR_QUE_NAO.map(([t, d], i) => (
-              <li key={t} className="reveal flex gap-5" style={{ transitionDelay: `${i * 90}ms` }}>
+            {VILOES.map((v, i) => (
+              <li key={v.n} className="reveal flex gap-5" style={{ transitionDelay: `${i * 90}ms` }}>
                 <span className="font-display text-[46px] font-bold leading-none text-terracota">{i + 1}</span>
                 <div className="border-l border-white/15 pl-5">
-                  <p className="font-display text-[20px] font-bold">{t}</p>
-                  <p className="mt-1.5 text-[16.5px] leading-relaxed text-creme/70">{d}</p>
+                  <p className="font-display text-[20px] font-bold">{v.n}</p>
+                  <p className="mt-1 text-[16.5px] leading-relaxed text-creme/70">{v.d}</p>
+                  <p className="mt-2.5 text-[16px] leading-relaxed text-creme/85">
+                    <span className="font-display text-[12px] font-bold uppercase tracking-[.16em] text-salvia">Antídoto · </span>
+                    {v.a}
+                  </p>
                 </div>
               </li>
             ))}
           </ol>
           <p className="reveal mt-12 text-center text-[20px] leading-relaxed text-creme/85">
-            O Mente Calma foi desenvolvido ao contrário: <span className="font-bold text-creme underline decoration-terracota decoration-[3px] underline-offset-[6px]">antes de organizar o seu dia, ele organiza o que está ocupando a sua cabeça.</span>
+            Uma agenda comum não tem antídoto para nenhum deles. O Mente Calma foi desenvolvido ao contrário: <span className="font-bold text-creme underline decoration-terracota decoration-[3px] underline-offset-[6px]">antes de organizar o seu dia, ele organiza o que está ocupando a sua cabeça.</span>
           </p>
         </div>
       </section>
@@ -299,6 +318,9 @@ export default function Page() {
             <p className="text-[19px] leading-relaxed text-grafite/80">
               Resultado: <b className="text-grafite">preocupações separadas</b>, <b className="text-grafite">pendências encaminhadas</b> e <span className="grifo font-bold text-grafite">uma primeira ação definida</span>.
             </p>
+            <p className="mt-3 text-[16px] leading-relaxed text-grafite/70">
+              E sem sobrecarga: <b className="text-grafite">na primeira semana você usa só 2 páginas</b>. O resto vem quando você quiser.
+            </p>
             <div className="mt-7 flex justify-center">
               <Cta>Quero aplicar o método</Cta>
             </div>
@@ -343,36 +365,6 @@ export default function Page() {
               <span className="inline-flex items-center gap-1.5">
                 <Check size={17} strokeWidth={3} className="text-petroleo" /> sem datas
               </span>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ======= VEJA POR DENTRO (prints) ======= */}
-      <section id="por-dentro" className="py-16 sm:py-20">
-        <div className="wrap">
-          <div className="reveal mx-auto max-w-[640px] text-center">
-            <span className="inline-block rounded-full bg-grafite px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">Veja por dentro</span>
-            <h2 className="titulo mt-4">
-              Páginas feitas para <span className="grifo">riscar, rabiscar e recomeçar</span>.
-            </h2>
-            <p className="sub mt-3">Nada de páginas perfeitas que dão medo de estragar.</p>
-          </div>
-          <div className="reveal mt-9">
-            <PorDentro />
-          </div>
-          <FotosReais />
-        </div>
-
-        <div className="wrap mt-14 grid gap-3 sm:grid-cols-2 sm:gap-4">
-          <div className="reveal rounded-[22px] bg-creme-escuro p-6">
-            <p className="font-display text-[12px] font-bold uppercase tracking-[.22em] text-grafite/45">Antes</p>
-            <p className="mt-2 text-[17.5px] leading-relaxed text-grafite/80">Acordar já cansada(o), com mil coisas na cabeça, e chegar à noite sem saber o que realmente fez.</p>
-          </div>
-          <div className="reveal rounded-[22px] bg-petroleo p-6 text-creme" style={{ transitionDelay: '90ms' }}>
-            <p className="font-display text-[12px] font-bold uppercase tracking-[.22em] text-salvia">Depois</p>
-            <p className="mt-2 text-[17.5px] leading-relaxed">
-              Tirar tudo da cabeça em 10 minutos, <b>saber o primeiro passo</b> e ir dormir sabendo o que fica para amanhã.
             </p>
           </div>
         </div>
@@ -473,7 +465,10 @@ export default function Page() {
                 </p>
                 <p className="mt-2 text-[14px] text-grafite/60">pagamento único · sem mensalidade · acesso imediato</p>
               </div>
-              <div className="mt-6 flex justify-center">
+              <p className="mx-auto mt-5 flex w-fit items-center gap-2 rounded-full bg-terracota-claro px-3.5 py-1.5 text-[13.5px] font-bold text-terracota-escuro">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-terracota-escuro" /> Bônus limitados · válidos até hoje às 23h59
+              </p>
+              <div className="mt-4 flex justify-center">
                 <Cta>Quero o Planner Mente Calma</Cta>
               </div>
               <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[13px] text-grafite/55">
@@ -520,6 +515,11 @@ export default function Page() {
             Você não precisa guardar tudo na cabeça. Só precisa de <span className="text-terracota">um lugar para colocar</span>.
           </h2>
           <p className="reveal mt-4 text-[18px] text-creme/80">Menos peso na mente. Mais clareza no dia.</p>
+          {mostraProva && (
+            <p className="so-ex reveal mt-3 text-[16px] text-creme/80">
+              Junte-se a <b className="text-creme">mais de {provaSocial.pessoas} pessoas</b> que já trocaram a cabeça cheia por 10 minutos de clareza.
+            </p>
+          )}
           <div className="reveal mt-8 flex justify-center">
             <Cta>Quero começar hoje</Cta>
           </div>
@@ -576,15 +576,44 @@ function Linha({ t, v, gratis = false }: { t: string; v: number; gratis?: boolea
   );
 }
 
+const mostraProva = provaSocial.real || modoTeste;
+
+/** "Mais de X pessoas" com avatares. Fictício enquanto provaSocial.real = false (some com o modo teste desligado). */
+function ProvaSocial() {
+  if (!mostraProva) return null;
+  return (
+    <div className={`${provaSocial.real ? '' : 'so-ex'} mt-5 flex items-center justify-center gap-3 md:justify-start`}>
+      <div className="flex -space-x-2.5">
+        {depoimentosTeste.slice(0, 4).map((d) => (
+          <Image key={d.avatar} src={d.avatar} alt="" width={36} height={36} className="h-9 w-9 rounded-full object-cover ring-2 ring-creme" />
+        ))}
+      </div>
+      <p className="text-[13.5px] leading-tight text-grafite/75">
+        <span className="tracking-[.12em] text-terracota-escuro">★★★★★</span> <b className="text-grafite">{provaSocial.nota}</b>
+        <br />
+        Já mudou a rotina de <b className="whitespace-nowrap text-grafite">+{provaSocial.pessoas} pessoas</b>
+      </p>
+    </div>
+  );
+}
+
 function Depoimentos() {
   const reais = imagens.depoimentos;
   return (
     <section className={`${reais.length ? '' : 'so-dep'} py-16 sm:py-20`}>
       <div className="wrap">
         <div className="reveal mx-auto max-w-[640px] text-center">
-          <p className="eyebrow">Quem já usa</p>
+          <p className="eyebrow">Resultados reais de quem já usa</p>
           <h2 className="titulo mt-3">
-            O que acontece quando a cabeça finalmente ganha <span className="grifo">um lugar para descansar</span>
+            {mostraProva ? (
+              <>
+                O método que já mudou a rotina de <span className="grifo">mais de {provaSocial.pessoas} pessoas</span> com a mente ansiosa
+              </>
+            ) : (
+              <>
+                O que acontece quando a cabeça finalmente ganha <span className="grifo">um lugar para descansar</span>
+              </>
+            )}
           </h2>
         </div>
         {reais.length ? (
@@ -600,7 +629,7 @@ function Depoimentos() {
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px] text-grafite/70">
                   <span className="text-[18px] tracking-[.15em] text-terracota-escuro">★★★★★</span>
                   <span>
-                    <b className="text-grafite">4,9 de 5</b> · avaliação de quem já usa
+                    <b className="text-grafite">{provaSocial.nota} de 5</b> · avaliação de quem já usa
                   </span>
                 </div>
                 <div className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">

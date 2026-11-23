@@ -15,16 +15,16 @@ const PERGUNTAS: { q: string; ops: [string, string, string]; lugar: Lugar; sinal
     sinal: 'Sua cabeça usa a hora de descansar para revisar o dia',
   },
   {
-    q: 'Com que frequência parece que tudo é urgente ao mesmo tempo?',
+    q: 'Com que frequência você sente aquele aperto de ansiedade, como se tudo fosse urgente ao mesmo tempo?',
     ops: ['Quase todo dia', 'Algumas vezes por semana', 'Raramente'],
     lugar: 'programar',
-    sinal: 'Tudo parece urgente, então nada sai do lugar',
+    sinal: 'A ansiedade faz tudo parecer urgente, e nada sai do lugar',
   },
   {
     q: 'Você se pega pensando “e se…” sobre coisas que ainda nem aconteceram?',
     ops: ['O tempo todo', 'De vez em quando', 'Quase nunca'],
     lugar: 'desocupar',
-    sinal: 'Você antecipa problemas que talvez nunca cheguem',
+    sinal: 'A ansiedade antecipa problemas que talvez nunca cheguem',
   },
   {
     q: 'Quantas coisas você começa e larga no meio porque a cabeça puxou para outra?',
@@ -53,7 +53,7 @@ export function Quiz() {
   const fim = resp.length === PERGUNTAS.length;
   const pontos = resp.reduce((a, v) => a + (2 - v), 0); // opção 0 = 2 pontos
   const max = PERGUNTAS.length * 2;
-  // Escala de 64% a 98%: quem chega até aqui já se identificou com a sobrecarga.
+  // Escala de 64% a 98%: quem chega até aqui já se identificou com a ansiedade e a sobrecarga.
   const pct = Math.round(64 + (pontos / max) * 34);
 
   const escolher = (op: number) => {
@@ -128,14 +128,14 @@ export function Quiz() {
 function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refazer: () => void }) {
   const nivel = pct >= 86 ? 'alto' : pct >= 74 ? 'medio' : 'baixo';
   const titulo = {
-    alto: 'Sua mente está no modo sobrecarga.',
-    medio: 'Sua mente está operando acima do limite.',
-    baixo: 'Sua mente está mais sobrecarregada do que parece.',
+    alto: 'Sua mente está no modo ansiedade e sobrecarga.',
+    medio: 'Sua mente ansiosa está operando acima do limite.',
+    baixo: 'Sua mente está mais ansiosa e sobrecarregada do que parece.',
   }[nivel];
   const texto = {
-    alto: 'Você está guardando tudo na cabeça ao mesmo tempo: o que precisa fazer, o que pode esperar e o que é só preocupação. É por isso que tudo parece urgente e o cansaço chega antes das tarefas.',
-    medio: 'Na maior parte dos dias, a sua cabeça mistura tarefas com preocupações. Quando isso acontece, fica difícil saber por onde começar e a energia vai embora só pensando.',
-    baixo: 'Mesmo dando conta no dia a dia, a sua cabeça carrega mais do que deveria. É esse peso silencioso que, nos dias cheios, vira insônia, travamento e a sensação de não ter feito nada.',
+    alto: 'Você está guardando tudo na cabeça ao mesmo tempo: o que precisa fazer, o que pode esperar e o que é só preocupação. A ansiedade se alimenta dessa mistura: tudo parece urgente, a cabeça não desliga e o cansaço chega antes das tarefas.',
+    medio: 'Na maior parte dos dias, a sua cabeça mistura tarefas com preocupações. É aí que a ansiedade aparece: fica difícil saber por onde começar e a energia vai embora só pensando.',
+    baixo: 'Mesmo dando conta no dia a dia, a sua cabeça carrega mais do que deveria. É esse peso silencioso que, nos dias cheios, vira ansiedade, insônia, travamento e a sensação de não ter feito nada.',
   }[nivel];
   const sinais = resp.map((r, k) => ({ r, p: PERGUNTAS[k] })).filter((x) => x.r === 0);
   const medios = resp.map((r, k) => ({ r, p: PERGUNTAS[k] })).filter((x) => x.r === 1);
@@ -152,7 +152,7 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
         </div>
         <div>
           <p className="font-display text-[12px] font-bold uppercase tracking-[.16em] text-terracota-escuro">
-            Sobrecarga mental: <span className="rounded bg-terracota-escuro px-1.5 py-0.5 text-white">alta</span>
+            Ansiedade e sobrecarga: <span className="rounded bg-terracota-escuro px-1.5 py-0.5 text-white">alta</span>
           </p>
           <p className="mt-1 font-display text-[20px] font-bold leading-snug text-grafite">{titulo}</p>
         </div>
@@ -174,7 +174,7 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
       )}
 
       <p className="mt-4 border-l-4 border-terracota-escuro pl-3 text-[15.5px] leading-relaxed text-grafite/85">
-        <b className="text-grafite">Isso não melhora sozinho.</b> Quanto mais tempo a cabeça segura tudo, mais cansaço e menos coisa feita. A boa notícia: dá para começar a mudar <span className="grifo font-bold text-grafite">hoje, com 10 minutos</span>.
+        <b className="text-grafite">Isso não melhora sozinho.</b> Quanto mais tempo a cabeça segura tudo, mais ansiedade, mais cansaço e menos coisa feita. A boa notícia: dá para começar a mudar <span className="grifo font-bold text-grafite">hoje, com 10 minutos</span>.
       </p>
 
       <div className="mt-4 rounded-2xl bg-salvia-bg p-4">

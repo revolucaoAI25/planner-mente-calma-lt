@@ -4,7 +4,8 @@
 
 @layer base {
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body { @apply bg-creme text-grafite antialiased; }
+  body { @apply bg-creme text-grafite antialiased; font-weight: 450; }
+  b, strong { font-weight: 700; }
   h1, h2, h3, h4 { @apply font-display; text-wrap: balance; }
   p { text-wrap: pretty; }
   ::selection { background: #D7A58D55; }

@@ -2,12 +2,12 @@ import localFont from 'next/font/local';
 
 // Fontes servidas pelo próprio site (carregam rápido e não dependem do Google).
 export const montserrat = localFont({ src: './fonts/montserrat.woff2', weight: '100 900', display: 'swap', variable: '--font-montserrat' });
-export const lato = localFont({
+/** Texto corrido: Plus Jakarta Sans (mais encorpada e legível que a Lato no celular). */
+export const jakarta = localFont({
   src: [
-    { path: './fonts/lato-latin-400-normal.woff2', weight: '400', style: 'normal' },
-    { path: './fonts/lato-latin-400-italic.woff2', weight: '400', style: 'italic' },
-    { path: './fonts/lato-latin-700-normal.woff2', weight: '700', style: 'normal' },
+    { path: './fonts/plus-jakarta-sans-latin-wght-normal.woff2', weight: '200 800', style: 'normal' },
+    { path: './fonts/plus-jakarta-sans-latin-wght-italic.woff2', weight: '200 800', style: 'italic' },
   ],
   display: 'swap',
-  variable: '--font-lato',
+  variable: '--font-texto',
 });
