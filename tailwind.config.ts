@@ -23,14 +23,15 @@ export default {
         flutua: { '0%,100%': { transform: 'translateY(0) rotate(-2deg)' }, '50%': { transform: 'translateY(-10px) rotate(-1deg)' } },
         entra: { from: { opacity: '0', transform: 'translateY(18px)' }, to: { opacity: '1', transform: 'none' } },
         brilho: { '0%': { transform: 'translateX(-120%)' }, '60%,100%': { transform: 'translateX(220%)' } },
-        pulso: { '0%,100%': { boxShadow: '0 0 0 0 rgba(181,105,74,.45)' }, '50%': { boxShadow: '0 0 0 12px rgba(181,105,74,0)' } },
+        // só transform: roda no compositor, sem repintar a página (rolagem lisa no celular)
+        pulso: { '0%,70%,100%': { transform: 'scale(1)' }, '80%': { transform: 'scale(1.035)' }, '90%': { transform: 'scale(.99)' } },
         balao: { '0%,100%': { transform: 'translate(0,0)' }, '50%': { transform: 'translate(3px,-5px)' } },
       },
       animation: {
         flutua: 'flutua 6s ease-in-out infinite',
         entra: 'entra .7s cubic-bezier(.2,.7,.2,1) both',
         brilho: 'brilho 3.2s ease-in-out infinite',
-        pulso: 'pulso 2.2s ease-out infinite',
+        pulso: 'pulso 3.2s ease-in-out infinite',
         balao: 'balao 4s ease-in-out infinite',
       },
     },

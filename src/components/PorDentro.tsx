@@ -1,56 +1,76 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { imagens } from '@/config/oferta';
 import { PaginaLazy as PaginaMock } from './PaginaLazy';
 
-/** Carrossel "Veja por dentro": prints reais quando houver (campo img), senão a ilustração da página. */
+/**
+ * "Veja por dentro": as páginas passam sozinhas, rolando sem parar (como uma esteira).
+ * Pausa enquanto a pessoa toca/arrasta ou passa o mouse; dá para arrastar com o dedo.
+ * Só anda quando está visível na tela, e respeita "reduzir movimento" do aparelho.
+ */
 export function PorDentro() {
   const ref = useRef<HTMLDivElement>(null);
-  const [atual, setAtual] = useState(0);
-  const [pausado, setPausado] = useState(false);
-  const [visivel, setVisivel] = useState(false);
   const itens = imagens.porDentro;
-  const ir = (i: number) => {
-    const el = ref.current;
-    if (!el) return;
-    const n = (i + itens.length) % itens.length;
-    const card = el.children[n] as HTMLElement;
-    el.scrollTo({ left: card.offsetLeft - el.offsetLeft - 20, behavior: 'smooth' });
-  };
-  // Passa sozinho enquanto está na tela; para de vez quando a pessoa mexe no carrossel.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => setVisivel(e.isIntersecting), { threshold: 0.4 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  useEffect(() => {
-    if (pausado || !visivel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const t = setInterval(() => ir(atual + 1), 3200);
-    return () => clearInterval(t);
-  });
-  const parar = () => setPausado(true);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let visivel = false;
+    let pausa = 0; // até quando fica parado (ms)
+    let ultimo = 0;
+    let raf = 0;
+    let pos = el.scrollLeft;
+    const VEL = 0.045; // px por ms (~45 px/s)
+
+    const passo = (t: number) => {
+      raf = requestAnimationFrame(passo);
+      const dt = ultimo ? Math.min(t - ultimo, 50) : 0;
+      ultimo = t;
+      if (!visivel || t < pausa) {
+        pos = el.scrollLeft;
+        return;
+      }
+      const meio = el.scrollWidth / 2; // a lista está duplicada: ao chegar na metade, volta ao início sem salto visível
+      pos += VEL * dt;
+      if (pos >= meio) pos -= meio;
+      el.scrollLeft = pos;
+    };
+    const parar = (ms = 2500) => () => (pausa = performance.now() + ms);
+    const tocar = parar(3000);
+    const mouse = parar(600000);
+    const sair = () => (pausa = performance.now() + 400);
+
+    const io = new IntersectionObserver(([e]) => (visivel = e.isIntersecting), { threshold: 0.2 });
+    io.observe(el);
+    el.addEventListener('pointerdown', tocar, { passive: true });
+    el.addEventListener('touchmove', tocar, { passive: true });
+    el.addEventListener('wheel', tocar, { passive: true });
+    el.addEventListener('mouseenter', mouse);
+    el.addEventListener('mouseleave', sair);
+    raf = requestAnimationFrame(passo);
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      el.removeEventListener('pointerdown', tocar);
+      el.removeEventListener('touchmove', tocar);
+      el.removeEventListener('wheel', tocar);
+      el.removeEventListener('mouseenter', mouse);
+      el.removeEventListener('mouseleave', sair);
+    };
+  }, []);
+
+  const lista = [...itens, ...itens];
   return (
-    <div className="relative" onPointerDown={parar} onWheel={parar} onKeyDown={parar}>
-      <div
-        ref={ref}
-        onScroll={(e) => {
-          const el = e.currentTarget;
-          const w = (el.children[0] as HTMLElement)?.offsetWidth || 1;
-          setAtual(Math.round(el.scrollLeft / (w + 16)));
-        }}
-        className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:-mx-8 sm:px-8 [&::-webkit-scrollbar]:hidden"
-      >
-        {itens.map((p) => (
-          <figure key={p.id} className="w-[72%] shrink-0 snap-center sm:w-[300px]">
+    <div className="relative -mx-5 sm:-mx-8">
+      <div ref={ref} className="flex gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:gap-6 sm:px-8 [&::-webkit-scrollbar]:hidden">
+        {lista.map((p, i) => (
+          <figure key={`${p.id}-${i}`} className="w-[64%] max-w-[280px] shrink-0 sm:w-[280px]" aria-hidden={i >= itens.length || undefined}>
             {p.img ? (
               <div className="relative aspect-[148/210] overflow-hidden rounded-[10px] bg-white shadow-papel ring-1 ring-grafite/10">
-                <Image src={p.img} alt={p.legenda} fill sizes="(max-width:640px) 72vw, 300px" className="object-cover" />
+                <Image src={p.img} alt={i < itens.length ? p.legenda : ''} fill sizes="(max-width:640px) 64vw, 280px" className="object-cover" loading={i < 3 ? 'eager' : 'lazy'} />
               </div>
             ) : (
               <PaginaMock id={p.id} />
@@ -59,19 +79,9 @@ export function PorDentro() {
           </figure>
         ))}
       </div>
-      <div className="mt-2 flex items-center justify-center gap-3">
-        <button type="button" aria-label="Anterior" onClick={() => ir(atual - 1)} className="grid h-10 w-10 place-items-center rounded-full bg-white shadow-suave ring-1 ring-grafite/10">
-          <ChevronLeft size={18} />
-        </button>
-        <div className="flex gap-1.5">
-          {itens.map((p, i) => (
-            <span key={p.id} className={`h-1.5 rounded-full transition-all ${i === atual ? 'w-6 bg-petroleo' : 'w-1.5 bg-grafite/20'}`} />
-          ))}
-        </div>
-        <button type="button" aria-label="Próxima" onClick={() => ir(atual + 1)} className="grid h-10 w-10 place-items-center rounded-full bg-white shadow-suave ring-1 ring-grafite/10">
-          <ChevronRight size={18} />
-        </button>
-      </div>
+      {/* bordas suaves para a esteira entrar e sair da tela */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-[#FCFBF8] to-transparent sm:w-16" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-[#FCFBF8] to-transparent sm:w-16" />
     </div>
   );
 }
