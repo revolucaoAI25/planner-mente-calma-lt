@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { imagens } from '@/config/oferta';
@@ -10,16 +10,33 @@ import { PaginaLazy as PaginaMock } from './PaginaLazy';
 export function PorDentro() {
   const ref = useRef<HTMLDivElement>(null);
   const [atual, setAtual] = useState(0);
+  const [pausado, setPausado] = useState(false);
+  const [visivel, setVisivel] = useState(false);
   const itens = imagens.porDentro;
   const ir = (i: number) => {
     const el = ref.current;
     if (!el) return;
-    const n = Math.max(0, Math.min(itens.length - 1, i));
+    const n = (i + itens.length) % itens.length;
     const card = el.children[n] as HTMLElement;
     el.scrollTo({ left: card.offsetLeft - el.offsetLeft - 20, behavior: 'smooth' });
   };
+  // Passa sozinho enquanto está na tela; para de vez quando a pessoa mexe no carrossel.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setVisivel(e.isIntersecting), { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (pausado || !visivel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const t = setInterval(() => ir(atual + 1), 3200);
+    return () => clearInterval(t);
+  });
+  const parar = () => setPausado(true);
+
   return (
-    <div className="relative">
+    <div className="relative" onPointerDown={parar} onWheel={parar} onKeyDown={parar}>
       <div
         ref={ref}
         onScroll={(e) => {
@@ -32,8 +49,8 @@ export function PorDentro() {
         {itens.map((p) => (
           <figure key={p.id} className="w-[72%] shrink-0 snap-center sm:w-[300px]">
             {p.img ? (
-              <div className="relative aspect-[3/4.1] overflow-hidden rounded-[14px] shadow-papel">
-                <Image src={p.img} alt={p.legenda} fill sizes="300px" className="object-cover" />
+              <div className="relative aspect-[148/210] overflow-hidden rounded-[10px] bg-white shadow-papel ring-1 ring-grafite/10">
+                <Image src={p.img} alt={p.legenda} fill sizes="(max-width:640px) 72vw, 300px" className="object-cover" />
               </div>
             ) : (
               <PaginaMock id={p.id} />

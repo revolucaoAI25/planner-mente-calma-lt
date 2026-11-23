@@ -29,16 +29,16 @@ export const imagens = {
   capaPlana: '/img/mockups/planner-capa-plana.webp',
   tablet: '/img/mockups/planner-tablet.webp',
   /**
-   * Páginas do planner para o carrossel "Veja por dentro".
+   * Páginas do planner para o carrossel "Veja por dentro" (geradas por `node planner/build.mjs --png`).
    * `img` vazio = ilustração provisória da página. Troque pelos prints/fotos reais do produto.
    */
   porDentro: [
-    { id: 'metodo', img: '', legenda: 'Método Mente em 3 Lugares: tire tudo da cabeça em 10 minutos' },
-    { id: 'dia', img: '', legenda: 'Meu dia sem sobrecarga: 3 prioridades e um primeiro passo' },
-    { id: 'acelerada', img: '', legenda: 'Modo Mente Acelerada: uma página só, para os dias difíceis' },
-    { id: 'preocupacoes', img: '', legenda: 'Organizador de preocupações: o que é real, o que é futuro, o que é repetição' },
-    { id: 'semana', img: '', legenda: 'Semana leve: compromissos, contas e o que pode esperar' },
-    { id: 'recomeco', img: '', legenda: 'Página de recomeço: voltar sem precisar preencher o que ficou para trás' },
+    { id: 'metodo', img: '/img/paginas/metodo.webp', legenda: 'Método Mente em 3 Lugares (exemplo preenchido): tudo fora da cabeça em 10 minutos' },
+    { id: 'dia', img: '/img/paginas/dia.webp', legenda: 'Meu dia sem sobrecarga: 3 prioridades e um primeiro passo' },
+    { id: 'acelerada', img: '/img/paginas/acelerada.webp', legenda: 'Página SOS: uma página só, para quando a cabeça estiver a mil' },
+    { id: 'preocupacoes', img: '/img/paginas/preocupacoes.webp', legenda: 'Organizador de preocupações: o que é real, o que é futuro, o que é repetição' },
+    { id: 'semana', img: '/img/paginas/semana.webp', legenda: 'Semana leve: compromissos, contas e o que pode esperar' },
+    { id: 'recomeco', img: '/img/paginas/recomeco.webp', legenda: 'Página de recomeço: voltar sem precisar preencher o que ficou para trás' },
   ],
   /**
    * Fotos reais do planner (capa impressa, alguém folheando, página preenchida).
