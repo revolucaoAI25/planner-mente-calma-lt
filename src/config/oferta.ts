@@ -23,10 +23,11 @@ export const valores = { planner: 97, bonus: [27, 27, 24, 24] };
 export const garantiaDias = 7;
 
 export const imagens = {
-  /** Mockup do planner (topo e oferta). */
-  capa: '/img/planner-capa.webp',
-  /** Mockup do planner aberto (seção "Veja por dentro"). Vazio = composição desenhada (tablet + página impressa). */
-  mockupPorDentro: '',
+  /** Mockups do planner (fundo transparente). */
+  capa: '/img/mockups/planner-espiral-frente.webp',
+  verso: '/img/mockups/planner-espiral-verso.webp',
+  capaPlana: '/img/mockups/planner-capa-plana.webp',
+  tablet: '/img/mockups/planner-tablet.webp',
   /**
    * Páginas do planner para o carrossel "Veja por dentro".
    * `img` vazio = ilustração provisória da página. Troque pelos prints/fotos reais do produto.
@@ -49,7 +50,7 @@ export const imagens = {
     { img: '', legenda: 'Uma página preenchida na mesa' },
   ],
   /** Capas dos bônus (vazio = capa provisória desenhada). */
-  bonus: ['', '', '', ''] as string[],
+  bonus: ['/img/bonus/bonus-1.webp', '/img/bonus/bonus-2.webp', '/img/bonus/bonus-3.webp', '/img/bonus/bonus-4.webp'] as string[],
   /**
    * Prints de depoimentos reais (WhatsApp/Instagram). Enquanto estiver vazio, a seção mostra espaços reservados.
    * Use só depoimentos reais com autorização: depoimento inventado é propaganda enganosa e motivo de bloqueio na Meta.
@@ -60,8 +61,8 @@ export const imagens = {
 
 /**
  * CONTEÚDO DE EXEMPLO (criadora e depoimentos fictícios) para validar o layout.
- * Fica no código, mas NUNCA aparece para o visitante: só no navegador onde você ligar a pré-visualização em /admin.
- * Para tirar de vez do site: NEXT_PUBLIC_MODO_TESTE=0 na Vercel.
+ * Ligado por padrão (aparece na página para você validar). No /admin dá para esconder no seu navegador.
+ * ANTES DE RODAR ANÚNCIOS: NEXT_PUBLIC_MODO_TESTE=0 na Vercel tira tudo do site.
  */
 export const modoTeste = process.env.NEXT_PUBLIC_MODO_TESTE !== '0';
 

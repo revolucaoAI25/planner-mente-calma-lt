@@ -39,9 +39,10 @@
   .reveal { opacity: 1; transform: none; }
 }
 
-/* Pré-visualização (ligada só no navegador do admin, em /admin): conteúdo de exemplo e espaços reservados.
-   Para o visitante, nada disso aparece (e as imagens escondidas nem são baixadas). */
-.so-ex, .so-ph, .so-pv { display: none !important; }
-html.pv-ex .so-ex { display: block !important; }
+/* Conteúdo de exemplo (criadora e depoimentos): aparece por padrão; o /admin pode esconder neste navegador (html.sem-ex).
+   Espaços reservados para prints reais: só com "Espaços reservados" ligado no /admin (html.pv-ph). */
+html.sem-ex .so-ex { display: none !important; }
+html.sem-ex:not(.pv-ph) .so-dep { display: none !important; }
+.so-ph, .so-pv { display: none !important; }
 html.pv-ph .so-ph { display: grid !important; }
-html.pv-ex .so-pv, html.pv-ph .so-pv { display: block !important; }
+html.pv-ph .so-pv { display: block !important; }

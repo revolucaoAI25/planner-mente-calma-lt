@@ -65,18 +65,18 @@ export function Painel({ status }: { status: Status }) {
           {aviso && <p className="rounded-xl bg-terracota-claro p-3 text-[14px]">{aviso}</p>}
 
           <section className="card p-5">
-            <h2 className="text-[18px] font-bold">Pré-visualização (só neste navegador)</h2>
+            <h2 className="text-[18px] font-bold">Conteúdo de teste</h2>
             <p className="mt-1 text-[14px] text-grafite/65">
-              O que você ligar aqui aparece <b>apenas neste aparelho</b>. Visitantes e anúncios nunca veem o conteúdo de exemplo nem os espaços reservados.
+              O conteúdo de exemplo (criadora e depoimentos) aparece <b>para todos</b> enquanto o modo teste estiver ligado na Vercel. <b>Antes de rodar anúncios</b>, coloque <code>NEXT_PUBLIC_MODO_TESTE=0</code> e faça um novo deploy. As chaves abaixo valem só para este aparelho.
             </p>
             <Chave
-              on={!!pv.ex}
+              on={pv.ex !== false}
               set={(v) => salvar({ ...pv, ex: v })}
-              t="Conteúdo de exemplo"
-              d={status.exemplo ? 'Criadora e depoimentos fictícios, para validar o layout e mostrar a página.' : 'Desativado no servidor (NEXT_PUBLIC_MODO_TESTE=0).'}
+              t="Mostrar conteúdo de exemplo"
+              d={status.exemplo ? 'Criadora e depoimentos fictícios. Desligue para ver a página como ficará sem eles.' : 'Já removido do site (NEXT_PUBLIC_MODO_TESTE=0).'}
               off={!status.exemplo}
             />
-            <Chave on={!!pv.ph} set={(v) => salvar({ ...pv, ph: v })} t="Espaços reservados" d="Mostra onde entram os prints reais: depoimentos e fotos do planner na vida real." />
+            <Chave on={!!pv.ph} set={(v) => salvar({ ...pv, ph: v })} t="Mostrar espaços reservados" d="Mostra onde entram os prints reais: depoimentos e fotos do planner na vida real." />
             <Link href="/" className="btn-principal mt-4 !w-full !min-w-0 !animate-none">
               <span className="relative z-10">Abrir a página</span>
             </Link>
@@ -105,7 +105,7 @@ export function Painel({ status }: { status: Status }) {
             }}
             className="w-full text-center text-[13px] text-grafite/55 underline"
           >
-            Sair e desligar a pré-visualização
+            Sair (volta às configurações padrão neste aparelho)
           </button>
         </div>
       )}

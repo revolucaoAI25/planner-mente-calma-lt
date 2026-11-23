@@ -2,34 +2,28 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   BatteryLow,
-  BedDouble,
   Brain,
   CalendarDays,
   Check,
   CircleDollarSign,
   HeartPulse,
-  ListChecks,
   MessageCircleQuestion,
   Moon,
-  NotebookPen,
   Printer,
   RefreshCcw,
   ShieldCheck,
   Sparkles,
   Sun,
   Tablet,
-  Timer,
   Wind,
   Zap,
 } from 'lucide-react';
-import { CapaBonus } from '@/components/CapaBonus';
 import { Cta } from '@/components/Cta';
+import { ExitPopup } from '@/components/ExitPopup';
 import { Faq } from '@/components/Faq';
 import { Logo, LogoMark } from '@/components/Logo';
-import { Quiz } from '@/components/Quiz';
 import { PorDentro } from '@/components/PorDentro';
-import { Vitrine } from '@/components/Vitrine';
-import { ExitPopup } from '@/components/ExitPopup';
+import { Quiz } from '@/components/Quiz';
 import { Reveal } from '@/components/Reveal';
 import { StickyBar } from '@/components/StickyBar';
 import { criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, preco, precoDe, valores } from '@/config/oferta';
@@ -37,22 +31,22 @@ import { criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca,
 const brl = (n: number) => `R$ ${n}`;
 
 const PRA_VOCE = [
-  'deita para dormir e a cabeça começa a repassar tudo o que fez, o que não fez e o que pode dar errado',
-  'começa três coisas ao mesmo tempo, se perde no meio e termina o dia com a sensação de que não fez nada',
-  'já comprou agenda, baixou aplicativo, fez lista… e largou tudo na segunda semana',
+  <>deita para dormir e a cabeça começa a <b>repassar tudo</b>: o que fez, o que não fez e o que pode dar errado</>,
+  <>começa três coisas ao mesmo tempo, se perde no meio e termina o dia com a sensação de que <b>não fez nada</b></>,
+  <>já comprou agenda, baixou aplicativo, fez lista… e <b>largou tudo na segunda semana</b></>,
 ];
 
-const SINAIS = [
-  { icon: Moon, t: 'A cabeça não desliga nem na hora de dormir', d: 'A conta, a conversa de amanhã, o “e se…”. Tudo de uma vez.' },
-  { icon: Zap, t: 'Tudo parece urgente ao mesmo tempo', d: 'A lista é tão grande que você trava e não começa nada.' },
-  { icon: Brain, t: 'Você ensaia conversas que nem aconteceram', d: 'E gasta horas antecipando problemas que quase nunca chegam.' },
-  { icon: BatteryLow, t: 'Cansaço sem ter feito nada', d: 'A energia do dia foi embora só pensando. As tarefas continuam lá.' },
+const ABAS = [
+  { icon: Moon, t: 'A cabeça não desliga nem na hora de dormir' },
+  { icon: Zap, t: 'Tudo parece urgente ao mesmo tempo' },
+  { icon: Brain, t: 'Ensaiando conversas que nem aconteceram' },
+  { icon: BatteryLow, t: 'Cansaço sem ter feito nada' },
 ];
 
-const POR_QUE_NAO = [
-  ['Ela só organiza tarefas.', 'Mas a sua cabeça está cheia de preocupações, lembretes e “e se…”. Nenhuma agenda tem lugar para isso.'],
-  ['Ela transforma o dia numa lista sem fim.', 'Para a mente acelerada, uma lista de 20 itens não organiza: paralisa.'],
-  ['Ela cobra todos os dias.', 'Uma semana difícil vira páginas em branco, e página em branco vira culpa.'],
+const POR_QUE_NAO: [string, React.ReactNode][] = [
+  ['Ela só organiza tarefas.', <>Mas a sua cabeça está cheia de <b className="text-creme">preocupações, lembretes e “e se…”</b>. Nenhuma agenda tem lugar para isso.</>],
+  ['Ela transforma o dia numa lista sem fim.', <>Para a mente acelerada, uma lista de 20 itens não organiza: <b className="text-creme">paralisa</b>.</>],
+  ['Ela cobra todos os dias.', <>Uma semana difícil vira páginas em branco, e página em branco vira <b className="text-creme">culpa</b>.</>],
 ];
 
 const LUGARES = [
@@ -62,27 +56,26 @@ const LUGARES = [
 ];
 
 const ETAPAS = [
-  ['Despejar', '3 min', 'Tudo o que está na cabeça vai para a página, sem filtro e sem ordem.'],
-  ['Distribuir', '5 min', 'Cada pensamento vai para o seu lugar: Resolver, Programar ou Desocupar.'],
-  ['Definir', '2 min', 'Você escolhe uma única primeira ação. O resto já tem lugar.'],
+  ['Despejar', '3 min', 'tudo o que está na cabeça vai para a página, sem filtro'],
+  ['Distribuir', '5 min', 'cada pensamento vai para o seu lugar'],
+  ['Definir', '2 min', 'você escolhe uma única primeira ação'],
 ];
 
-const DENTRO: { icon: typeof Brain; t: string; d: string; destaque?: boolean }[] = [
-  { icon: Sparkles, t: 'Páginas do Método Mente em 3 Lugares', d: 'O passo a passo guiado de 10 minutos para tirar tudo da cabeça e separar no lugar certo. Use todo dia ou sempre que a mente pesar.', destaque: true },
-  { icon: Sun, t: 'Dia sem sobrecarga', d: '3 prioridades e um primeiro passo, em vez de uma lista interminável.' },
-  { icon: CalendarDays, t: 'Semana e mês', d: 'Compromissos, contas e objetivos à vista. Sem datas: comece quando quiser.' },
-  { icon: Wind, t: 'Modo Mente Acelerada', d: 'Páginas simplificadas para os dias de maior sobrecarga.' },
-  { icon: MessageCircleQuestion, t: 'Organizador de preocupações', d: 'Problema real, situação futura ou pensamento repetitivo: cada um no seu lugar.' },
-  { icon: HeartPulse, t: 'Hábitos e autocuidado', d: 'Sono, pausas e hábitos, sem cobrança.' },
-  { icon: CircleDollarSign, t: 'Organização financeira', d: 'Contas e vencimentos num lugar só, fora da sua cabeça.' },
-  { icon: RefreshCcw, t: 'Páginas de recomeço', d: 'Volte depois de dias difíceis sem preencher o que ficou para trás.' },
+const DENTRO: { icon: typeof Brain; t: string; d: string }[] = [
+  { icon: Sun, t: 'Dia sem sobrecarga', d: '3 prioridades e um primeiro passo, em vez de uma lista sem fim' },
+  { icon: CalendarDays, t: 'Semana e mês', d: 'compromissos, contas e objetivos à vista, sem datas' },
+  { icon: Wind, t: 'Modo Mente Acelerada', d: 'páginas simplificadas para os dias mais pesados' },
+  { icon: MessageCircleQuestion, t: 'Organizador de preocupações', d: 'problema real, situação futura ou pensamento repetitivo' },
+  { icon: HeartPulse, t: 'Hábitos e autocuidado', d: 'sono, pausas e hábitos, sem cobrança' },
+  { icon: CircleDollarSign, t: 'Organização financeira', d: 'contas e vencimentos fora da sua cabeça' },
+  { icon: RefreshCcw, t: 'Páginas de recomeço', d: 'volte depois de dias difíceis, sem culpa' },
 ];
 
-const BONUS: { t: string; d: string; tema: 'petroleo' | 'salvia' | 'terracota' | 'grafite' }[] = [
-  { t: 'SOS Mente Acelerada', d: 'Páginas rápidas para organizar os pensamentos e escolher um próximo passo quando a cabeça estiver a mil.', tema: 'terracota' },
-  { t: 'Desligando a Cabeça Antes de Dormir', d: 'Rotina de encerramento do dia: descarregue as preocupações, prepare o amanhã e deite mais leve.', tema: 'petroleo' },
-  { t: 'Diário da Ansiedade', d: 'Registre as preocupações que se repetem, o que aumenta a ansiedade e o que ajuda no seu dia a dia.', tema: 'salvia' },
-  { t: 'Kit Rotina Sem Sobrecarga', d: 'Modelos simples de rotina para manhã, tarde e noite, que se adaptam à sua realidade.', tema: 'grafite' },
+const BONUS = [
+  { t: 'SOS Mente Acelerada', d: 'Páginas rápidas para organizar os pensamentos e escolher um próximo passo quando a cabeça estiver a mil.' },
+  { t: 'Desligando a Cabeça Antes de Dormir', d: 'Um ritual para encerrar o dia: descarregue as preocupações, prepare o amanhã e deite mais leve.' },
+  { t: 'Diário da Ansiedade', d: 'Registre o que se repete, o que aumenta a ansiedade e o que te ajuda no dia a dia.' },
+  { t: 'Kit Rotina Sem Sobrecarga', d: 'Modelos simples de rotina para manhã, tarde e noite, que se adaptam à sua realidade.' },
 ];
 
 const FAQ: [string, React.ReactNode][] = [
@@ -117,73 +110,72 @@ export default function Page() {
         <div className="wrap relative pt-5">
           <Logo />
         </div>
-        <div className="wrap relative grid items-center gap-8 pb-10 pt-7 md:grid-cols-[1.1fr_.9fr] md:gap-12 md:pb-16 md:pt-12">
-          <div className="animate-entra">
+        <div className="wrap relative grid items-center gap-6 pb-12 pt-7 md:grid-cols-[1.05fr_.95fr] md:gap-10 md:pb-16 md:pt-12">
+          <div>
             <p className="eyebrow">Para quem pensa demais e se preocupa com tudo</p>
             <h1 className="mt-4 text-[33px] font-bold leading-[1.06] tracking-tight text-grafite min-[400px]:text-[36px] sm:text-[52px]">
               Finalmente, um planner desenvolvido para o <span className="grifo">cérebro com ansiedade</span>.
             </h1>
             <p className="sub mt-5">
-              Pare de lutar contra uma cabeça que não desliga. Com o <b className="text-grafite">Método Mente em 3 Lugares</b>, em 10 minutos por dia você tira tudo da cabeça, separa o que precisa resolver do que é só preocupação e termina com <b className="text-grafite">um primeiro passo claro</b>. Menos peso na mente, mais clareza no dia.
+              Pare de lutar contra uma cabeça que não desliga. Com o <b className="text-grafite">Método Mente em 3 Lugares</b>, em 10 minutos por dia você tira tudo da cabeça, separa o que precisa resolver do que é só preocupação e termina com <b className="text-grafite">um primeiro passo claro</b>.
             </p>
             <div className="mt-7 hidden md:block">
               <Cta>Quero minha mente mais calma</Cta>
               <Garantias />
             </div>
           </div>
-          <div className="relative mx-auto w-[78%] max-w-[390px] md:w-full">
-            <div className="absolute inset-6 rounded-[40px] bg-gradient-to-br from-salvia/60 to-terracota/50 blur-2xl" />
-            <div className="relative animate-flutua">
-              <Image src={imagens.capa} alt="Planner Mente Calma" width={482} height={657} priority sizes="(max-width:768px) 78vw, 390px" className="h-auto w-full rounded-[18px] shadow-papel" />
+
+          {/* Mockups: tablet atrás, planner espiral na frente */}
+          <div className="relative mx-auto aspect-[1/0.92] w-full max-w-[470px]">
+            <div className="absolute inset-[12%] rounded-full bg-gradient-to-br from-salvia/70 to-terracota/50 blur-3xl" />
+            <Image src={imagens.tablet} alt="Planner Mente Calma no tablet" width={820} height={990} priority sizes="(max-width:768px) 62vw, 300px" className="absolute right-0 top-0 h-auto w-[62%] rotate-[4deg]" />
+            <div className="absolute bottom-0 left-0 w-[64%] -rotate-[5deg] animate-flutua">
+              <Image src={imagens.capa} alt="Planner Mente Calma impresso" width={700} height={847} priority sizes="(max-width:768px) 64vw, 310px" className="h-auto w-full" />
             </div>
-            <span className="absolute -left-3 top-8 rotate-[-6deg] rounded-full bg-white px-3 py-1.5 font-display text-[12px] font-bold text-petroleo shadow-suave">⏱ 10 min por dia</span>
-            <span className="absolute -right-2 bottom-12 rotate-[5deg] rounded-full bg-terracota-escuro px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">+ 4 bônus</span>
+            <span className="absolute left-[2%] top-[6%] rotate-[-6deg] rounded-full bg-white px-3 py-1.5 font-display text-[12px] font-bold text-petroleo shadow-suave">⏱ 10 min por dia</span>
+            <span className="absolute bottom-[10%] right-[2%] rotate-[5deg] rounded-full bg-terracota-escuro px-3 py-1.5 font-display text-[12px] font-bold text-white shadow-suave">+ 4 bônus</span>
           </div>
+
           <div className="md:hidden">
             <Cta>Quero minha mente mais calma</Cta>
             <Garantias />
           </div>
         </div>
 
-        <div className="wrap relative pb-14">
-          <div className="card mx-auto max-w-[760px] p-5 sm:p-7">
-            <p className="text-center font-display text-[11px] font-bold uppercase tracking-[.25em] text-grafite/50">Este planner é para você se:</p>
-            <ul className="mt-4 space-y-3">
-              {PRA_VOCE.map((t) => (
-                <li key={t} className="flex gap-3 text-[16px] leading-snug text-grafite/85">
-                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-salvia-bg text-petroleo">
-                    <Check size={15} strokeWidth={3} />
-                  </span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="estreito relative pb-16">
+          <p className="text-center font-display text-[13px] font-bold uppercase tracking-[.22em] text-grafite/45">Este planner é para você que…</p>
+          <ul className="mt-5 space-y-4">
+            {PRA_VOCE.map((t, i) => (
+              <li key={i} className="flex gap-3.5 text-[17.5px] leading-snug text-grafite/80 [&_b]:text-grafite">
+                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-petroleo text-creme">
+                  <Check size={16} strokeWidth={3} />
+                </span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ======= VEJA POR DENTRO ======= */}
-      <section id="por-dentro" className="bg-white/60 py-16 sm:py-20">
-        <div className="wrap">
-          <div className="reveal mx-auto max-w-[640px] text-center">
-            <span className="inline-block rounded-full bg-grafite px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">Veja por dentro</span>
-            <h2 className="titulo mt-4">Páginas feitas para riscar, rabiscar e recomeçar.</h2>
-            <p className="sub mt-3">Nada de páginas perfeitas que dão medo de estragar. Use no tablet ou imprima, quantas vezes quiser.</p>
+      {/* ======= QUIZ ======= */}
+      <section id="teste" className="relative overflow-hidden bg-gradient-to-b from-petroleo to-petroleo-escuro py-16 text-creme sm:py-20">
+        <svg className="pointer-events-none absolute -top-px left-0 w-full rotate-180 opacity-30" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden>
+          <path d="M0 60 C250 10 420 110 700 50 S1100 20 1200 40 V120 H0Z" fill="#A8BDB0" />
+        </svg>
+        <div className="mx-auto w-full max-w-[640px] px-5">
+          <div className="reveal text-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-terracota px-3.5 py-1.5 font-display text-[12px] font-bold uppercase tracking-[.16em] text-grafite">
+              <span className="h-2 w-2 animate-ping rounded-full bg-grafite" /> Teste de 1 minuto
+            </span>
+            <h2 className="mt-4 font-display text-[29px] font-bold leading-[1.1] sm:text-[40px]">
+              O quanto a sua mente está <span className="text-terracota">sobrecarregada</span>?
+            </h2>
+            <p className="mt-3 text-[17px] leading-relaxed text-creme/80">
+              Responda 5 perguntas rápidas e descubra <b className="text-creme">o que mais pesa na sua cabeça</b> e por onde começar. Resultado na hora.
+            </p>
           </div>
-          <div className="reveal mt-10">
-            <Vitrine />
-          </div>
-          <div className="reveal mx-auto mt-8 flex max-w-[760px] flex-wrap justify-center gap-2">
-            {['Sem datas: comece hoje', 'PDF em A4', 'Imprima quantas vezes quiser', 'GoodNotes, Notability, Xodo', 'Páginas guiadas com exemplo'].map((t) => (
-              <span key={t} className="chip gap-1.5">
-                <Check size={14} strokeWidth={3} className="text-petroleo" /> {t}
-              </span>
-            ))}
-          </div>
-          <FotosReais />
-          <div className="reveal mt-12">
-            <p className="mb-5 text-center font-display text-[13px] font-bold uppercase tracking-[.22em] text-grafite/50">Arraste para ver as páginas</p>
-            <PorDentro />
+          <div className="reveal mt-8">
+            <Quiz />
           </div>
         </div>
       </section>
@@ -191,32 +183,40 @@ export default function Page() {
       {/* ======= IDENTIFICAÇÃO ======= */}
       <section className="py-16 sm:py-20">
         <div className="estreito text-center">
-          <h2 className="titulo reveal">Se a sua mente fosse um navegador, teria 47 abas abertas.</h2>
+          <h2 className="titulo reveal">
+            Se a sua mente fosse um navegador, teria <span className="grifo">47 abas abertas</span>.
+          </h2>
           <p className="sub reveal mt-3">E todas tocando música ao mesmo tempo.</p>
         </div>
-        <div className="wrap mt-10 grid gap-3 sm:grid-cols-2 sm:gap-4">
-          {SINAIS.map((s, i) => (
-            <div key={s.t} className="reveal card flex gap-4 p-5" style={{ transitionDelay: `${i * 80}ms` }}>
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-terracota-claro text-terracota-escuro">
-                <s.icon size={21} />
-              </span>
-              <div>
-                <p className="font-display text-[16.5px] font-bold leading-snug">{s.t}</p>
-                <p className="mt-1 text-[15px] leading-relaxed text-grafite/70">{s.d}</p>
-              </div>
+
+        {/* abas do navegador */}
+        <div className="reveal mx-auto mt-9 max-w-[720px] px-5">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-papel ring-1 ring-grafite/10">
+            <div className="flex items-center gap-1.5 border-b border-grafite/10 bg-creme-escuro/70 px-3 py-2.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-terracota" />
+              <span className="h-2.5 w-2.5 rounded-full bg-salvia" />
+              <span className="h-2.5 w-2.5 rounded-full bg-petroleo/50" />
+              <span className="ml-2 truncate text-[12px] text-grafite/45">minha-cabeca.com/tudo-ao-mesmo-tempo</span>
             </div>
-          ))}
+            <ul className="divide-y divide-grafite/5">
+              {ABAS.map((a, i) => (
+                <li key={a.t} className="flex items-center gap-3 px-4 py-3.5" style={{ opacity: 1 - i * 0.04 }}>
+                  <a.icon size={18} className="shrink-0 text-terracota-escuro" />
+                  <span className="flex-1 font-display text-[15.5px] font-semibold text-grafite">{a.t}</span>
+                  <span className="text-[16px] text-grafite/25">×</span>
+                </li>
+              ))}
+              <li className="px-4 py-3 text-center text-[13px] font-bold text-grafite/40">+ 43 abas abertas…</li>
+            </ul>
+          </div>
         </div>
-        <div id="teste" className="reveal mx-auto mt-12 max-w-[640px] px-5">
-          <p className="mb-4 text-center font-display text-[17px] font-bold text-grafite">Se identificou? Descubra o quanto a sua mente está sobrecarregada:</p>
-          <Quiz />
-        </div>
-        <div className="estreito reveal mt-12 text-center">
-          <p className="text-[18px] leading-relaxed text-grafite/80">
-            Não é falta de força de vontade. <b className="text-grafite">Uma cabeça sobrecarregada não consegue simplesmente sentar, planejar e seguir uma lista.</b>
+
+        <div className="estreito reveal mt-12 space-y-5 text-center text-[19px] leading-relaxed text-grafite/80">
+          <p>
+            Não é preguiça. Não é falta de força de vontade. É que <b className="text-grafite">uma cabeça sobrecarregada não consegue simplesmente sentar, planejar e seguir uma lista.</b>
           </p>
-          <p className="mt-6 rounded-2xl bg-salvia-bg p-5 font-display text-[19px] font-semibold leading-snug text-petroleo-escuro">
-            Você não precisa de mais uma lista de tarefas. Precisa de uma forma de organizar tudo o que não sai da sua cabeça.
+          <p className="font-display text-[22px] font-bold leading-snug text-petroleo-escuro sm:text-[26px]">
+            Você não precisa de mais uma lista de tarefas. Precisa de um jeito de <span className="grifo">esvaziar a cabeça</span>.
           </p>
         </div>
       </section>
@@ -225,25 +225,25 @@ export default function Page() {
       <section className="bg-grafite py-16 text-creme sm:py-20">
         <div className="estreito">
           <h2 className="reveal text-center font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">Por que a agenda comum não funciona para quem tem a mente acelerada</h2>
-          <div className="mt-9 space-y-3">
+          <ol className="mt-10 space-y-8">
             {POR_QUE_NAO.map(([t, d], i) => (
-              <div key={t} className="reveal flex gap-4 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10" style={{ transitionDelay: `${i * 90}ms` }}>
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-terracota font-display text-[16px] font-bold text-grafite">{i + 1}</span>
-                <div>
-                  <p className="font-display text-[17.5px] font-bold">{t}</p>
-                  <p className="mt-1 text-[15.5px] leading-relaxed text-creme/70">{d}</p>
+              <li key={t} className="reveal flex gap-5" style={{ transitionDelay: `${i * 90}ms` }}>
+                <span className="font-display text-[46px] font-bold leading-none text-terracota">{i + 1}</span>
+                <div className="border-l border-white/15 pl-5">
+                  <p className="font-display text-[20px] font-bold">{t}</p>
+                  <p className="mt-1.5 text-[16.5px] leading-relaxed text-creme/70">{d}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
-          <p className="reveal mt-10 text-center text-[19px] leading-relaxed text-creme/85">
-            O Mente Calma foi desenvolvido ao contrário: <b className="text-creme">antes de organizar o seu dia, ele organiza o que está ocupando a sua cabeça.</b>
+          </ol>
+          <p className="reveal mt-12 text-center text-[20px] leading-relaxed text-creme/85">
+            O Mente Calma foi desenvolvido ao contrário: <span className="font-bold text-creme underline decoration-terracota decoration-[3px] underline-offset-[6px]">antes de organizar o seu dia, ele organiza o que está ocupando a sua cabeça.</span>
           </p>
         </div>
       </section>
 
       {/* ======= MÉTODO ======= */}
-      <section id="metodo" className="relative py-16 sm:py-20">
+      <section id="metodo" className="py-16 sm:py-20">
         <div className="wrap">
           <div className="reveal mx-auto max-w-[700px] text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-petroleo px-3.5 py-1.5 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">
@@ -251,9 +251,9 @@ export default function Page() {
             </span>
             <h2 className="titulo mt-4">Método Mente em 3 Lugares</h2>
             <p className="sub mt-4">
-              A ansiedade guarda tudo na mesma gaveta: o que você <b className="text-grafite">precisa fazer</b>, o que <b className="text-grafite">pode esperar</b> e o que você está <b className="text-grafite">só antecipando</b>. Enquanto fica tudo junto, tudo parece urgente.
+              A ansiedade guarda tudo na mesma gaveta: o que você <b className="text-grafite">precisa fazer</b>, o que <b className="text-grafite">pode esperar</b> e o que você está <span className="grifo font-bold text-grafite">só antecipando</span>. Enquanto fica tudo junto, tudo parece urgente.
             </p>
-            <p className="sub mt-3">O método separa essas três coisas. E quando cada pensamento ganha o seu lugar, a cabeça finalmente para de segurar tudo.</p>
+            <p className="sub mt-3">O método separa essas três coisas. Quando cada pensamento ganha o seu lugar, <b className="text-grafite">a cabeça finalmente para de segurar tudo</b>.</p>
           </div>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -268,37 +268,36 @@ export default function Page() {
                 <p className="mt-4 font-display text-[22px] font-bold uppercase tracking-wide">{m.n}</p>
                 <p className="text-[15px] italic text-grafite/65">{m.s}</p>
                 <p className="mt-2.5 text-[15.5px] leading-relaxed text-grafite/80">{m.d}</p>
-                <div className="mt-4 rounded-xl bg-white/70 p-3 text-[14.5px]">
-                  <p className="italic text-grafite/75">{m.ex}</p>
-                  <p className="mt-1 font-bold text-petroleo-escuro">→ {m.fim}</p>
-                </div>
+                <p className="mt-4 text-[14.5px] italic text-grafite/70">{m.ex}</p>
+                <p className="mt-1 text-[14.5px] font-bold text-petroleo-escuro">→ {m.fim}</p>
               </div>
             ))}
           </div>
 
-          {/* As 3 etapas dos 10 minutos */}
-          <div className="reveal mx-auto mt-12 max-w-[860px] rounded-[26px] bg-white/80 p-5 shadow-suave ring-1 ring-grafite/5 sm:p-7">
-            <div className="flex items-center justify-center gap-2 text-center">
-              <Timer size={20} className="text-terracota-escuro" />
-              <p className="font-display text-[17px] font-bold">Como funcionam os 10 minutos</p>
-            </div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {/* linha do tempo dos 10 minutos */}
+          <div className="reveal mx-auto mt-14 max-w-[820px]">
+            <p className="text-center font-display text-[20px] font-bold">
+              Tudo isso em <span className="grifo">10 minutos</span>:
+            </p>
+            <ol className="relative mt-8 grid gap-6 sm:grid-cols-3 sm:gap-4">
+              <span className="absolute left-[19px] top-5 h-[calc(100%-40px)] w-0.5 bg-terracota/40 sm:left-[16%] sm:right-[16%] sm:top-5 sm:h-0.5 sm:w-auto" aria-hidden />
               {ETAPAS.map(([t, min, d], i) => (
-                <div key={t} className="relative rounded-2xl bg-creme p-4">
-                  <div className="flex items-baseline justify-between">
-                    <p className="font-display text-[13px] font-bold text-terracota-escuro">ETAPA {i + 1}</p>
-                    <p className="font-display text-[12px] font-bold text-grafite/40">{min}</p>
+                <li key={t} className="relative flex gap-4 sm:flex-col sm:items-center sm:text-center">
+                  <span className="relative z-10 grid h-10 w-10 shrink-0 place-items-center rounded-full bg-terracota-escuro font-display text-[15px] font-bold text-white ring-4 ring-creme">{i + 1}</span>
+                  <div>
+                    <p className="font-display text-[19px] font-bold">
+                      {t} <span className="text-[13px] font-bold text-terracota-escuro">{min}</span>
+                    </p>
+                    <p className="mt-0.5 text-[15.5px] leading-relaxed text-grafite/70">{d}</p>
                   </div>
-                  <p className="mt-1 font-display text-[19px] font-bold">{t}</p>
-                  <p className="mt-1 text-[14.5px] leading-relaxed text-grafite/70">{d}</p>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
 
-          <div className="reveal mx-auto mt-10 max-w-[640px] text-center">
-            <p className="text-[18px] leading-relaxed text-grafite/80">
-              Em 10 minutos: <b className="text-grafite">preocupações separadas</b>, <b className="text-grafite">pendências encaminhadas</b> e <b className="text-grafite">uma primeira ação definida</b>.
+          <div className="reveal mx-auto mt-12 max-w-[640px] text-center">
+            <p className="text-[19px] leading-relaxed text-grafite/80">
+              Resultado: <b className="text-grafite">preocupações separadas</b>, <b className="text-grafite">pendências encaminhadas</b> e <span className="grifo font-bold text-grafite">uma primeira ação definida</span>.
             </p>
             <div className="mt-7 flex justify-center">
               <Cta>Quero aplicar o método</Cta>
@@ -308,46 +307,73 @@ export default function Page() {
       </section>
 
       {/* ======= O QUE VEM DENTRO ======= */}
-      <section id="dentro" className="py-16 sm:py-20">
+      <section id="dentro" className="bg-white/60 py-16 sm:py-20">
+        <div className="wrap grid items-center gap-10 md:grid-cols-[.9fr_1.1fr] md:gap-14">
+          <div className="reveal relative mx-auto aspect-[1/1.02] w-full max-w-[420px]">
+            <div className="absolute inset-[10%] rounded-full bg-gradient-to-br from-salvia/60 to-terracota/40 blur-3xl" />
+            <Image src={imagens.verso} alt="Verso do Planner Mente Calma" width={700} height={847} sizes="(max-width:768px) 60vw, 260px" className="absolute right-0 top-0 h-auto w-[60%] rotate-[6deg] drop-shadow-[0_20px_26px_rgba(38,52,49,.25)]" />
+            <Image src={imagens.capaPlana} alt="Capa do Planner Mente Calma" width={640} height={826} sizes="(max-width:768px) 62vw, 270px" className="absolute bottom-0 left-0 h-auto w-[62%] -rotate-[4deg]" />
+          </div>
+          <div>
+            <p className="eyebrow reveal">O que vem no planner</p>
+            <h2 className="titulo reveal mt-3">
+              Uma agenda organiza compromissos. O Mente Calma organiza também as <span className="grifo">preocupações</span>.
+            </h2>
+            <p className="reveal mt-6 rounded-2xl bg-petroleo p-5 text-[16px] leading-relaxed text-creme/85">
+              <Sparkles size={18} className="mb-2 text-terracota" />
+              <b className="text-creme">Páginas do Método Mente em 3 Lugares:</b> o passo a passo guiado de 10 minutos para tirar tudo da cabeça e separar no lugar certo. Use todo dia ou sempre que a mente pesar.
+            </p>
+            <ul className="reveal mt-6 space-y-3.5">
+              {DENTRO.map((d) => (
+                <li key={d.t} className="flex gap-3 text-[16px] leading-snug text-grafite/75">
+                  <d.icon size={19} className="mt-0.5 shrink-0 text-petroleo" />
+                  <span>
+                    <b className="text-grafite">{d.t}:</b> {d.d}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="reveal mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[14.5px] text-grafite/70">
+              <span className="inline-flex items-center gap-1.5">
+                <Printer size={17} className="text-petroleo" /> Imprima em A4
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Tablet size={17} className="text-petroleo" /> ou use no tablet
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Check size={17} strokeWidth={3} className="text-petroleo" /> sem datas
+              </span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ======= VEJA POR DENTRO (prints) ======= */}
+      <section id="por-dentro" className="py-16 sm:py-20">
         <div className="wrap">
-          <div className="reveal mx-auto max-w-[660px] text-center">
-            <p className="eyebrow">O que vem no planner</p>
-            <h2 className="titulo mt-3">Uma agenda organiza compromissos. O Mente Calma organiza também as preocupações.</h2>
+          <div className="reveal mx-auto max-w-[640px] text-center">
+            <span className="inline-block rounded-full bg-grafite px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[.2em] text-creme">Veja por dentro</span>
+            <h2 className="titulo mt-4">
+              Páginas feitas para <span className="grifo">riscar, rabiscar e recomeçar</span>.
+            </h2>
+            <p className="sub mt-3">Nada de páginas perfeitas que dão medo de estragar.</p>
           </div>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-            {DENTRO.map((d, i) => (
-              <div
-                key={d.t}
-                className={`reveal rounded-[22px] p-5 ${d.destaque ? 'bg-petroleo text-creme shadow-papel sm:col-span-2' : 'card'}`}
-                style={{ transitionDelay: `${(i % 4) * 70}ms` }}
-              >
-                <span className={`grid h-11 w-11 place-items-center rounded-2xl ${d.destaque ? 'bg-white/15 text-creme' : 'bg-salvia-bg text-petroleo'}`}>
-                  <d.icon size={21} />
-                </span>
-                <p className={`mt-4 font-display font-bold leading-snug ${d.destaque ? 'text-[21px]' : 'text-[17px]'}`}>{d.t}</p>
-                <p className={`mt-1.5 text-[15px] leading-relaxed ${d.destaque ? 'text-creme/80' : 'text-grafite/70'}`}>{d.d}</p>
-              </div>
-            ))}
+          <div className="reveal mt-9">
+            <PorDentro />
           </div>
+          <FotosReais />
+        </div>
 
-          <div className="reveal mx-auto mt-8 grid max-w-[860px] gap-3 sm:grid-cols-2">
-            <div className="flex items-center gap-3 rounded-2xl bg-salvia-bg p-4 text-[15px] leading-snug">
-              <Printer size={22} className="shrink-0 text-petroleo" /> <span><b>Imprima</b> em A4 só as páginas que for usar, quantas vezes quiser.</span>
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl bg-salvia-bg p-4 text-[15px] leading-snug">
-              <Tablet size={22} className="shrink-0 text-petroleo" /> <span>Ou <b>preencha no tablet</b>: GoodNotes, Notability, Xodo, Samsung Notes.</span>
-            </div>
+        <div className="wrap mt-14 grid gap-3 sm:grid-cols-2 sm:gap-4">
+          <div className="reveal rounded-[22px] bg-creme-escuro p-6">
+            <p className="font-display text-[12px] font-bold uppercase tracking-[.22em] text-grafite/45">Antes</p>
+            <p className="mt-2 text-[17.5px] leading-relaxed text-grafite/80">Acordar já cansada(o), com mil coisas na cabeça, e chegar à noite sem saber o que realmente fez.</p>
           </div>
-
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 sm:gap-4">
-            <div className="reveal rounded-[22px] bg-creme-escuro p-6">
-              <p className="font-display text-[12px] font-bold uppercase tracking-[.22em] text-grafite/45">Antes</p>
-              <p className="mt-2 text-[17.5px] leading-relaxed text-grafite/80">Acordar já cansada(o), com mil coisas na cabeça, e chegar à noite sem saber o que realmente fez.</p>
-            </div>
-            <div className="reveal rounded-[22px] bg-petroleo p-6 text-creme" style={{ transitionDelay: '90ms' }}>
-              <p className="font-display text-[12px] font-bold uppercase tracking-[.22em] text-salvia">Depois</p>
-              <p className="mt-2 text-[17.5px] leading-relaxed">Tirar tudo da cabeça em 10 minutos, saber o primeiro passo e ir dormir sabendo o que fica para amanhã.</p>
-            </div>
+          <div className="reveal rounded-[22px] bg-petroleo p-6 text-creme" style={{ transitionDelay: '90ms' }}>
+            <p className="font-display text-[12px] font-bold uppercase tracking-[.22em] text-salvia">Depois</p>
+            <p className="mt-2 text-[17.5px] leading-relaxed">
+              Tirar tudo da cabeça em 10 minutos, <b>saber o primeiro passo</b> e ir dormir sabendo o que fica para amanhã.
+            </p>
           </div>
         </div>
       </section>
@@ -357,25 +383,22 @@ export default function Page() {
         <div className="wrap">
           <div className="reveal mx-auto max-w-[640px] text-center">
             <p className="eyebrow">Só nesta oferta</p>
-            <h2 className="titulo mt-3">Você ainda leva 4 bônus para os momentos mais pesados.</h2>
+            <h2 className="titulo mt-3">
+              Você ainda leva <span className="grifo">4 bônus</span> para os momentos mais pesados.
+            </h2>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-9 lg:grid-cols-4">
             {BONUS.map((b, i) => (
-              <div key={b.t} className="reveal card overflow-hidden" style={{ transitionDelay: `${(i % 2) * 90}ms` }}>
-                <div className={`py-7 ${['bg-terracota-claro', 'bg-salvia-bg', 'bg-salvia-claro/50', 'bg-creme-escuro'][i]}`}>
-                  <CapaBonus img={imagens.bonus[i]} titulo={b.t} n={i + 1} tema={b.tema} />
+              <div key={b.t} className="reveal" style={{ transitionDelay: `${(i % 4) * 80}ms` }}>
+                <div className="relative">
+                  <Image src={imagens.bonus[i]} alt={b.t} width={480} height={644} sizes="(max-width:1024px) 46vw, 240px" className="h-auto w-full rounded-xl shadow-papel" />
+                  <span className="absolute -right-1.5 -top-2.5 rotate-[6deg] rounded-full bg-petroleo px-2.5 py-1 font-display text-[11px] font-bold text-creme shadow-suave">GRÁTIS</span>
                 </div>
-                <div className="p-5">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="font-display text-[11px] font-bold uppercase tracking-[.2em] text-terracota-escuro">Bônus {String(i + 1).padStart(2, '0')}</p>
-                    <p className="text-[13px]">
-                      <s className="text-grafite/45">{brl(valores.bonus[i])}</s>{' '}
-                      <span className="rounded-full bg-petroleo px-2.5 py-0.5 font-display text-[11px] font-bold text-creme">GRÁTIS</span>
-                    </p>
-                  </div>
-                  <p className="mt-1.5 font-display text-[19px] font-bold leading-snug">{b.t}</p>
-                  <p className="mt-1.5 text-[15px] leading-relaxed text-grafite/70">{b.d}</p>
-                </div>
+                <p className="mt-3 font-display text-[11px] font-bold uppercase tracking-[.18em] text-terracota-escuro">
+                  Bônus {i + 1} · <s className="text-grafite/40">{brl(valores.bonus[i])}</s>
+                </p>
+                <p className="mt-1 font-display text-[16.5px] font-bold leading-snug">{b.t}</p>
+                <p className="mt-1 text-[14.5px] leading-relaxed text-grafite/70">{b.d}</p>
               </div>
             ))}
           </div>
@@ -396,7 +419,9 @@ export default function Page() {
             </div>
             <div className="reveal">
               <p className="eyebrow">Quem criou</p>
-              <h2 className="titulo mt-3">Eu criei o método que eu precisava ter encontrado.</h2>
+              <h2 className="titulo mt-3">
+                Eu criei o método que eu <span className="grifo">precisava ter encontrado</span>.
+              </h2>
               <div className="mt-5 space-y-4 text-[16.5px] leading-relaxed text-grafite/80">
                 {criadora.historia.map((p) => (
                   <p key={p}>{p}</p>
@@ -411,7 +436,9 @@ export default function Page() {
       {/* ======= OFERTA ======= */}
       <section id="oferta" className="bg-gradient-to-b from-salvia-bg to-creme py-16 sm:py-20">
         <div className="estreito">
-          <h2 className="titulo reveal text-center">Sua cabeça não precisa carregar tudo sozinha.</h2>
+          <h2 className="titulo reveal text-center">
+            Sua cabeça não precisa <span className="grifo">carregar tudo sozinha</span>.
+          </h2>
           <p className="sub reveal mt-3 text-center">Comece hoje, com 10 minutos.</p>
           <div className="reveal mt-9 overflow-hidden rounded-[28px] bg-white shadow-papel ring-1 ring-grafite/5">
             <div className="relative flex items-center gap-4 bg-petroleo px-6 py-5 text-creme">
@@ -423,10 +450,11 @@ export default function Page() {
               <span className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-terracota px-2.5 py-1 font-display text-[11px] font-bold text-grafite">-{Math.round((1 - preco / precoDe) * 100)}%</span>
             </div>
             <div className="p-5 sm:p-8">
-              <div className="mx-auto w-[52%] max-w-[210px]">
-                <Image src={imagens.capa} alt="" width={482} height={657} sizes="210px" className="h-auto w-full -rotate-2 rounded-xl shadow-papel" />
+              <div className="relative mx-auto aspect-[1/0.75] w-full max-w-[380px]">
+                <Image src={imagens.tablet} alt="" width={820} height={990} sizes="200px" className="absolute right-[4%] top-0 h-auto w-[44%] rotate-[5deg] drop-shadow-[0_16px_20px_rgba(38,52,49,.25)]" />
+                <Image src={imagens.capa} alt="" width={700} height={847} sizes="200px" className="absolute bottom-0 left-[4%] h-auto w-[48%] -rotate-[4deg] drop-shadow-[0_18px_22px_rgba(38,52,49,.3)]" />
               </div>
-              <ul className="mt-7 divide-y divide-grafite/10 rounded-2xl bg-creme/70 px-4">
+              <ul className="mt-6 divide-y divide-grafite/10 rounded-2xl bg-creme/70 px-4">
                 <Linha t="Planner Mente Calma completo + Método Mente em 3 Lugares" v={valores.planner} />
                 {BONUS.map((b, i) => (
                   <Linha key={b.t} t={`Bônus ${i + 1} · ${b.t}`} v={valores.bonus[i]} gratis />
@@ -448,8 +476,8 @@ export default function Page() {
               <div className="mt-6 flex justify-center">
                 <Cta>Quero o Planner Mente Calma</Cta>
               </div>
-              <p className="mt-3 flex items-center justify-center gap-1.5 text-[13px] text-grafite/55">
-                <ShieldCheck size={15} /> Compra 100% segura · PDF para imprimir ou usar no tablet
+              <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[13px] text-grafite/55">
+                <ShieldCheck size={15} className="shrink-0" /> Compra 100% segura · PDF para imprimir ou usar no tablet
               </p>
             </div>
           </div>
@@ -462,7 +490,9 @@ export default function Page() {
             </span>
             <div>
               <p className="font-display text-[17px] font-bold">Garantia incondicional de {garantiaDias} dias.</p>
-              <p className="mt-1 text-[15px] leading-relaxed text-grafite/70">Use o planner. Se não ajudar você a organizar a cabeça e a rotina, peça o reembolso dentro do prazo e devolvemos 100% do valor. Sem perguntas.</p>
+              <p className="mt-1 text-[15px] leading-relaxed text-grafite/70">
+                Use o planner. Se não ajudar você a organizar a cabeça e a rotina, peça o reembolso dentro do prazo e <b className="text-grafite">devolvemos 100% do valor</b>. Sem perguntas.
+              </p>
             </div>
           </div>
         </div>
@@ -486,7 +516,9 @@ export default function Page() {
         </svg>
         <div className="estreito relative text-center">
           <LogoMark size={64} light className="mx-auto" />
-          <h2 className="reveal mt-5 font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">Você não precisa guardar tudo na cabeça. Só precisa de um lugar para colocar.</h2>
+          <h2 className="reveal mt-5 font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">
+            Você não precisa guardar tudo na cabeça. Só precisa de <span className="text-terracota">um lugar para colocar</span>.
+          </h2>
           <p className="reveal mt-4 text-[18px] text-creme/80">Menos peso na mente. Mais clareza no dia.</p>
           <div className="reveal mt-8 flex justify-center">
             <Cta>Quero começar hoje</Cta>
@@ -504,7 +536,14 @@ export default function Page() {
             O Planner Mente Calma é uma ferramenta de organização pessoal. Não é tratamento psicológico ou médico e não substitui o acompanhamento de um profissional de saúde. Se você está em sofrimento intenso, procure ajuda: CVV, ligue 188 (gratuito, 24h).
           </p>
           <p className="mt-4">
-            <Link href="/termos" className="inline-block py-2 underline-offset-2 hover:underline">Termos de uso</Link> · <Link href="/privacidade" className="inline-block py-2 underline-offset-2 hover:underline">Privacidade</Link> · {marca.suporte}
+            <Link href="/termos" className="inline-block py-2 underline-offset-2 hover:underline">
+              Termos de uso
+            </Link>{' '}
+            ·{' '}
+            <Link href="/privacidade" className="inline-block py-2 underline-offset-2 hover:underline">
+              Privacidade
+            </Link>{' '}
+            · {marca.suporte}
           </p>
           <p className="mt-3 text-creme/45">© {new Date().getFullYear()} {marca.nome}. Este site não é afiliado ao Facebook ou à Meta.</p>
         </div>
@@ -540,11 +579,13 @@ function Linha({ t, v, gratis = false }: { t: string; v: number; gratis?: boolea
 function Depoimentos() {
   const reais = imagens.depoimentos;
   return (
-    <section className={`${reais.length ? '' : 'so-pv'} py-16 sm:py-20`}>
+    <section className={`${reais.length ? '' : 'so-dep'} py-16 sm:py-20`}>
       <div className="wrap">
         <div className="reveal mx-auto max-w-[640px] text-center">
           <p className="eyebrow">Quem já usa</p>
-          <h2 className="titulo mt-3">O que acontece quando a cabeça finalmente ganha um lugar para descansar</h2>
+          <h2 className="titulo mt-3">
+            O que acontece quando a cabeça finalmente ganha <span className="grifo">um lugar para descansar</span>
+          </h2>
         </div>
         {reais.length ? (
           <div className="mt-10 columns-2 gap-4 sm:columns-3">
@@ -571,7 +612,15 @@ function Depoimentos() {
                       </div>
                       {d.titulo && <p className="mt-2 font-display text-[17px] font-bold leading-snug">{d.titulo}</p>}
                       <blockquote className={`mt-2 text-[15.5px] leading-relaxed ${i === 0 ? 'text-creme/90' : 'text-grafite/85'}`}>
-                        {d.texto.split('**').map((t, k) => (k % 2 ? <b key={k} className={i === 0 ? 'text-white underline decoration-terracota decoration-2 underline-offset-4' : 'grifo text-grafite'}>{t}</b> : <span key={k}>{t}</span>))}
+                        {d.texto.split('**').map((t, k) =>
+                          k % 2 ? (
+                            <b key={k} className={i === 0 ? 'text-white underline decoration-terracota decoration-2 underline-offset-4' : 'grifo text-grafite'}>
+                              {t}
+                            </b>
+                          ) : (
+                            <span key={k}>{t}</span>
+                          ),
+                        )}
                       </blockquote>
                       <figcaption className="mt-4 flex items-center gap-3">
                         <Image src={d.avatar} alt="" width={44} height={44} className="h-11 w-11 rounded-full object-cover ring-2 ring-white" />
@@ -585,15 +634,13 @@ function Depoimentos() {
                 </div>
               </div>
             )}
-            {(
-              <div className="so-ph mt-10 grid-cols-2 gap-4 sm:grid-cols-3">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="grid aspect-[9/14] place-items-center rounded-2xl border-2 border-dashed border-grafite/15 bg-white/50 p-4 text-center text-[13px] text-grafite/45">
-                    Espaço para print de depoimento real {i + 1}
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="so-ph mt-10 grid-cols-2 gap-4 sm:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="grid aspect-[9/14] place-items-center rounded-2xl border-2 border-dashed border-grafite/15 bg-white/50 p-4 text-center text-[13px] text-grafite/45">
+                  Espaço para print de depoimento real {i + 1}
+                </div>
+              ))}
+            </div>
           </>
         )}
       </div>

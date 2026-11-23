@@ -131,7 +131,7 @@ export function ExitPopup() {
         </div>
         <div className="px-6 pb-6 pt-5">
           <div className="flex items-center gap-4">
-            <Image src={imagens.capa} alt="" width={90} height={123} className="h-auto w-[86px] shrink-0 -rotate-3 rounded-lg shadow-papel" />
+            <Image src={imagens.capa} alt="" width={700} height={847} sizes="96px" className="h-auto w-[96px] shrink-0 -rotate-3 drop-shadow-[0_10px_14px_rgba(38,52,49,.3)]" />
             <div>
               <p className="text-[14px] text-grafite/60">
                 de <s>R$ {precoDe}</s> por

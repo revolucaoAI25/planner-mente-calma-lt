@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Planner Mente Calma',
     description: 'O planner criado para quem vive com ansiedade e uma mente que não desliga.',
-    images: ['/img/planner-capa.webp'],
+    images: ['/img/mockups/planner-espiral-frente.webp'],
     locale: 'pt_BR',
     type: 'website',
   },
@@ -29,10 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`${montserrat.variable} ${lato.variable}`}>
       <head>
-        {/* Pré-visualização do admin (só neste navegador): liga antes de pintar, sem piscar. */}
+        {/* Preferências do /admin (só neste navegador), aplicadas antes de pintar. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var v=JSON.parse(localStorage.getItem('pmc:pv')||'{}');var c=document.documentElement.classList;if(v.ex)c.add('pv-ex');if(v.ph)c.add('pv-ph')}catch(e){}`,
+            __html: `try{var v=JSON.parse(localStorage.getItem('pmc:pv')||'{}');var c=document.documentElement.classList;if(v.ex===false)c.add('sem-ex');if(v.ph)c.add('pv-ph')}catch(e){}`,
           }}
         />
         <link rel="dns-prefetch" href="https://pay.kiwify.com.br" />

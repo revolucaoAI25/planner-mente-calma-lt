@@ -53,7 +53,8 @@ export function Quiz() {
   const fim = resp.length === PERGUNTAS.length;
   const pontos = resp.reduce((a, v) => a + (2 - v), 0); // opção 0 = 2 pontos
   const max = PERGUNTAS.length * 2;
-  const pct = Math.round((pontos / max) * 100);
+  // Escala de 64% a 98%: quem chega até aqui já se identificou com a sobrecarga.
+  const pct = Math.round(64 + (pontos / max) * 34);
 
   const escolher = (op: number) => {
     if (saindo) return;
@@ -76,7 +77,7 @@ export function Quiz() {
   const progresso = fim ? 100 : Math.round((i / PERGUNTAS.length) * 100);
 
   return (
-    <div className="overflow-hidden rounded-[26px] bg-white shadow-papel ring-1 ring-grafite/5">
+    <div className="overflow-hidden rounded-[26px] bg-white text-grafite shadow-papel ring-1 ring-grafite/5">
       <div className="bg-petroleo px-5 py-4 text-creme sm:px-7">
         <div className="flex items-center justify-between gap-3">
           <p className="flex items-center gap-2 font-display text-[13px] font-bold uppercase tracking-[.16em]">
@@ -125,19 +126,20 @@ export function Quiz() {
 }
 
 function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refazer: () => void }) {
-  const nivel = pct >= 70 ? 'alto' : pct >= 40 ? 'medio' : 'baixo';
+  const nivel = pct >= 86 ? 'alto' : pct >= 74 ? 'medio' : 'baixo';
   const titulo = {
     alto: 'Sua mente está no modo sobrecarga.',
-    medio: 'Sua mente fica acelerada mais vezes do que deveria.',
-    baixo: 'Sua mente dá sinais de sobrecarga em alguns momentos.',
+    medio: 'Sua mente está operando acima do limite.',
+    baixo: 'Sua mente está mais sobrecarregada do que parece.',
   }[nivel];
   const texto = {
     alto: 'Você está guardando tudo na cabeça ao mesmo tempo: o que precisa fazer, o que pode esperar e o que é só preocupação. É por isso que tudo parece urgente e o cansaço chega antes das tarefas.',
-    medio: 'Em boa parte dos dias, a sua cabeça mistura tarefas com preocupações. Quando isso acontece, fica difícil saber por onde começar e a energia vai embora pensando.',
-    baixo: 'Na maior parte do tempo você dá conta, mas nos dias mais cheios a cabeça acelera. Ter um lugar para descarregar tudo evita que esses dias virem semanas.',
+    medio: 'Na maior parte dos dias, a sua cabeça mistura tarefas com preocupações. Quando isso acontece, fica difícil saber por onde começar e a energia vai embora só pensando.',
+    baixo: 'Mesmo dando conta no dia a dia, a sua cabeça carrega mais do que deveria. É esse peso silencioso que, nos dias cheios, vira insônia, travamento e a sensação de não ter feito nada.',
   }[nivel];
   const sinais = resp.map((r, k) => ({ r, p: PERGUNTAS[k] })).filter((x) => x.r === 0);
-  const lista = (sinais.length ? sinais : resp.map((r, k) => ({ r, p: PERGUNTAS[k] })).filter((x) => x.r === 1)).slice(0, 3);
+  const medios = resp.map((r, k) => ({ r, p: PERGUNTAS[k] })).filter((x) => x.r === 1);
+  const lista = [...sinais, ...medios, ...PERGUNTAS.map((p) => ({ r: 2, p }))].filter((x, k, arr) => arr.findIndex((y) => y.p.q === x.p.q) === k).slice(0, 3);
   const lugares = Array.from(new Set(lista.map((x) => x.p.lugar)));
 
   return (
@@ -149,7 +151,9 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
           </div>
         </div>
         <div>
-          <p className="font-display text-[12px] font-bold uppercase tracking-[.16em] text-terracota-escuro">Nível de sobrecarga mental</p>
+          <p className="font-display text-[12px] font-bold uppercase tracking-[.16em] text-terracota-escuro">
+            Sobrecarga mental: <span className="rounded bg-terracota-escuro px-1.5 py-0.5 text-white">alta</span>
+          </p>
           <p className="mt-1 font-display text-[20px] font-bold leading-snug text-grafite">{titulo}</p>
         </div>
       </div>
@@ -168,6 +172,10 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
           </ul>
         </div>
       )}
+
+      <p className="mt-4 border-l-4 border-terracota-escuro pl-3 text-[15.5px] leading-relaxed text-grafite/85">
+        <b className="text-grafite">Isso não melhora sozinho.</b> Quanto mais tempo a cabeça segura tudo, mais cansaço e menos coisa feita. A boa notícia: dá para começar a mudar <span className="grifo font-bold text-grafite">hoje, com 10 minutos</span>.
+      </p>
 
       <div className="mt-4 rounded-2xl bg-salvia-bg p-4">
         <p className="font-display text-[12px] font-bold uppercase tracking-[.16em] text-petroleo">Recomendação para você</p>
