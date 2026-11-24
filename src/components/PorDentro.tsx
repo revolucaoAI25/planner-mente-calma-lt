@@ -7,8 +7,9 @@ import { PaginaLazy as PaginaMock } from './PaginaLazy';
 
 /**
  * "Veja por dentro": as páginas passam sozinhas, rolando sem parar (como uma esteira).
- * Pausa enquanto a pessoa toca/arrasta ou passa o mouse; dá para arrastar com o dedo.
- * Só anda quando está visível na tela, e respeita "reduzir movimento" do aparelho.
+ * Só pausa enquanto a pessoa arrasta para o lado de propósito (e volta em 1,5 s).
+ * Rolar a página por cima do carrossel ou passar o mouse não para.
+ * Anda só quando está visível na tela e respeita "reduzir movimento" do aparelho.
  */
 export function PorDentro() {
   const ref = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ export function PorDentro() {
     let ultimo = 0;
     let raf = 0;
     let pos = el.scrollLeft;
-    const VEL = 0.045; // px por ms (~45 px/s)
+    const VEL = 0.05; // px por ms (~50 px/s)
 
     const passo = (t: number) => {
       raf = requestAnimationFrame(passo);
@@ -38,27 +39,35 @@ export function PorDentro() {
       if (pos >= meio) pos -= meio;
       el.scrollLeft = pos;
     };
-    const parar = (ms = 2500) => () => (pausa = performance.now() + ms);
-    const tocar = parar(3000);
-    const mouse = parar(600000);
-    const sair = () => (pausa = performance.now() + 400);
+
+    const pausar = (ms: number) => (pausa = performance.now() + ms);
+    let x0 = 0;
+    let y0 = 0;
+    const inicio = (e: TouchEvent) => {
+      x0 = e.touches[0].clientX;
+      y0 = e.touches[0].clientY;
+    };
+    const move = (e: TouchEvent) => {
+      const dx = Math.abs(e.touches[0].clientX - x0);
+      const dy = Math.abs(e.touches[0].clientY - y0);
+      if (dx > 12 && dx > dy) pausar(1500);
+    };
+    const roda = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) pausar(1500);
+    };
 
     const io = new IntersectionObserver(([e]) => (visivel = e.isIntersecting), { threshold: 0.2 });
     io.observe(el);
-    el.addEventListener('pointerdown', tocar, { passive: true });
-    el.addEventListener('touchmove', tocar, { passive: true });
-    el.addEventListener('wheel', tocar, { passive: true });
-    el.addEventListener('mouseenter', mouse);
-    el.addEventListener('mouseleave', sair);
+    el.addEventListener('touchstart', inicio, { passive: true });
+    el.addEventListener('touchmove', move, { passive: true });
+    el.addEventListener('wheel', roda, { passive: true });
     raf = requestAnimationFrame(passo);
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
-      el.removeEventListener('pointerdown', tocar);
-      el.removeEventListener('touchmove', tocar);
-      el.removeEventListener('wheel', tocar);
-      el.removeEventListener('mouseenter', mouse);
-      el.removeEventListener('mouseleave', sair);
+      el.removeEventListener('touchstart', inicio);
+      el.removeEventListener('touchmove', move);
+      el.removeEventListener('wheel', roda);
     };
   }, []);
 
