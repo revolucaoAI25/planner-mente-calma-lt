@@ -636,9 +636,7 @@ function Depoimentos() {
                     <figure key={d.nome} className={`reveal mb-4 break-inside-avoid rounded-[22px] p-5 shadow-suave ring-1 ring-grafite/5 ${i === 0 ? 'bg-petroleo text-creme' : i === 3 ? 'bg-terracota-claro' : 'bg-white'}`}>
                       <div className="flex items-center justify-between">
                         <span className={`text-[14px] tracking-[.18em] ${i === 0 ? 'text-terracota' : 'text-terracota-escuro'}`}>★★★★★</span>
-                        <span className={`font-display text-[40px] leading-[0] ${i === 0 ? 'text-white/25' : 'text-grafite/10'}`}>”</span>
                       </div>
-                      {d.titulo && <p className="mt-2 font-display text-[17px] font-bold leading-snug">{d.titulo}</p>}
                       <blockquote className={`mt-2 text-[15.5px] leading-relaxed ${i === 0 ? 'text-creme/90' : 'text-grafite/85'}`}>
                         {d.texto.split('**').map((t, k) =>
                           k % 2 ? (

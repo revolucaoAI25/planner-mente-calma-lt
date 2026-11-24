@@ -102,42 +102,40 @@ export const depoimentosTeste = [
     nome: 'Juliana Ribeiro',
     info: '34 anos · Campinas, SP',
     avatar: '/img/teste/avatar-1.webp',
-    titulo: 'Voltei a dormir sem repassar o dia inteiro',
     texto:
-      'Eu achava normal deitar e ficar uma hora repassando tudo: o que falei, o que esqueci, o que podia dar errado. Comecei a fazer a página do Mente em 3 Lugares antes de dormir e na primeira semana percebi que metade do que me tirava o sono estava no “Desocupar”. Não é mágica, mas **hoje eu deito sabendo que nada ficou solto**, e isso mudou muito o meu sono.',
+      'eu deitava e ficava horas pensando em tudo que tinha pra fazer no dia seguinte, em coisa que eu falei errado, sei lá. comecei a fazer aquela página de tirar tudo da cabeça antes de dormir e **tô conseguindo dormir bem mais rápido**. não resolveu minha vida mas ajudou demais',
   },
   {
     nome: 'Fernanda Lopes',
     info: '48 anos · Belo Horizonte, MG',
     avatar: '/img/teste/avatar-2.webp',
-    texto: 'Simples demais. **Dez minutos de manhã e eu já sei por onde começar.** Pronto, o dia anda.',
+    texto: 'Gostei muito, bem simples de usar. Imprimi e deixei na cozinha 😊',
   },
   {
     nome: 'Rafael Souza',
     info: '31 anos · Curitiba, PR',
     avatar: '/img/teste/avatar-3.webp',
     texto:
-      'Já larguei umas cinco agendas porque bastava uma semana ruim pra ficar tudo em branco. Esse não tem data. Sumi uns dias, voltei pela página de recomeço e **segui sem aquela culpa de começar do zero**.',
+      'Já comprei umas 4 agendas e larguei todas na segunda semana kkk. Essa é diferente porque não tem data, então quando eu sumo uns dias **não fica aquele monte de página em branco me julgando**. Volto e pronto',
   },
   {
     nome: 'Camila Teixeira',
     info: '24 anos · Recife, PE',
     avatar: '/img/teste/avatar-4.webp',
-    titulo: 'Minha página de emergência',
     texto:
-      'Trabalho com atendimento e chego em casa com a cabeça a mil. O Modo Mente Acelerada é uma página só: escrevo o que está pesando, vejo se é pra agora e escolho um passo. **A sensação de sufoco diminui na hora.**',
+      'trabalho com atendimento e chego em casa com a cabeça explodindo. a página de quando a mente tá acelerada me salva, é rapidinho. **a sensação de sufoco passa** bem mais rápido que antes',
   },
   {
     nome: 'Marcos Vinícius',
     info: '38 anos · São Paulo, SP',
     avatar: '/img/teste/avatar-5.webp',
     texto:
-      'Comprei pra minha esposa e acabei usando também. Sou do tipo que guarda tudo na cabeça “pra não esquecer”. Separar o que é problema do que é só preocupação **tirou um peso enorme das minhas manhãs**. E parei de pagar conta atrasada, de quebra.',
+      'comprei pra minha esposa e acabei usando também. eu guardo tudo na cabeça pra não esquecer e aí não consigo prestar atenção em nada, nem nas crianças. separar o que é problema de verdade do que é só preocupação **me deixou bem mais tranquilo de manhã**',
   },
   {
     nome: 'Patrícia Almeida',
     info: '39 anos · Porto Alegre, RS',
     avatar: '/img/teste/avatar-6.webp',
-    texto: 'Imprimi só as páginas que uso e deixei na mesa da cozinha. **O dia deixou de parecer uma lista sem fim.**',
+    texto: 'Muito bom, vale cada centavo. Uso no tablet todo dia de manhã',
   },
 ];
