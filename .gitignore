@@ -7,5 +7,3 @@ next-env.d.ts
 !.env.example
 .vercel
 planner/.build/
-planner/dist/
-public/a-*/

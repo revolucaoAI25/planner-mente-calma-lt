@@ -67,6 +67,46 @@ const rastreador = (linhasRot, dias, extra = '') => `
   </div>${extra}
 </div>`;
 
+/** Ícone grande e suave na capa: a marca de cada material. */
+const deco = (icon, cor, pos) => `<div style="position:absolute;${pos};opacity:.13;color:${cor};pointer-events:none">${ic(icon, 300, cor, 1.2)}</div>`;
+
+/** Perguntas frequentes / obstáculos. */
+const faq = (itens) => `<div style="display:flex;flex-direction:column;gap:2mm">${itens
+  .map(([q, r], i) => `<div class="box ${i % 2 ? 'b-cre' : 'b-white'}" style="padding:2.2mm 2.8mm"><p style="font-family:Mont;font-weight:700;font-size:8pt;color:var(--p)">“${q}”</p><p style="font-size:7.5pt;line-height:1.42;margin-top:.8mm">${r}</p></div>`)
+  .join('')}</div>`;
+
+/** Sumário do material (inserido logo depois da capa). */
+const sumario = (P, s, modo, intro) => ({
+  key: `${s}-sumario`, sec: s, eb: 'Neste material', t: 'O que tem <span class="gr">aqui dentro</span>', body: (x) => `
+  <p class="tx" style="font-size:8pt">${intro}</p>
+  <div style="display:flex;flex-direction:column;flex:1;justify-content:space-evenly">
+  ${P.filter((p) => !p.raw && p.key !== `${s}-sumario`).map((p, i) => `<${modo === 'dig' ? `a href="#p-${p.key}"` : 'div'} style="display:flex;align-items:baseline;gap:2mm;padding:.9mm 0;border-bottom:.25mm dotted ${C.gra}33">
+    <span style="font-family:Mont;font-weight:700;font-size:6.6pt;color:var(--t-tx);width:5mm">${String(i + 1).padStart(2, '0')}</span>
+    <span style="font-size:8.1pt">${p.t.replace(/<[^>]+>/g, '')}</span><span style="flex:1"></span>
+    <b style="font-family:Mont;font-size:7pt;color:var(--p)">${modo === 'dig' ? '›' : x.pn(p.key)}</b></${modo === 'dig' ? 'a' : 'div'}>`).join('')}
+  </div>`,
+});
+
+/** Assinatura visual de cada material (diferencia sem sair da família do planner). */
+export const CSS_EXTRAS = /* css */ `
+/* Menos Tela: cartões arredondados como notificações, rótulo em "pílula" */
+.mat-e1 .eb{display:inline-block;background:var(--p);color:#fff;padding:.7mm 2.4mm;border-radius:10mm;letter-spacing:.18em}
+.mat-e1 .box{border-radius:4.6mm}
+.mat-e1 h1 .gr{background:none;border-bottom:1.1mm solid var(--ln);padding-bottom:.2mm}
+.mat-e1 .hd{border-bottom:none;position:relative}
+.mat-e1 .hd::after{content:'';position:absolute;left:0;right:0;bottom:0;height:.6mm;border-radius:1mm;background:linear-gradient(90deg,var(--p),var(--ln) 40%,transparent)}
+/* Casa em Ordem: etiquetas de caixa organizadora, cantos mais retos, filete lateral */
+.mat-e2 .box{border-radius:1.6mm}
+.mat-e2 .box.b-sal,.mat-e2 .box.b-ter,.mat-e2 .box.b-cre{border-left:1.1mm solid var(--ln)}
+.mat-e2 .eb{border:.35mm solid var(--p);padding:.5mm 2mm;border-radius:.8mm;display:inline-block}
+.mat-e2 h1 .gr{background:linear-gradient(transparent 70%, var(--ln) 70%, var(--ln) 88%, transparent 88%)}
+/* Rotinas: linha do tempo — título com barra vertical, caixas com marcador de horário */
+.mat-e3 .hd > div:first-child{border-left:1.2mm solid var(--p);padding-left:3mm}
+.mat-e3 .box{border-radius:3.6mm}
+.mat-e3 h1 .gr{background:none;color:var(--p)}
+.mat-e3 .eb::before{content:'◷ ';}
+`;
+
 const referencias = (lista) => `
 <p class="tx" style="font-size:7.6pt">As ideias deste material se apoiam nos estudos abaixo. Eles mostram efeitos <b>em média</b>, em grupos de pessoas: cada corpo e cada rotina reagem de um jeito. Use como direção, não como regra.</p>
 <ol style="padding-left:4.4mm;display:flex;flex-direction:column;gap:1.5mm;flex:0 0 auto">
@@ -83,7 +123,7 @@ const referencias = (lista) => `
 function menosTela(modo) {
   const P = [];
   const s = 'e1';
-  P.push({ key: 'e1-capa', sec: s, raw: () => capa({ selo: 'Material extra', topo: 'PLANNER MENTE CALMA', titulo: 'Menos Tela,<br>Menos Ansiedade', tag: 'Um plano de 21 dias, baseado em pesquisas, para usar o celular sem que ele use você.', ordem: ['#E2EDF6', '#A9C4DA', '#36678A', '#F6E6DC'], sub: 'Plano de 21 dias' }) });
+  P.push({ key: 'e1-capa', sec: s, raw: () => capa({ selo: 'Material extra', topo: 'PLANNER MENTE CALMA', titulo: 'Menos Tela,<br>Menos Ansiedade', tag: 'Um plano de 21 dias, baseado em pesquisas, para usar o celular sem que ele use você.', ordem: ['#E2EDF6', '#A9C4DA', '#36678A', '#F6E6DC'], sub: 'Plano de 21 dias' }) + deco('Smartphone', '#36678A', 'right:-22mm;top:6mm;transform:rotate(-12deg)') });
 
   P.push({
     key: 'e1-porque', sec: s, sp: true, eb: 'Entenda primeiro', t: 'Por que o celular <span class="gr">alimenta a ansiedade</span>', sub: 'não é falta de força de vontade. é um ciclo', body: () => `
@@ -245,6 +285,81 @@ function menosTela(modo) {
   });
 
   P.push({
+    key: 'e1-apps', sec: s, eb: 'Auditoria', t: 'App por app: <span class="gr">fica, limita ou sai?</span>', sub: 'nem todo app pesa igual. descubra quais te fazem bem', refil: true, body: () => `
+    <p class="tx" style="font-size:7.9pt">Liste os apps que você mais abre (o tempo de uso do celular mostra). Para cada um, responda com honestidade: <b>eu saio dele melhor ou pior do que entrei?</b> A decisão vem daí, não da culpa.</p>
+    <table class="tb" style="flex:0 0 auto">
+      <tr><th style="width:24%">App</th><th style="width:24%">Uso para…</th><th style="width:13%;text-align:center">Min/dia</th><th style="width:17%;text-align:center">Depois me sinto</th><th style="text-align:center">Decisão</th></tr>
+      ${Array.from({ length: 11 }, () => `<tr style="height:9mm"><td style="border-right:.25mm solid ${C.gra}18"></td><td style="border-right:.25mm solid ${C.gra}18"></td><td style="border-right:.25mm solid ${C.gra}18"></td><td style="text-align:center;font-size:9pt;border-right:.25mm solid ${C.gra}18">☺ ☹</td><td style="text-align:center;white-space:nowrap">${['fica', 'limita', 'sai'].map((t) => `<span style="font-size:5.8pt;color:${C.gra}99;margin:0 .6mm"><span style="display:inline-block;width:2.6mm;height:2.6mm;border-radius:50%;border:.28mm solid var(--ln);vertical-align:middle;margin-right:.3mm"></span>${t}</span>`).join('')}</td></tr>`).join('')}
+    </table>
+    <div class="g3" style="flex:0 0 auto">
+      ${[['Fica', 'útil e me faz bem (mapas, banco, mensagens de pessoas próximas).', 'sal'], ['Limita', 'gosto, mas passa do ponto: limite diário e fora da tela inicial.', 'cre'], ['Sai', 'saio pior do que entrei: apago por 21 dias e vejo se faz falta.', 'ter']].map(([t, d, c]) => `<div class="box b-${c}" style="padding:2.2mm"><p style="font-family:Mont;font-weight:700;font-size:8pt;color:var(--p)">${t}</p><p class="mini" style="font-size:6.8pt;margin-top:.6mm">${d}</p></div>`).join('')}
+    </div>`,
+  });
+
+  P.push({
+    key: 'e1-redes', sec: s, eb: 'Redes sociais', t: 'Rolar sem ler <span class="gr">pesa mais</span>', sub: 'o problema não é só o tempo: é o jeito de usar', body: () => `
+    ${estudo('Verduyn et al., 2017', 'Uma revisão de estudos encontrou que o uso <b>passivo</b> das redes (rolar e ver a vida dos outros, sem interagir) está ligado a menor bem-estar, principalmente por causa da <b>comparação</b> e da inveja. O uso <b>ativo</b> (conversar, comentar com quem você gosta) não mostrou esse efeito.', 'troque rolar por conversar: mande mensagem para uma pessoa em vez de ver 50 stories.')}
+    <div class="row" style="flex:0 0 auto">
+      <div class="box b-ter"><div class="bt">${ic('TrendingDown', 10)}<span>Uso que costuma pesar</span></div><div style="font-size:7.2pt;line-height:1.5;margin-top:1mm">• rolar o feed sem objetivo<br>• ver perfis de quem “tem a vida perfeita”<br>• ler comentários de discussões<br>• abrir “só para ver” várias vezes por hora</div></div>
+      <div class="box b-sal"><div class="bt">${ic('TrendingUp', 10)}<span>Uso que costuma fazer bem</span></div><div style="font-size:7.2pt;line-height:1.5;margin-top:1mm">• falar com amigos e família<br>• grupos com propósito (hobby, apoio)<br>• aprender algo que você escolheu<br>• entrar, fazer o que queria e sair</div></div>
+    </div>
+    ${box({ icon: 'Filter', t: 'Faxina no feed', s: 'faça uma vez por mês', cor: 'white', style: 'flex:0 0 auto', body: `<div style="margin-top:.8mm">${['Deixei de seguir ou silenciei perfis que me fazem sentir “atrás” ou insuficiente', 'Silenciei palavras e assuntos que me disparam ansiedade', 'Segui 3 perfis que me fazem bem (humor leve, natureza, aprendizado)', 'Saí de grupos que só trazem cobrança ou alarme'].map((t) => chk(t)).join('')}</div>` })}
+    ${box({ icon: 'PenLine', t: 'Perfis que eu vou silenciar ou deixar de seguir', cor: 'cre', cls: 'grow', body: fill() })}`,
+  });
+
+  P.push({
+    key: 'e1-noticias', sec: s, eb: 'Notícias', t: 'Bem informada(o), <span class="gr">não inundada(o)</span>', sub: 'uma dieta de notícias para quem tem a mente ansiosa', body: () => `
+    <p class="tx" style="font-size:7.9pt">O cérebro dá mais peso a ameaças do que a boas notícias. Isso foi útil para a sobrevivência, mas com um fluxo infinito de manchetes vira um alarme que não desliga. O hábito de rolar notícias ruins sem parar ganhou até nome: <b>doomscrolling</b>. A solução não é se alienar; é <b>escolher quando, quanto e de onde</b>.</p>
+    ${estudo('Holman, Garfin & Silver, 2014', 'Na pesquisa feita após o atentado de Boston, a exposição repetida à cobertura da mídia esteve associada a <b>mais estresse agudo</b> do que estar perto do local. Quanto mais horas, mais sintomas.', 'notícia em dose pequena, com hora marcada.')}
+    <div class="box b-white" style="flex:0 0 auto"><div class="bt">${ic('ListChecks', 11)}<span>As 5 regras da dieta de notícias</span></div>
+      <div style="margin-top:1.2mm">${passos([['Um horário, no máximo dois.', 'Por exemplo, 12h30 e 18h. Nunca na primeira e na última hora do dia.'], ['Uma ou duas fontes confiáveis.', 'De preferência texto, que você lê no seu ritmo, em vez de vídeos em sequência.'], ['Tempo com fim.', '15 minutos. Timer ligado.'], ['Notícia não é notificação.', 'Desligue os alertas de portais e apps de notícia.'], ['Depois, pergunte:', '“tem algo que eu posso FAZER com isso?” Se não, solte. Se sim, leve para o Resolver.']])}</div>
+    </div>
+    ${box({ icon: 'Newspaper', t: 'Minha semana de notícias', s: 'ansiedade de 0 a 10 depois de ler', cor: 'cre', cls: 'grow', body: `<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1.4mm;margin-top:1.4mm;flex:1">${['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((d) => `<div style="background:#fff;border-radius:2mm;padding:1.2mm;text-align:center"><p class="lbl" style="font-size:5.6pt">${d}</p><p style="font-size:6.4pt;color:${C.gra}66;margin-top:2mm">__ min</p><p style="font-size:6.4pt;color:${C.gra}66;margin-top:1.4mm">__ /10</p></div>`).join('')}</div>` })}`,
+  });
+
+  P.push({
+    key: 'e1-sono', sec: s, eb: 'Celular e sono', t: 'A última hora do dia <span class="gr">é sua</span>', sub: 'o protocolo noturno que protege o sono e a manhã seguinte', body: () => `
+    <div style="display:flex;flex-direction:column;gap:0;flex:0 0 auto">
+      ${[['60 min antes', 'Último uso do celular. Responda o que precisar e avise quem for preciso.', 'BellOff'], ['45 min antes', 'Celular carregando fora do quarto. Despertador comum ao lado da cama.', 'PlugZap'], ['30 min antes', 'Luz baixa, banho morno, leitura em papel ou o ritual Desligando a Cabeça.', 'Lamp'], ['Na cama', 'Se a cabeça encher, papel e caneta ao lado: anote e volte a deitar.', 'NotebookPen'], ['Se acordar à noite', 'Não pegue o celular para ver a hora. A luz e as mensagens acordam de vez.', 'Moon']].map(([h, t, i], k) => `<div style="display:flex;gap:2.6mm"><div style="display:flex;flex-direction:column;align-items:center"><span class="bi" style="width:7mm;height:7mm;background:var(--s-bg)">${ic(i, 13)}</span>${k < 4 ? `<span style="flex:1;width:.4mm;background:var(--ln);margin:.6mm 0"></span>` : ''}</div><div style="padding-bottom:2.4mm"><p style="font-family:Mont;font-weight:700;font-size:7.6pt;color:var(--t-tx)">${h}</p><p style="font-size:7.7pt;line-height:1.4">${t}</p></div></div>`).join('')}
+    </div>
+    <div class="box b-sal" style="flex:0 0 auto"><p style="font-size:7.4pt;line-height:1.45"><b>E o “modo noturno”?</b> Ele reduz a luz azul, o que ajuda um pouco, mas não resolve o principal: o conteúdo continua estimulando a mente (mensagens, vídeos, notícias). O que protege o sono é a <b>distância</b> do celular, não só a cor da tela.</p></div>
+    <p class="lbl" style="flex:0 0 auto">Diário de 7 noites</p>
+    ${tabela(['Noite', 'Último uso', 'Celular fora do quarto?', 'Demorei a dormir?', 'Acordei como?'], 7, 7.8, ['12%', '19%', '24%', '22%', ''])}`,
+  });
+
+  P.push({
+    key: 'e1-relacoes', sec: s, eb: 'Celular e as pessoas', t: 'Presente de verdade <span class="gr">com quem importa</span>', sub: 'o celular na mesa também muda a conversa', body: () => `
+    ${estudo('Przybylski & Weinstein, 2013', 'Em conversas entre desconhecidos, a simples <b>presença de um celular sobre a mesa</b> (nem era de nenhum dos dois) reduziu a sensação de proximidade e de confiança, principalmente quando o assunto era importante. Estudos posteriores nem sempre repetiram esse resultado, então trate como um alerta, não como regra.', 'nas conversas que importam, o celular fica fora da vista.')}
+    <p class="tx" style="font-size:7.9pt">Interromper alguém para olhar o celular tem até nome em inglês: <b>phubbing</b> (de <i>phone</i> + <i>snubbing</i>, esnobar). Quem está do outro lado sente, mesmo que não fale. E, para quem tem ansiedade, conexões de verdade são um dos maiores protetores.</p>
+    ${box({ icon: 'Users', t: 'Combinados com quem mora comigo', s: 'conversem e marquem juntos', cor: 'white', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 4mm;margin-top:.8mm">${['refeições sem celular na mesa', 'uma noite por semana sem tela', 'celular longe na hora de dormir', 'avisar antes de pegar o celular numa conversa', 'cesta dos celulares na entrada', 'passeio sem foto obrigatória'].map((t) => chk(t)).join('')}</div>` })}
+    ${box({ icon: 'MessageCircleHeart', t: 'Para pedir com carinho', cor: 'sal', style: 'flex:0 0 auto', body: `<p class="hand" style="font-size:11pt;color:${C.gra}aa;margin-top:.8mm">“Eu estou tentando usar menos o celular porque percebi que me deixa ansiosa(o). Você topa a gente jantar sem ele hoje?”</p>` })}
+    ${box({ icon: 'Heart', t: 'Com quem eu quero estar mais presente', cor: 'ter', cls: 'grow', body: fill() })}`,
+  });
+
+  P.push({
+    key: 'e1-fds', sec: s, eb: 'Desafio extra', t: 'Mini detox de <span class="gr">24 horas</span>', sub: 'um sábado ou domingo para lembrar como é a vida fora da tela', body: () => `
+    <div class="g2" style="flex:0 0 auto">
+      ${box({ icon: 'ClipboardList', t: 'Na véspera', cor: 'sal', body: `<div class="ac" style="margin-top:.8mm">${['avisar família e amigos próximos', 'anotar endereços e telefones úteis no papel', 'deixar música/livro/jogo de tabuleiro separados', 'combinar um passeio ou visita', 'celular desligado numa gaveta'].map((t) => chk(t)).join('')}</div>` })}
+      ${box({ icon: 'Sun', t: 'Ideias para o dia', cor: 'cre', body: `<div class="ac" style="margin-top:.8mm">${['caminhar sem destino', 'cozinhar uma receita nova', 'visitar alguém', 'ler, desenhar, escrever', 'arrumar um cantinho da casa', 'cochilar sem culpa'].map((t) => chk(t)).join('')}</div>` })}
+    </div>
+    <p class="mini it" style="flex:0 0 auto">Pode manter o celular ligado só para ligações, em outro cômodo. 24 h é a meta; 12 h já é uma vitória.</p>
+    <div class="row" style="flex:0 0 auto">${escala('Ansiedade no início', 0, 10)}</div>
+    <div class="row" style="flex:0 0 auto">${escala('Ansiedade no fim', 0, 10)}</div>
+    ${box({ icon: 'Sparkles', t: 'O que eu senti, o que eu fiz, do que senti falta', cor: 'ter', cls: 'grow', body: fill() })}`,
+  });
+
+  P.push({
+    key: 'e1-faq', sec: s, eb: 'Obstáculos', t: 'E quando <span class="gr">não dá</span>?', sub: 'as dificuldades mais comuns, e o que fazer com elas', body: () => faq([
+      ['Eu preciso do celular para trabalhar.', 'Separe “ferramenta” de “distração”: deixe na tela inicial só apps de trabalho e mensagens. Redes e jogos vão para uma pasta na última página. Use o modo foco do trabalho em blocos de 50 minutos.'],
+      ['Quando fico sem o celular, a ansiedade aumenta.', 'É comum no começo: o cérebro estranha a falta do alívio rápido. Use a técnica de surfar a vontade e comece com períodos curtos (30 minutos). A ansiedade de abstinência tende a diminuir em poucos dias.'],
+      ['E se alguém precisar falar comigo?', 'Deixe ligações liberadas no “Não perturbe” para os contatos favoritos. Emergências ligam; quase nada urgente chega por rede social.'],
+      ['Voltei a usar muito depois de uma semana boa.', 'Recaída faz parte de qualquer mudança de hábito. Não recomece do zero: volte à missão do dia em que parou e reveja qual ajuste de ambiente você desfez.'],
+      ['Fico entediada(o) sem o celular.', 'O tédio é desconfortável, mas é dele que vêm descanso real e ideias novas. Tenha a lista “Em vez de rolar” à vista e aceite alguns minutos de nada.'],
+      ['Meus filhos/família usam muito também.', 'Mude primeiro o seu exemplo e os combinados da casa (refeições, quartos). Ordens funcionam menos do que regras que valem para todos.'],
+    ]),
+  });
+
+  P.push({
     key: 'e1-revisao', sec: s, eb: 'Dia 21', t: 'O que mudou em <span class="gr">21 dias</span>', sub: 'compare com o seu raio-X do começo', data: true, body: () => `
     <div class="g3" style="flex:0 0 auto">
       ${[['Tempo de tela', 'antes ___ · agora ___'], ['Desbloqueios', 'antes ___ · agora ___'], ['Ansiedade média', 'antes ___ · agora ___']].map(([t, v]) => `<div class="box b-sal" style="padding:2.4mm;text-align:center"><p class="lbl" style="font-size:5.8pt">${t}</p><p style="font-size:7pt;color:${C.gra}88;margin-top:2mm">${v}</p></div>`).join('')}
@@ -263,9 +378,12 @@ function menosTela(modo) {
       'Chang, A.-M., Aeschbach, D., Duffy, J. F., & Czeisler, C. A. (2015). Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. <i>PNAS</i>, 112(4), 1232–1237.',
       'Holman, E. A., Garfin, D. R., & Silver, R. C. (2014). Media’s role in broadcasting acute stress following the Boston Marathon bombings. <i>PNAS</i>, 111(1), 93–98.',
       'Holte, A. J., & Ferraro, F. R. (2020). True colors: Grayscale setting reduces screen time in college students. <i>The Social Science Journal</i>. https://doi.org/10.1080/03623319.2020.1737461',
+      'Verduyn, P., Ybarra, O., Résibois, M., Jonides, J., & Kross, E. (2017). Do social network sites enhance or undermine subjective well-being? A critical review. <i>Social Issues and Policy Review</i>, 11(1), 274–302.',
+      'Przybylski, A. K., & Weinstein, N. (2013). Can you connect with me now? How the presence of mobile communication technology influences face-to-face conversation quality. <i>Journal of Social and Personal Relationships</i>, 30(3), 237–246.',
       'Bowen, S., & Marlatt, A. (2009). Surfing the urge: Brief mindfulness-based intervention for college student smokers. <i>Psychology of Addictive Behaviors</i>, 23(4), 666–671.',
     ]),
   });
+  P.splice(1, 0, sumario(P, s, modo, 'Comece pelas páginas de explicação e pelo seu raio-X. Depois siga o plano de 21 dias: uma missão por dia, com as páginas de apoio sempre que precisar.'));
   if (modo === 'imp') P.push({ key: 'e1-cc', sec: s, raw: () => contracapa('Você escolhe quando usar. Não o contrário.') });
   return P;
 }
@@ -276,7 +394,7 @@ function menosTela(modo) {
 function casaEmOrdem(modo) {
   const P = [];
   const s = 'e2';
-  P.push({ key: 'e2-capa', sec: s, raw: () => capa({ selo: 'Material extra', topo: 'PLANNER MENTE CALMA', titulo: 'Casa em Ordem,<br>Mente Mais Leve', tag: 'Um método de 15 minutos por dia para a casa deixar de ser mais uma fonte de cobrança.', ordem: ['#FBF0D4', '#E6CF95', '#87651B', '#EAF1EC'], sub: 'Método 15 minutos' }) });
+  P.push({ key: 'e2-capa', sec: s, raw: () => capa({ selo: 'Material extra', topo: 'PLANNER MENTE CALMA', titulo: 'Casa em Ordem,<br>Mente Mais Leve', tag: 'Um método de 15 minutos por dia para a casa deixar de ser mais uma fonte de cobrança.', ordem: ['#FBF0D4', '#E6CF95', '#87651B', '#EAF1EC'], sub: 'Método 15 minutos' }) + deco('House', '#87651B', 'left:-20mm;top:2mm;transform:rotate(-6deg)') });
 
   P.push({
     key: 'e2-porque', sec: s, sp: true, eb: 'Entenda primeiro', t: 'Por que a bagunça <span class="gr">pesa na mente</span>', sub: 'cada objeto fora do lugar é um pequeno lembrete de algo por fazer', body: () => `
@@ -394,6 +512,93 @@ function casaEmOrdem(modo) {
   });
 
   P.push({
+    key: 'e2-enderecos', sec: s, eb: 'Sistema', t: 'Um endereço <span class="gr">para cada coisa</span>', sub: 'objeto sem lugar vira bagunça. resolva o lugar uma vez só', refil: true, body: () => `
+    <p class="tx" style="font-size:7.9pt">Ande pela casa e anote o que vive “solto”: em cima da mesa, na cadeira, no sofá. Para cada item, decida um <b>endereço fixo</b>, o mais perto possível de onde ele é usado. Se não existe lugar, é sinal de que tem coisa demais (destralhe) ou falta um recipiente simples (cesta, gancho, caixa).</p>
+    <table class="tb" style="flex:0 0 auto">
+      <tr><th style="width:30%">O que vive solto</th><th style="width:24%">Onde aparece</th><th style="width:30%">Novo endereço</th><th style="text-align:center">Precisa de</th></tr>
+      ${Array.from({ length: 10 }, () => `<tr style="height:8.8mm"><td style="border-right:.25mm solid ${C.gra}18"></td><td style="border-right:.25mm solid ${C.gra}18"></td><td style="border-right:.25mm solid ${C.gra}18"></td><td style="text-align:center;font-size:5.8pt;color:${C.gra}88">cesta · gancho · caixa</td></tr>`).join('')}
+    </table>
+    <div class="box b-sal" style="flex:1;min-height:0">
+      <div class="bt">${ic('DoorOpen', 11)}<span>Estação de chegada</span><em>o lugar que mais evita bagunça</em></div>
+      <p class="mini" style="font-size:7.1pt;margin-top:1mm;color:${C.gra}cc">Perto da porta: um gancho para chaves, uma bandeja ou cesta para carteira e óculos, um lugar para bolsa/mochila e uma caixinha para correspondência. Tudo que entra em casa para ali, em vez de se espalhar.</p>
+      <div class="g2" style="gap:0 4mm;margin-top:1mm">${['gancho para chaves', 'bandeja para carteira/óculos', 'lugar da bolsa/mochila', 'caixa da correspondência', 'lugar dos sapatos', 'sacolas reutilizáveis'].map((t) => chk(t)).join('')}</div>
+    </div>`,
+  });
+
+  P.push({
+    key: 'e2-papeis', sec: s, eb: 'Sistema', t: 'Papéis e contas <span class="gr">sem pilha</span>', sub: 'a pilha de papéis é uma das maiores fontes de ansiedade escondida', body: () => `
+    <p class="tx" style="font-size:7.9pt">A pilha de papéis guarda contas, prazos e “coisas para resolver” sem data. Ela pesa porque a mente não sabe o que tem lá dentro. A saída é um sistema de <b>3 caixas</b> e 10 minutos por semana.</p>
+    <div class="g3" style="flex:0 0 auto">
+      ${[['Zap', 'Agir', 'contas a pagar, formulários, coisas para responder. Revise toda semana.', 'ter'], ['Archive', 'Guardar', 'documentos, garantias, contratos, exames. Vai para a pasta e sai da vista.', 'sal'], ['Trash2', 'Descartar', 'propaganda, envelopes, papéis que já viraram foto ou PDF.', 'cre']].map(([i, t, d, c]) => `<div class="box b-${c}" style="padding:2.4mm;text-align:center"><span class="bi" style="width:8mm;height:8mm;margin:0 auto">${ic(i, 15)}</span><p class="h2" style="font-size:9pt;margin-top:1.2mm">${t}</p><p class="mini" style="font-size:6.8pt;margin-top:.6mm;color:${C.gra}cc">${d}</p></div>`).join('')}
+    </div>
+    ${box({ icon: 'CalendarClock', t: 'Os 10 minutos da semana', s: 'sábado, dia de papéis', cor: 'white', style: 'flex:0 0 auto', body: `<div style="margin-top:.6mm">${passos([['Esvazie a caixa da correspondência', 'e separe nas 3 caixas.'], ['Na caixa “Agir”,', 'pague ou agende cada conta (anote no Contas do mês do planner).'], ['Guarde', 'o que for documento, na pasta certa.'], ['Fotografe', 'o que precisa só de registro e descarte o papel.']])}</div>` })}
+    ${box({ icon: 'FolderOpen', t: 'Minha pasta de documentos importantes', s: 'marque o que já está guardado', cor: 'cre', cls: 'grow', body: `<div class="g2" style="gap:0 4mm;margin-top:.8mm">${['documentos pessoais (cópias)', 'certidões', 'contratos de aluguel/financiamento', 'garantias e notas fiscais', 'exames e receitas', 'apólices de seguro', 'documentos do carro', 'imposto de renda'].map((t) => chk(t)).join('')}</div>` })}`,
+  });
+
+  P.push({
+    key: 'e2-roupas', sec: s, eb: 'Sistema', t: 'Roupa sem <span class="gr">montanha</span>', sub: 'o segredo é terminar uma leva inteira antes de começar outra', body: () => `
+    <div style="display:flex;align-items:center;gap:1mm;flex:0 0 auto">
+      ${['Cesto', 'Lavar', 'Secar', 'Dobrar', 'Guardar'].map((t, i) => `<div style="flex:1;text-align:center;background:${i % 2 ? 'var(--t-bg)' : 'var(--s-bg)'};border-radius:1.6mm;padding:2mm .6mm"><p style="font-family:Mont;font-weight:700;font-size:7.2pt;color:var(--p)">${i + 1}. ${t}</p></div>${i < 4 ? `<span style="color:var(--t-tx)">${ic('ChevronRight', 11)}</span>` : ''}`).join('')}
+    </div>
+    <p class="tx" style="font-size:7.9pt">A montanha de roupa nasce no meio do caminho: roupa lavada que não secou, roupa seca que não foi dobrada, roupa dobrada que ficou na cadeira. <b>Uma leva do começo ao fim por dia</b> (ou dia sim, dia não) impede o acúmulo.</p>
+    <div class="row" style="flex:0 0 auto">
+      ${box({ icon: 'Lightbulb', t: 'Atalhos que ajudam', cor: 'sal', body: `<div style="font-size:7.1pt;line-height:1.5;margin-top:1mm">• lavar à noite e estender de manhã<br>• dobrar logo ao tirar do varal<br>• um cesto por pessoa<br>• cabides suficientes para tudo<br>• a “cadeira de roupa” vira cabide na porta</div>` })}
+      ${box({ icon: 'Shirt', t: 'Guarda-roupa enxuto', cor: 'ter', body: `<div style="font-size:7.1pt;line-height:1.5;margin-top:1mm">• vire os cabides ao contrário; ao usar, desvire. Em 6 meses, o que não foi desvirado pode ser doado<br>• separe uma “gaveta de dúvida”<br>• uma peça entra, uma peça sai</div>` })}
+    </div>
+    <p class="lbl" style="flex:0 0 auto">Rastreador de levas · 4 semanas</p>
+    ${rastreador(['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'], 7)}
+    ${box({ icon: 'PenLine', t: 'Meu dia e horário da roupa', cor: 'white', cls: 'grow', body: fill() })}`,
+  });
+
+  P.push({
+    key: 'e2-refeicoes', sec: s, eb: 'Cozinha', t: 'Refeições <span class="gr">sem decidir todo dia</span>', sub: 'decidir o cardápio uma vez por semana tira um peso diário da cabeça', refil: true, body: () => `
+    <div style="display:grid;grid-template-columns:14mm repeat(3,1fr);gap:1mm;flex:0 0 auto">
+      <span></span>${['Café', 'Almoço', 'Jantar'].map((t) => `<span style="text-align:center;font-family:Mont;font-weight:700;font-size:6.4pt;letter-spacing:.08em;text-transform:uppercase;color:var(--p);background:var(--s-bg);border-radius:1.4mm;padding:.8mm 0">${t}</span>`).join('')}
+      ${['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((d, i) => `<span style="display:flex;align-items:center;font-family:Mont;font-weight:700;font-size:6.6pt;color:var(--p)">${d}</span>${[0, 1, 2].map(() => `<div style="height:10.5mm;border:.3mm solid ${C.creEsc};border-radius:1.4mm;background:${i > 4 ? 'var(--t-bg)' : '#fff'}"></div>`).join('')}`).join('')}
+    </div>
+    <div class="row" style="flex:1;min-height:0">
+      ${box({ icon: 'ShoppingCart', t: 'Lista de compras', cor: 'white', body: `<div style="display:flex;flex-direction:column;gap:.8mm;margin-top:1mm">${['Hortifrúti', 'Proteínas', 'Despensa', 'Limpeza e higiene'].map((t) => `<p class="lbl" style="font-size:5.8pt;color:var(--t-tx);margin-top:.6mm">${t}</p>${linhas(2, 5.4)}`).join('')}</div>` })}
+      ${box({ icon: 'Lightbulb', t: 'Para facilitar', cor: 'sal', body: `<div style="font-size:7pt;line-height:1.5;margin-top:1mm">• repita refeições: tudo bem ter “segunda é macarrão”<br>• cozinhe a mais e congele porções<br>• deixe 1 jantar “coringa” bem simples (ovos, sopa, sanduíche)<br>• lave e corte os vegetais no dia da compra<br>• liste 10 refeições fáceis que todos gostam e escolha delas</div>` })}
+    </div>`,
+  });
+
+  P.push({
+    key: 'e2-energia', sec: s, eb: 'Dias difíceis', t: 'A casa nos dias <span class="gr">sem energia</span>', sub: 'modo sobrevivência: cuidar do mínimo sem se culpar pelo resto', body: () => `
+    <p class="tx" style="font-size:7.9pt">Há dias (ou semanas) em que a ansiedade, o cansaço ou a tristeza deixam a energia quase zerada. Nesses dias, a meta da casa muda: <b>não é arrumar, é não piorar</b>. E tudo bem.</p>
+    ${box({ icon: 'BatteryLow', t: 'O mínimo dos dias sem energia', cor: 'ter', style: 'flex:0 0 auto', body: `<div class="g2" style="gap:0 4mm;margin-top:.8mm">${['lixo para fora', 'louça de molho (lavar amanhã)', 'uma roupa limpa para amanhã', 'comer alguma coisa', 'abrir a janela', 'deitar em lençol que dá para deitar'].map((t) => chk(t)).join('')}</div>` })}
+    ${box({ icon: 'Heart', t: 'Permissões', s: 'leia em voz alta, se ajudar', cor: 'sal', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:1.2mm;margin-top:1.2mm">${['Posso usar prato descartável hoje.', 'Posso pedir comida ou comer algo simples.', 'Posso deixar a roupa no cesto até amanhã.', 'Posso pedir ajuda sem me explicar demais.', 'A casa espera. Eu venho primeiro.'].map((f) => `<p style="font-family:Mont;font-weight:600;font-size:7.8pt;color:var(--p)">“${f}”</p>`).join('')}</div>` })}
+    ${box({ icon: 'HandHeart', t: 'A quem eu posso pedir ajuda e com o quê', cor: 'white', cls: 'grow', body: fill() })}`,
+  });
+
+  P.push({
+    key: 'e2-familia', sec: s, eb: 'Casa com família', t: 'Cada um com <span class="gr">a sua parte</span>', sub: 'tarefas por idade: criança que ajuda também aprende a cuidar', body: () => `
+    <div class="g3" style="flex:0 0 auto">
+      ${[['3 a 5 anos', 'sal', ['guardar brinquedos numa cesta', 'pôr roupa suja no cesto', 'levar o prato à pia', 'ajudar a pôr a mesa']], ['6 a 9 anos', 'cre', ['arrumar a cama (do jeito dela)', 'separar roupas por cor', 'regar plantas', 'tirar o pó de móveis baixos']], ['10 anos ou mais', 'ter', ['lavar a louça', 'tirar o lixo', 'passar aspirador', 'preparar um lanche simples']]].map(([t, c, l]) => `<div class="box b-${c}" style="padding:2.4mm"><p style="font-family:Mont;font-weight:700;font-size:8pt;color:var(--p)">${t}</p><div class="ac" style="margin-top:.8mm">${l.map((x) => chk(x)).join('')}</div></div>`).join('')}
+    </div>
+    ${box({ icon: 'Timer', t: 'O “resgate de 10 minutos” em família', cor: 'white', style: 'flex:0 0 auto', body: `<p class="mini" style="font-size:7.2pt;margin-top:1mm;color:${C.gra}cc">Música animada, timer de 10 minutos e cada um com uma missão (“você recolhe o que é seu da sala”, “você esvazia a mesa”). Parece jogo, termina rápido e ninguém carrega tudo sozinho.</p>` })}
+    ${tabela(['Pessoa', 'Tarefas fixas', 'Dia'], 6, 9, ['24%', '52%', ''])}
+    ${box({ icon: 'MessageCircle', t: 'Como vamos combinar e lembrar', cor: 'cre', cls: 'grow', body: fill() })}`,
+  });
+
+  P.push({
+    key: 'e2-ano', sec: s, eb: 'Ao longo do ano', t: 'Limpeza profunda <span class="gr">sem maratona</span>', sub: 'uma tarefa grande por mês, em vez de uma faxina que esgota', body: () => `
+    <div class="g3" style="grid-auto-rows:1fr;flex:1;min-height:0">
+      ${[['Jan', 'armários da cozinha e despensa'], ['Fev', 'geladeira e freezer por dentro'], ['Mar', 'guarda-roupa: troca de estação'], ['Abr', 'vidros e janelas'], ['Mai', 'colchões e travesseiros'], ['Jun', 'papéis e documentos'], ['Jul', 'banheiro: rejuntes e ralos'], ['Ago', 'cortinas e tapetes'], ['Set', 'guarda-roupa: troca de estação'], ['Out', 'forno, coifa e fogão'], ['Nov', 'destralhe para doação'], ['Dez', 'revisão geral e o que levar para o ano novo']].map(([m, t], i) => `<div class="box ${i % 3 === 0 ? 'b-sal' : i % 3 === 1 ? 'b-cre' : 'b-ter'}" style="padding:2mm 2.4mm"><div style="display:flex;justify-content:space-between;align-items:center"><p style="font-family:Mont;font-weight:700;font-size:9pt;color:var(--p)">${m}</p><span class="cb"></span></div><p style="font-size:7pt;line-height:1.3;margin-top:.8mm">${t}</p>${fill(5.4)}</div>`).join('')}
+    </div>`,
+  });
+
+  P.push({
+    key: 'e2-faq', sec: s, eb: 'Obstáculos', t: 'E quando <span class="gr">não dá</span>?', sub: 'as dificuldades mais comuns, e o que fazer com elas', body: () => faq([
+      ['Começo a arrumar e paro no meio, me perco em tudo.', 'Use o timer e a regra de um lugar por vez. Termine uma superfície pequena (uma gaveta, o criado-mudo) antes de qualquer outra. Ver algo terminado dá energia para continuar.'],
+      ['Moro com pessoas que bagunçam.', 'Cuide primeiro dos espaços que são seus e combine regras simples para os espaços comuns (a página “Quem faz o quê”). Mostrar como uma área arrumada ajuda a todos funciona melhor do que cobrar.'],
+      ['Tenho apego a muitas coisas.', 'Comece pelo fácil: vencidos, quebrados e duplicados. Para objetos com memória, tire uma foto e guarde só um ou dois que representam aquela fase.'],
+      ['Não tenho tempo nenhum.', 'Os 5 minutos das tarefas-âncora mantêm a casa de pé. O reset completo pode ficar para 3 dias por semana.'],
+      ['Quando a casa está arrumada, eu fico ansiosa(o) para manter perfeita.', 'A meta é uma casa funcional, não de revista. Bagunça do dia é sinal de vida; o reset da noite resolve.'],
+      ['Já tentei de tudo e sempre volto ao caos.', 'Provavelmente o problema é volume: coisa demais para o espaço. Antes de organizar mais, foque 30 dias no destralhe.'],
+    ]) + box({ icon: 'Lightbulb', t: 'O meu maior obstáculo e o que eu vou tentar', cor: 'sal', cls: 'grow', body: fill() }),
+  });
+
+  P.push({
     key: 'e2-revisao', sec: s, eb: 'Depois de 30 dias', t: 'Minha casa, <span class="gr">minha mente</span>', sub: 'compare como você se sentia antes e agora', data: true, body: () => `
     ${box({ icon: 'Gauge', t: 'Como me sinto em casa', s: '0 = nada · 10 = muito', cor: 'white', style: 'flex:0 0 auto', body: `<div style="display:flex;flex-direction:column;gap:2mm;margin-top:1.6mm">${['Consigo descansar em casa', 'A bagunça me deixa ansiosa(o)', 'Sei o que fazer e quando', 'Me cobro pela casa'].map((t) => `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:7.4pt">${t}</span><span style="display:flex;gap:2mm;align-items:center"><span class="mini">antes</span><span style="width:8mm;border-bottom:.25mm solid ${C.gra}44;height:4mm"></span><span class="mini">agora</span><span style="width:8mm;border-bottom:.25mm solid ${C.gra}44;height:4mm"></span></span></div>`).join('')}</div>` })}
     ${box({ icon: 'Sparkles', t: 'O que mais mudou', cor: 'sal', cls: 'grow', body: fill() })}
@@ -411,6 +616,7 @@ function casaEmOrdem(modo) {
       'Allen, D. (2001). <i>Getting Things Done: The Art of Stress-Free Productivity</i>. Viking. (origem da “regra dos 2 minutos”)',
     ]),
   });
+  P.splice(1, 0, sumario(P, s, modo, 'Leia as 3 primeiras páginas para entender o método. Depois faça o diagnóstico da casa e comece pelo reset de 15 minutos. Os sistemas (endereços, papéis, roupas, refeições) entram um por semana.'));
   if (modo === 'imp') P.push({ key: 'e2-cc', sec: s, raw: () => contracapa('Casa leve, cabeça leve.') });
   return P;
 }
@@ -421,7 +627,7 @@ function casaEmOrdem(modo) {
 function rotinasProntas(modo) {
   const P = [];
   const s = 'e3';
-  P.push({ key: 'e3-capa', sec: s, raw: () => capa({ selo: 'Material extra', topo: 'PLANNER MENTE CALMA', titulo: 'Rotinas Prontas<br>para Mentes Ansiosas', tag: '8 rotinas já montadas, passo a passo, para cada momento do dia. É só seguir.', ordem: ['#ECE8F6', '#BEB4DE', '#5B4E8C', '#F6E6DC'], sub: '8 rotinas guiadas' }) });
+  P.push({ key: 'e3-capa', sec: s, raw: () => capa({ selo: 'Material extra', topo: 'PLANNER MENTE CALMA', titulo: 'Rotinas Prontas<br>para Mentes Ansiosas', tag: '11 rotinas já montadas, passo a passo, para cada momento do dia. É só seguir.', ordem: ['#ECE8F6', '#BEB4DE', '#5B4E8C', '#F6E6DC'], sub: '11 rotinas guiadas' }) + deco('Clock', '#5B4E8C', 'right:-26mm;top:-6mm') });
 
   P.push({
     key: 'e3-porque', sec: s, sp: true, eb: 'Entenda primeiro', t: 'Por que a rotina <span class="gr">acalma</span>', sub: 'previsibilidade é um remédio natural para a mente ansiosa', body: () => `
@@ -433,7 +639,7 @@ function rotinasProntas(modo) {
   });
 
   P.push({
-    key: 'e3-comousar', sec: s, eb: 'Como usar', t: 'Escolha uma. <span class="gr">Comece pequeno.</span>', sub: 'não tente adotar as 8 rotinas de uma vez', body: () => `
+    key: 'e3-comousar', sec: s, eb: 'Como usar', t: 'Escolha uma. <span class="gr">Comece pequeno.</span>', sub: 'não tente adotar as 11 rotinas de uma vez', body: () => `
     ${passos([
       ['Escolha uma rotina só.', 'A que resolveria o momento mais difícil do seu dia hoje (manhã corrida? noite sem conseguir desligar?).'],
       ['Comece pela versão mínima.', 'Cada rotina tem uma versão de 3 minutos para os dias pesados. Fazer a mínima conta como fazer.'],
@@ -442,7 +648,7 @@ function rotinasProntas(modo) {
       ['Em 2 semanas, avalie.', 'Funcionou? Mantenha e acrescente outra. Não funcionou? Ajuste o horário ou os passos.'],
     ])}
     <div class="g2">
-      ${[['Sunrise', 'Manhã sem pressa', 'e3-manha'], ['Brain', 'Começar a trabalhar', 'e3-foco'], ['Wind', 'Pausa de 5 minutos', 'e3-pausa'], ['DoorOpen', 'Chegar em casa', 'e3-transicao'], ['Moon', 'Noite que desacelera', 'e3-noite'], ['LifeBuoy', 'Dia de crise', 'e3-crise'], ['Footprints', 'Movimento mínimo', 'e3-movimento'], ['CalendarCheck', 'Domingo de preparo', 'e3-domingo']].map(([i, t, k]) => `<${modo === 'dig' ? `a href="#p-${k}"` : 'div'} class="box b-cre" style="flex-direction:row;gap:2.2mm;align-items:center;padding:2mm 2.4mm"><span style="color:var(--p)">${ic(i, 13)}</span><span style="font-size:7.6pt;font-weight:700">${t}</span></${modo === 'dig' ? 'a' : 'div'}>`).join('')}
+      ${[['Sunrise', 'Manhã sem pressa', 'e3-manha'], ['Brain', 'Começar a trabalhar', 'e3-foco'], ['Wind', 'Pausa de 5 minutos', 'e3-pausa'], ['DoorOpen', 'Chegar em casa', 'e3-transicao'], ['Moon', 'Noite que desacelera', 'e3-noite'], ['LifeBuoy', 'Dia de crise', 'e3-crise'], ['Footprints', 'Movimento mínimo', 'e3-movimento'], ['CalendarCheck', 'Domingo de preparo', 'e3-domingo'], ['Shield', 'Antes de um momento difícil', 'e3-antes'], ['MoonStar', 'Acordei de madrugada', 'e3-madrugada'], ['Palmtree', 'Fim de semana sem culpa', 'e3-fds']].map(([i, t, k]) => `<${modo === 'dig' ? `a href="#p-${k}"` : 'div'} class="box b-cre" style="flex-direction:row;gap:2.2mm;align-items:center;padding:2mm 2.4mm"><span style="color:var(--p)">${ic(i, 13)}</span><span style="font-size:7.6pt;font-weight:700">${t}</span></${modo === 'dig' ? 'a' : 'div'}>`).join('')}
     </div>
     ${box({ icon: 'Flag', t: 'A rotina que eu começo esta semana', s: 'e por quê', cor: 'ter', cls: 'grow', body: fill() })}`,
   });
@@ -566,6 +772,85 @@ function rotinasProntas(modo) {
     ciencia: 'Planejar quando e como fazer as tarefas reduz os pensamentos repetitivos sobre elas (Masicampo & Baumeister, 2011) e aumenta a chance de cumpri-las (Gollwitzer & Sheeran, 2006).',
   }));
 
+  P.push(rotina({
+    key: 'e3-antes', t: 'Antes de um momento <span class="gr">difícil</span>', sub: 'reunião, consulta, conversa difícil, prova, entrevista', icon: 'Shield', quando: 'até 1 hora antes', dur: '10 minutos', gatilho: 'quando o “e se…” começar', tema: 'rosa',
+    passos: [
+      ['3 min', 'Escreva o pior cenário, o melhor e o mais provável.', 'Ver o “mais provável” no papel mostra que o pior é só uma das possibilidades.'],
+      ['2 min', 'Defina o que depende de você: 3 pontos que quer falar ou fazer.', 'Foco no que você controla reduz a sensação de ameaça.'],
+      ['2 min', 'Respiração: suspiro cíclico, 5 vezes.', 'Acalma o corpo antes da situação, quando ainda é mais fácil.'],
+      ['2 min', 'Releia: “estou ansiosa(o) e consigo fazer isso mesmo assim”.', 'Aceitar a ansiedade em vez de brigar com ela costuma diminuir o peso dela.'],
+      ['1 min', 'Combine uma recompensa para depois.', 'Ter algo bom marcado depois ajuda a atravessar o momento.'],
+    ],
+    minima: 'Escrever os 3 pontos que quer falar e respirar 5 vezes.',
+    ciencia: 'Reinterpretar a agitação do corpo como sinal de preparo (e não de perigo) melhorou o desempenho de pessoas em situações de avaliação em estudos de reavaliação da ansiedade (Jamieson et al., 2012).',
+  }));
+  P.push(rotina({
+    key: 'e3-madrugada', t: 'Acordei de madrugada <span class="gr">com a cabeça a mil</span>', sub: 'para voltar a dormir sem resolver a vida às 3h', icon: 'MoonStar', quando: 'se acordar à noite', dur: '10 a 20 minutos', gatilho: 'ao perceber que a mente disparou', tema: 'azul',
+    passos: [
+      ['1 min', 'Não pegue o celular para ver a hora.', 'A luz e as mensagens acordam de vez; saber a hora aumenta a pressão para dormir.'],
+      ['2 min', 'Anote em uma linha o que está rodando, num papel ao lado da cama.', 'De madrugada a gente não resolve, só registra. Amanhã vai para o método.'],
+      ['3 min', 'Respiração 4-6 deitada(o): inspire em 4, solte em 6.', 'Ritmo lento favorece o relaxamento.'],
+      ['5 min', 'Relaxamento do corpo: tensione e solte pés, pernas, barriga, ombros, rosto.', 'Soltar a tensão muscular ajuda a mente a acompanhar.'],
+      ['20 min', 'Ainda acordada(o) depois de uns 20 min? Levante, luz baixa, algo calmo, e volte com sono.', 'Ficar rolando na cama ensina o cérebro que cama é lugar de ficar acordada(o).'],
+    ],
+    minima: 'Anotar o que está rodando, respirar e não pegar o celular.',
+    ciencia: 'Sair da cama quando não consegue dormir e voltar só com sono é parte da terapia cognitivo-comportamental para insônia (TCC-I), o tratamento de primeira linha recomendado para insônia crônica (Qaseem et al., 2016).',
+  }));
+  P.push(rotina({
+    key: 'e3-fds', t: 'Fim de semana <span class="gr">sem culpa</span>', sub: 'descansar de verdade, sem transformar o sábado em segunda', icon: 'Palmtree', quando: 'sábado de manhã', dur: '10 minutos', gatilho: 'depois do café de sábado', tema: 'mant',
+    passos: [
+      ['3 min', 'Escreva no máximo 3 obrigações do fim de semana. O resto espera.', 'Limitar as tarefas evita que o descanso vire uma lista invisível.'],
+      ['2 min', 'Escolha uma coisa só por prazer (sem utilidade).', 'Atividades prazerosas planejadas melhoram o humor, mais do que esperar “sobrar tempo”.'],
+      ['2 min', 'Defina um horário para o trabalho NÃO entrar (sem e-mail, sem grupo).', 'Desligar psicologicamente do trabalho está ligado a mais bem-estar e menos exaustão.'],
+      ['3 min', 'Combine um encontro, passeio ou ligação com alguém.', 'Contato social é um dos melhores reguladores do humor.'],
+    ],
+    minima: 'Uma obrigação e uma coisa por prazer.',
+    ciencia: 'Pesquisas sobre recuperação mostram que se desligar mentalmente do trabalho no tempo livre está ligado a menos exaustão e mais bem-estar (Sonnentag & Fritz, 2015).',
+  }));
+
+  P.push({
+    key: 'e3-respirar', sec: s, eb: 'A ferramenta de todas as rotinas', t: '3 respirações <span class="gr">que acalmam</span>', sub: 'aprenda uma vez, use em qualquer lugar', body: () => `
+    <p class="tx" style="font-size:7.9pt">Quando a ansiedade sobe, a respiração fica curta e alta. Respirar devagar, <b>soltando o ar por mais tempo do que puxa</b>, ativa o sistema de “descanso e digestão” do corpo. É a ferramenta mais rápida que você tem, e está sempre com você.</p>
+    ${[
+      ['Suspiro cíclico', 'o mais estudado', 'Puxe o ar pelo nariz, puxe mais um pouquinho por cima, solte bem devagar pela boca. Repita por 1 a 5 minutos.', 'inspira · inspira mais · solta looongo', 'sal'],
+      ['Respiração 4-6', 'para dormir e desacelerar', 'Inspire contando 4, solte contando 6. Sem pausas. Faça 6 a 10 ciclos.', 'inspira 4 · solta 6', 'cre'],
+      ['Respiração quadrada', 'para focar antes de algo difícil', 'Inspire em 4, segure 4, solte em 4, segure 4. Desenhe um quadrado com o dedo enquanto faz.', 'inspira 4 · segura 4 · solta 4 · segura 4', 'ter'],
+    ].map(([t, sub, d, ritmo, c]) => `<div class="box b-${c}" style="flex:1;min-height:0">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><p class="h2" style="font-size:10pt">${t}</p><span class="mini it">${sub}</span></div>
+      <p style="font-size:7.8pt;line-height:1.45;margin-top:1mm">${d}</p>
+      <p style="margin-top:auto;font-family:Mont;font-weight:700;font-size:7pt;letter-spacing:.06em;color:var(--t-tx)">${ritmo}</p>
+    </div>`).join('')}
+    ${estudo('Balban et al., 2023', 'Num estudo de um mês, 5 minutos diários de <b>suspiro cíclico</b> melhoraram o humor e reduziram a frequência respiratória em repouso mais do que a meditação de atenção plena.', 'comece por ele: 1 minuto já conta.')}`,
+  });
+
+  P.push({
+    key: 'e3-dia', sec: s, eb: 'Monte o seu dia', t: 'Meu dia <span class="gr">em blocos</span>', sub: 'encaixe as rotinas que escolheu na sua linha do tempo', refil: true, body: () => `
+    <div style="flex:1;display:grid;grid-template-columns:13mm 1fr 30mm;grid-template-rows:auto repeat(9,1fr);gap:1mm;min-height:0">
+      <span></span><span class="lbl" style="padding-left:1mm">O que acontece</span><span class="lbl">Rotina / passo</span>
+      ${[['Acordar', 'Sunrise'], ['Manhã', 'Coffee'], ['Começo do trabalho', 'Brain'], ['Meio do dia', 'Wind'], ['Tarde', 'Sun'], ['Fim do expediente', 'DoorOpen'], ['Noite', 'Utensils'], ['Antes de dormir', 'Moon'], ['Dormir', 'BedDouble']].map(([t, i], k) => `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4mm"><span style="color:var(--p)">${ic(i, 12)}</span><span style="font-size:5.4pt;color:${C.gra}88">__:__</span></div><div style="background:${k % 2 ? C.cre : 'var(--s-bg)'};border-radius:2mm;padding:1.4mm 2mm"><p style="font-family:Mont;font-weight:700;font-size:6.8pt;color:var(--p)">${t}</p></div><div style="border:.3mm dashed var(--ln);border-radius:2mm"></div>`).join('')}
+    </div>
+    <p class="mini it" style="flex:0 0 auto;text-align:center">Não precisa preencher todos os blocos. Dois ou três momentos bem cuidados já mudam o dia.</p>`,
+  });
+
+  P.push({
+    key: 'e3-faq', sec: s, eb: 'Obstáculos', t: 'Quando a rotina <span class="gr">não pega</span>', sub: 'as dificuldades mais comuns, e o que fazer com elas', body: () => faq([
+      ['Começo animada(o) e largo em 3 dias.', 'Você provavelmente começou grande demais. Volte para a versão mínima e faça só ela por duas semanas. Hábito é construído pela repetição, não pela intensidade.'],
+      ['Minha rotina muda todo dia (turnos, filhos, imprevistos).', 'Ancore a rotina num gatilho, não num horário: “depois do café”, “ao chegar em casa”. O gatilho acontece mesmo quando o horário muda.'],
+      ['Rotina me dá sensação de prisão.', 'Use rotinas só nos momentos que pesam (manhã e noite, por exemplo) e deixe o resto livre. A rotina existe para dar segurança, não para controlar cada minuto.'],
+      ['Esqueço de fazer.', 'Deixe um lembrete físico no lugar do gatilho: a página da rotina colada na geladeira, o caderno em cima do travesseiro, o tênis na porta.'],
+      ['Fiz tudo e continuo ansiosa(o).', 'Rotina ajuda, mas não é tratamento. Se a ansiedade está alta na maior parte dos dias há semanas, procure um profissional: existem tratamentos muito eficazes.'],
+    ]) + box({ icon: 'Lightbulb', t: 'O meu maior obstáculo e o que eu vou tentar', cor: 'sal', cls: 'grow', body: fill() }),
+  });
+
+  P.push({
+    key: 'e3-recomeco', sec: s, eb: 'Recaídas', t: 'Recomeçar <span class="gr">sem culpa</span>', sub: 'falhar um dia não apaga nada. recomeçar é parte do hábito', body: () => `
+    ${estudo('Lally et al., 2010', 'No estudo sobre formação de hábitos, <b>perder uma oportunidade de repetir o comportamento não afetou</b> de forma importante o processo. O que conta é voltar.', 'regra de ouro: nunca falhe duas vezes seguidas.')}
+    <div class="box b-white" style="flex:0 0 auto"><div class="bt">${ic('RefreshCcw', 11)}<span>O protocolo de recomeço</span></div><div style="margin-top:1.2mm">${passos([['Sem julgamento:', 'escreva o que aconteceu, como um fato (“fiquei doente e parei”).'], ['O que tornou difícil?', 'Horário, cansaço, gatilho que sumiu?'], ['Ajuste uma coisa:', 'horário, tamanho da rotina ou gatilho.'], ['Volte hoje pela versão mínima.', 'Amanhã, se der, a completa.']])}</div></div>
+    ${box({ icon: 'PenLine', t: 'O que aconteceu', cor: 'cre', cls: 'grow', body: fill() })}
+    ${box({ icon: 'Wrench', t: 'O que eu vou ajustar', cor: 'sal', cls: 'grow', body: fill() })}
+    ${box({ icon: 'Footprints', t: 'Recomeço hoje com', cor: 'dash', style: 'flex:0 0 auto', body: linhas(1) })}`,
+  });
+
   P.push({
     key: 'e3-montar', sec: s, eb: 'Personalize', t: 'Minha rotina <span class="gr">se… então…</span>', sub: 'adapte qualquer rotina à sua vida', refil: true, body: () => `
     <div class="box b-pet" style="flex:0 0 auto"><p style="font-size:7.8pt;line-height:1.45"><b>A fórmula:</b> “Depois de <i>[algo que eu já faço todo dia]</i>, eu vou <i>[novo passo pequeno]</i>, em <i>[lugar]</i>.” Quanto mais específico, mais fácil de cumprir.</p></div>
@@ -598,9 +883,13 @@ function rotinasProntas(modo) {
       'Chang, A.-M., Aeschbach, D., Duffy, J. F., & Czeisler, C. A. (2015). Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. <i>PNAS</i>, 112(4), 1232–1237.',
       'Ward, A. F., Duke, K., Gneezy, A., & Bos, M. W. (2017). Brain drain: The mere presence of one’s own smartphone reduces available cognitive capacity. <i>Journal of the Association for Consumer Research</i>, 2(2), 140–154.',
       'Masicampo, E. J., & Baumeister, R. F. (2011). Consider it done! Plan making can eliminate the cognitive effects of unfulfilled goals. <i>Journal of Personality and Social Psychology</i>, 101(4), 667–683.',
+      'Jamieson, J. P., Nock, M. K., & Mendes, W. B. (2012). Mind over matter: Reappraising arousal improves cardiovascular and cognitive responses to stress. <i>Journal of Experimental Psychology: General</i>, 141(3), 417–422.',
+      'Qaseem, A., et al. (2016). Management of chronic insomnia disorder in adults: A clinical practice guideline from the American College of Physicians. <i>Annals of Internal Medicine</i>, 165(2), 125–133.',
+      'Sonnentag, S., & Fritz, C. (2015). Recovery from job stress: The stressor-detachment model as an integrative framework. <i>Journal of Organizational Behavior</i>, 36(S1), S72–S103.',
       'Singh, B., et al. (2023). Effectiveness of physical activity interventions for improving depression, anxiety and distress: An overview of systematic reviews. <i>British Journal of Sports Medicine</i>, 57(18), 1203–1209.',
     ]),
   });
+  P.splice(1, 0, sumario(P, s, modo, 'Leia as páginas de explicação e a de respiração. Depois escolha UMA rotina e comece pela versão mínima. As páginas do fim ajudam a montar o seu dia e a recomeçar quando a rotina falhar.'));
   if (modo === 'imp') P.push({ key: 'e3-cc', sec: s, raw: () => contracapa('Rotina é carinho com a sua mente.') });
   return P;
 }

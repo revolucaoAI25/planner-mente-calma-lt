@@ -2,7 +2,6 @@
  * Arquivos entregues por e-mail depois da compra.
  *
  * Os PDFs são gerados por `node planner/build.mjs` e copiados para `public/<PASTA>`.
- * Eles só são publicados junto com o site se o repositório for PRIVADO (a pasta está no .gitignore).
  * Alternativa: hospede os PDFs em outro lugar (Drive, Vercel Blob…) e preencha `url` de cada arquivo
  * ou a variável ENTREGA_BASE_URL (pasta com os mesmos nomes de arquivo).
  */

@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { CSS, CSS_TEMA, temasCss, FILL_JS, C, ic, mark } from './src/ui.mjs';
 import { SECOES, TEMAS, planner, bonus, mantra } from './src/paginas.mjs';
-import { extras } from './src/extras.mjs';
+import { extras, CSS_EXTRAS } from './src/extras.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const TMP = path.join(DIR, '.build');
@@ -35,7 +35,7 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
 
   const html = pags
     .map((p, i) => {
-      const lado = ((i + 1) % 2 ? 'r' : 'l') + ` th-${p.tema || SECOES[p.sec].tema || 'brand'}` + (modo === 'dig' && !secoes.length ? ' semtabs' : '');
+      const lado = ((i + 1) % 2 ? 'r' : 'l') + ` th-${p.tema || SECOES[p.sec].tema || 'brand'}` + (modo === 'dig' && !secoes.length ? ' semtabs' : '') + ` mat-${p.sec}`;
       const cor = SECOES[p.sec].cor;
       const id = `id="p-${p.key}"`;
       if (p.raw) {
@@ -53,13 +53,13 @@ function montar(pags, modo, { secoes, titulo, numerar = true }) {
       <div class="hd-r">${p.data ? `<span class="data">${ic('Calendar', 9)}<i></i>/<i></i>/<i></i></span>` : mark(22)}${p.dia ? `<span style="display:flex;align-items:center;gap:1.4mm;font-family:Mont;font-weight:700;font-size:5.8pt;letter-spacing:.08em;color:${C.terEsc}">DIA ${p.dia}/30<span style="width:22mm;height:1.3mm;border-radius:1mm;background:${C.creEsc};overflow:hidden;display:block"><span style="display:block;height:100%;width:${(p.dia / 30) * 100}%;background:${C.ter}"></span></span></span>` : ''}</div>
     </header>
     <div class="bd${p.sp ? ' sp' : ''}">${p.body(x)}</div>
-    <footer class="ft">${rodapeEsq}<span class="mt">${mantra(i)}</span><span class="lg">${p.data ? mark(13) : ''}<span>PLANNER MENTE CALMA</span></span></footer>
+    <footer class="ft">${rodapeEsq}<span class="mt">${SECOES[p.sec].mantras ? SECOES[p.sec].mantras[i % SECOES[p.sec].mantras.length] : mantra(i)}</span><span class="lg">${p.data ? mark(13) : ''}<span>PLANNER MENTE CALMA</span></span></footer>
   </div>
   ${modo === 'dig' && secoes.length ? tabs(p.sec) : ''}
 </section>`;
     })
     .join('\n');
-  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${titulo}</title><style>${CSS}${CSS_TEMA}${temasCss(TEMAS)}</style></head><body>${html}</body></html>`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${titulo}</title><style>${CSS}${CSS_TEMA}${temasCss(TEMAS)}${CSS_EXTRAS}</style></head><body>${html}</body></html>`;
 }
 
 let browser;

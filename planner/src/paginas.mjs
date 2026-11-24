@@ -28,9 +28,9 @@ export const SECOES = {
   b2: { nome: 'Noite', cor: TEMAS.lav.p, tema: 'lav', bonus: true },
   b3: { nome: 'Diário', cor: TEMAS.azul.p, tema: 'azul', bonus: true },
   b4: { nome: 'Rotina', cor: TEMAS.mant.p, tema: 'mant', bonus: true },
-  e1: { nome: 'Menos Tela', cor: TEMAS.azul.p, tema: 'azul', bonus: true },
-  e2: { nome: 'Casa em Ordem', cor: TEMAS.mant.p, tema: 'mant', bonus: true },
-  e3: { nome: 'Rotinas Prontas', cor: TEMAS.lav.p, tema: 'lav', bonus: true },
+  e1: { nome: 'Menos Tela', cor: TEMAS.azul.p, tema: 'azul', bonus: true, mantras: ['Você escolhe quando usar.', 'Presença vale mais que o feed.', 'A vontade sobe e desce. Deixe passar.', 'Menos tela, mais vida.', 'Nada de importante some em 10 minutos.'] },
+  e2: { nome: 'Casa em Ordem', cor: TEMAS.mant.p, tema: 'mant', bonus: true, mantras: ['Pouco e sempre.', 'Feito é melhor que perfeito.', 'Uma superfície de cada vez.', 'Casa leve, cabeça leve.', 'Cada coisa no seu lugar, inclusive a culpa: fora.'] },
+  e3: { nome: 'Rotinas Prontas', cor: TEMAS.lav.p, tema: 'lav', bonus: true, mantras: ['A versão mínima também conta.', 'Previsível é tranquilo.', 'Um passo depois do outro.', 'Falhou um dia? Siga no próximo.', 'Rotina é carinho com a sua mente.'] },
 };
 
 const MANTRAS = [
