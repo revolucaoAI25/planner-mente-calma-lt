@@ -1,13 +1,13 @@
-import { Download, FileText, Printer, Tablet, Gift, BookOpen } from 'lucide-react';
+import { Download, FileText, Printer, Tablet, Gift, BookOpen, Sparkles } from 'lucide-react';
 import { Logo } from '@/components/Logo';
-import { ARQUIVOS, GRUPOS, type Grupo } from '@/config/entrega';
+import { ARQUIVOS, GRUPOS, podeBaixar, type Grupo } from '@/config/entrega';
 import { marca } from '@/config/oferta';
 import { lerToken } from '@/lib/entrega';
 
 export const metadata = { title: 'Meus arquivos · Planner Mente Calma', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
-const ICONE: Record<Grupo, typeof Tablet> = { comece: BookOpen, tablet: Tablet, imprimir: Printer, bonus: Gift };
+const ICONE: Record<Grupo, typeof Tablet> = { comece: BookOpen, tablet: Tablet, imprimir: Printer, bonus: Gift, extra: Sparkles };
 
 export default async function Acesso({ searchParams }: { searchParams: Promise<{ t?: string }> }) {
   const { t } = await searchParams;
@@ -27,7 +27,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
   }
 
   const primeiro = (a.n || '').trim().split(/\s+/)[0];
-  const grupos: Grupo[] = ['comece', 'tablet', 'imprimir', 'bonus'];
+  const grupos: Grupo[] = ['comece', 'tablet', 'imprimir', 'bonus', 'extra'];
 
   return (
     <main className="min-h-dvh bg-creme pb-16">
@@ -57,7 +57,8 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
 
         {grupos.map((g) => {
           const Icone = ICONE[g];
-          const lista = ARQUIVOS.filter((x) => x.grupo === g);
+          const lista = ARQUIVOS.filter((x) => x.grupo === g && podeBaixar(x, a.b));
+          if (!lista.length) return null;
           return (
             <section key={g} className="card p-5">
               <div className="flex items-center gap-2.5">

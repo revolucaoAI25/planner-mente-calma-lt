@@ -329,10 +329,9 @@ export default function Page() {
       {/* ======= O QUE VEM DENTRO ======= */}
       <section id="dentro" className="bg-white/60 py-16 sm:py-20">
         <div className="wrap grid items-center gap-10 md:grid-cols-[.9fr_1.1fr] md:gap-14">
-          <div className="reveal relative mx-auto aspect-[1/1.02] w-full max-w-[420px]">
-            <div className="absolute -inset-[4%] bg-[radial-gradient(closest-side,rgba(168,189,176,.5),rgba(215,165,141,.2)_60%,transparent)]" />
-            <Image src={imagens.verso} alt="Verso do Planner Mente Calma" width={700} height={847} sizes="(max-width:768px) 60vw, 260px" className="absolute right-0 top-0 h-auto w-[60%] rotate-[6deg]" />
-            <Image src={imagens.capaPlana} alt="Capa do Planner Mente Calma" width={640} height={826} sizes="(max-width:768px) 62vw, 270px" className="absolute bottom-0 left-0 h-auto w-[62%] -rotate-[4deg]" />
+          <div className="reveal relative mx-auto w-full max-w-[520px]">
+            <Image src={imagens.fotoAberto} alt="Planner Mente Calma aberto: Mente em 3 Lugares e Meu dia lado a lado" width={1100} height={825} sizes="(max-width:768px) 92vw, 480px" className="h-auto w-full rounded-[24px] shadow-papel ring-1 ring-grafite/5" />
+            <span className="absolute -bottom-3 left-4 rounded-full bg-white px-3.5 py-2 font-display text-[12.5px] font-bold text-petroleo shadow-suave">Cada dia numa página dupla ✍️</span>
           </div>
           <div>
             <p className="eyebrow reveal">O que vem no planner</p>
@@ -505,8 +504,10 @@ export default function Page() {
           <path d="M0 130 C300 90 600 170 1200 110 V160 H0Z" fill="#D7A58D" opacity=".55" />
         </svg>
         <div className="estreito relative text-center">
-          <LogoMark size={64} light className="mx-auto" />
-          <h2 className="reveal mt-5 font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">
+          <div className="reveal mx-auto w-full max-w-[300px] sm:max-w-[340px]">
+            <Image src={imagens.fotoMaos} alt="Planner Mente Calma impresso nas mãos" width={900} height={900} sizes="(max-width:640px) 300px, 340px" className="h-auto w-full rotate-[-2deg] rounded-[26px] shadow-[0_24px_50px_-20px_rgba(0,0,0,.5)] ring-4 ring-white/15" />
+          </div>
+          <h2 className="reveal mt-8 font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">
             Você não precisa guardar tudo na cabeça. Só precisa de <span className="text-terracota">um lugar para colocar</span>.
           </h2>
           <p className="reveal mt-4 text-[18px] text-creme/80">Menos peso na mente. Mais clareza no dia.</p>

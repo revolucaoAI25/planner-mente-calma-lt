@@ -7,7 +7,7 @@ import { Logo } from '@/components/Logo';
 const KEY = 'pmc:pv';
 const AUTH = 'pmc:admin';
 
-type Status = { checkout: boolean; pixel: boolean; utmify: boolean; suporte: boolean; exemplo: boolean; resend: boolean; from: boolean; kiwify: boolean; segredo: boolean; site: string };
+type Status = { checkout: boolean; pixel: boolean; utmify: boolean; suporte: boolean; exemplo: boolean; resend: boolean; from: boolean; kiwify: boolean; utmifyApi: boolean; segredo: boolean; site: string };
 const SENHA = 'pmc:admin-senha';
 
 export function Painel({ status }: { status: Status }) {
@@ -176,6 +176,7 @@ function Entrega({ status }: { status: Status }) {
         <Item ok={status.from} t="Remetente (domínio verificado no Resend)" d="EMAIL_FROM" />
         <Item ok={status.kiwify} t="Token do webhook da Kiwify" d="KIWIFY_WEBHOOK_TOKEN" />
         <Item ok={status.segredo} t="Segredo dos links de acesso" d="ENTREGA_SECRET" />
+        <Item ok={status.utmifyApi} t="Credencial da API da Utmify (vendas dos order bumps)" d="UTMIFY_API_TOKEN" />
       </ul>
       <p className="mt-3 rounded-xl bg-creme p-3 text-[13px] leading-relaxed text-grafite/70">
         URL do webhook na Kiwify (evento <b>Compra aprovada</b>):<br />

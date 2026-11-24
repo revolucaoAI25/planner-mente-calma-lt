@@ -25,6 +25,9 @@ export const garantiaDias = 7;
 export const imagens = {
   /** Composição do topo e da oferta: páginas reais (tablet + mapa da jornada + caderno). */
   hero: '/img/mockups/hero-planner.webp',
+  /** Fotos do planner impresso (aberto na mesa e nas mãos). */
+  fotoAberto: '/img/fotos/planner-aberto.webp',
+  fotoMaos: '/img/fotos/planner-maos.webp',
   /** Mockups do planner (fundo transparente). */
   capa: '/img/mockups/planner-espiral-frente.webp',
   verso: '/img/mockups/planner-espiral-verso.webp',

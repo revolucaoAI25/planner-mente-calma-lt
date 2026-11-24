@@ -17,6 +17,7 @@ export default function Admin() {
         resend: !!process.env.RESEND_API_KEY,
         from: !!process.env.EMAIL_FROM,
         kiwify: !!process.env.KIWIFY_WEBHOOK_TOKEN,
+        utmifyApi: !!process.env.UTMIFY_API_TOKEN,
         segredo: !!(process.env.ENTREGA_SECRET || process.env.ADMIN_PASSWORD),
         site: (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, ''),
       }}
