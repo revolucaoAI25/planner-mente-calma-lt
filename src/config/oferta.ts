@@ -103,39 +103,39 @@ export const depoimentosTeste = [
     info: '34 anos · Campinas, SP',
     avatar: '/img/teste/avatar-1.webp',
     texto:
-      'eu deitava e ficava horas pensando em tudo que tinha pra fazer no dia seguinte, em coisa que eu falei errado, sei lá. comecei a fazer aquela página de tirar tudo da cabeça antes de dormir e **tô conseguindo dormir bem mais rápido**. não resolveu minha vida mas ajudou demais',
+      'Eu deitava e ficava horas pensando em tudo o que tinha para fazer no dia seguinte. Comecei a usar a página de tirar tudo da cabeça antes de dormir e **estou conseguindo pegar no sono bem mais rápido**. Não resolveu tudo, mas tem me ajudado muito.',
   },
   {
     nome: 'Fernanda Lopes',
     info: '48 anos · Belo Horizonte, MG',
     avatar: '/img/teste/avatar-2.webp',
-    texto: 'Gostei muito, bem simples de usar. Imprimi e deixei na cozinha 😊',
+    texto: 'Gostei muito, é bem simples de usar. Imprimi e deixei na mesa da cozinha.',
   },
   {
     nome: 'Rafael Souza',
     info: '31 anos · Curitiba, PR',
     avatar: '/img/teste/avatar-3.webp',
     texto:
-      'Já comprei umas 4 agendas e larguei todas na segunda semana kkk. Essa é diferente porque não tem data, então quando eu sumo uns dias **não fica aquele monte de página em branco me julgando**. Volto e pronto',
+      'Já tinha comprado umas quatro agendas e largado todas na segunda semana. Essa funciona melhor para mim porque não tem data: quando passo uns dias sem usar, **não fica aquele monte de página em branco**. Só volto de onde parei.',
   },
   {
     nome: 'Camila Teixeira',
     info: '24 anos · Recife, PE',
     avatar: '/img/teste/avatar-4.webp',
     texto:
-      'trabalho com atendimento e chego em casa com a cabeça explodindo. a página de quando a mente tá acelerada me salva, é rapidinho. **a sensação de sufoco passa** bem mais rápido que antes',
+      'Trabalho com atendimento e chego em casa com a cabeça a mil. A página para os dias de mente acelerada é rápida de fazer e **a sensação de sufoco passa bem antes** do que passava.',
   },
   {
     nome: 'Marcos Vinícius',
     info: '38 anos · São Paulo, SP',
     avatar: '/img/teste/avatar-5.webp',
     texto:
-      'comprei pra minha esposa e acabei usando também. eu guardo tudo na cabeça pra não esquecer e aí não consigo prestar atenção em nada, nem nas crianças. separar o que é problema de verdade do que é só preocupação **me deixou bem mais tranquilo de manhã**',
+      'Comprei para a minha esposa e acabei usando também. Eu guardava tudo na cabeça para não esquecer e não conseguia prestar atenção em nada, nem nas crianças. Separar o que é problema de verdade do que é só preocupação **me deixou bem mais tranquilo**.',
   },
   {
     nome: 'Patrícia Almeida',
     info: '39 anos · Porto Alegre, RS',
     avatar: '/img/teste/avatar-6.webp',
-    texto: 'Muito bom, vale cada centavo. Uso no tablet todo dia de manhã',
+    texto: 'Muito bom, valeu cada centavo. Uso no tablet todo dia de manhã.',
   },
 ];
