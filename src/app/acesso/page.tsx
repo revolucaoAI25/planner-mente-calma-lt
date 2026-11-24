@@ -71,7 +71,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
                 </div>
               </div>
               <div className="mt-4 space-y-2.5">
-                {g === 'bonus'
+                {(g === 'bonus' || g === 'extra')
                   ? [...new Set(lista.map((x) => x.titulo))].map((titulo) => {
                       const fs = lista.filter((x) => x.titulo === titulo);
                       return (

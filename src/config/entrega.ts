@@ -41,6 +41,17 @@ export const ARQUIVOS: Arquivo[] = [
     { id: `${id}-a4`, grupo: 'bonus' as const, titulo, desc: 'A4 (em casa)', arquivo:`${base} - A4 2 por folha (frente e verso, cortar ao meio).pdf` },
     { id: `${id}-a5`, grupo: 'bonus' as const, titulo, desc: 'A5 (gráfica)', arquivo: `${base} - A5 (grafica ou impressora A5).pdf` },
   ]),
+  ...(
+    [
+      ['tela', 'Menos Tela, Menos Ansiedade', 'Extra - Menos Tela Menos Ansiedade'],
+      ['casa', 'Casa em Ordem, Mente Mais Leve', 'Extra - Casa em Ordem Mente Mais Leve'],
+      ['rotinas', 'Rotinas Prontas para Mentes Ansiosas', 'Extra - Rotinas Prontas para Mentes Ansiosas'],
+    ] as const
+  ).flatMap(([bump, titulo, base]) => [
+    { id: `x-${bump}-tablet`, grupo: 'extra' as const, bump, titulo, desc: 'Tablet', arquivo: `${base} - TABLET.pdf` },
+    { id: `x-${bump}-a4`, grupo: 'extra' as const, bump, titulo, desc: 'A4 (em casa)', arquivo: `${base} - A4 2 por folha (frente e verso, cortar ao meio).pdf` },
+    { id: `x-${bump}-a5`, grupo: 'extra' as const, bump, titulo, desc: 'A5 (gráfica)', arquivo: `${base} - A5 (grafica ou impressora A5).pdf` },
+  ]),
 ];
 
 /**

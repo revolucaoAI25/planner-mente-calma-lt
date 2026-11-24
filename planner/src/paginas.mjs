@@ -28,6 +28,9 @@ export const SECOES = {
   b2: { nome: 'Noite', cor: TEMAS.lav.p, tema: 'lav', bonus: true },
   b3: { nome: 'Diário', cor: TEMAS.azul.p, tema: 'azul', bonus: true },
   b4: { nome: 'Rotina', cor: TEMAS.mant.p, tema: 'mant', bonus: true },
+  e1: { nome: 'Menos Tela', cor: TEMAS.azul.p, tema: 'azul', bonus: true },
+  e2: { nome: 'Casa em Ordem', cor: TEMAS.mant.p, tema: 'mant', bonus: true },
+  e3: { nome: 'Rotinas Prontas', cor: TEMAS.lav.p, tema: 'lav', bonus: true },
 };
 
 const MANTRAS = [

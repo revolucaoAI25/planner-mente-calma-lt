@@ -8,6 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { CSS, CSS_TEMA, temasCss, FILL_JS, C, ic, mark } from './src/ui.mjs';
 import { SECOES, TEMAS, planner, bonus, mantra } from './src/paginas.mjs';
+import { extras } from './src/extras.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const TMP = path.join(DIR, '.build');
@@ -130,6 +131,19 @@ const py = (...a) => execFileSync('python3', ['-I', path.join(DIR, 'impor.py'), 
     const a5 = await pdf(`a5-${k}`, montar(pags, 'imp', { secoes: secs, titulo: NOMES[k] }), { png: previa });
     fs.copyFileSync(a5, path.join(OUT, `${NOMES[k]} - A5 (grafica ou impressora A5).pdf`));
     py('cortar', a5, MARCAS, path.join(OUT, `${NOMES[k]} - A4 2 por folha (frente e verso, cortar ao meio).pdf`));
+  }
+
+  // ---------- MATERIAIS EXTRAS (order bumps): tablet, A5 e A4 ----------
+  const NOMES_E = { e1: 'Extra - Menos Tela Menos Ansiedade', e2: 'Extra - Casa em Ordem Mente Mais Leve', e3: 'Extra - Rotinas Prontas para Mentes Ansiosas' };
+  const exD = extras('dig');
+  const exI = extras('imp');
+  for (const k of ['e1', 'e2', 'e3']) {
+    const td = await pdf(`tablet-${k}`, montar(exD[k], 'dig', { secoes: [], titulo: NOMES_E[k] }), { png: previa });
+    fs.copyFileSync(td, path.join(OUT, `${NOMES_E[k]} - TABLET.pdf`));
+    const pags = parear(exI[k], k);
+    const a5 = await pdf(`a5-${k}`, montar(pags, 'imp', { secoes: [k], titulo: NOMES_E[k] }), { png: previa });
+    fs.copyFileSync(a5, path.join(OUT, `${NOMES_E[k]} - A5 (grafica ou impressora A5).pdf`));
+    py('cortar', a5, MARCAS, path.join(OUT, `${NOMES_E[k]} - A4 2 por folha (frente e verso, cortar ao meio).pdf`));
   }
 
   // ---------- REFIS (A4, cada folha = 2 cópias, frente e verso) ----------
