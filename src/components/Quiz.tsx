@@ -133,7 +133,7 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
     baixo: 'Sua mente está mais ansiosa e sobrecarregada do que parece.',
   }[nivel];
   const texto = {
-    alto: 'Você está guardando tudo na cabeça ao mesmo tempo: o que precisa fazer, o que pode esperar e o que é só preocupação. A ansiedade se alimenta dessa mistura: a cabeça não desliga, você trava e o cansaço chega antes das tarefas. É isso que vai roubando o seu sono, o seu rendimento e a sua paz.',
+    alto: 'Você está guardando tudo na cabeça ao mesmo tempo: o que precisa fazer, o que pode esperar e o que é só preocupação. A ansiedade se alimenta dessa mistura: a cabeça não desliga, você trava e o cansaço chega antes das tarefas. Aos poucos, isso atrapalha o sono, o trabalho e até os momentos que deveriam ser de descanso.',
     medio: 'Na maior parte dos dias, a sua cabeça mistura tarefas com preocupações. É aí que a ansiedade aparece: fica difícil saber por onde começar e a energia vai embora só pensando.',
     baixo: 'Mesmo dando conta no dia a dia, a sua cabeça carrega mais do que deveria. É esse peso silencioso que, nos dias cheios, vira ansiedade, insônia, travamento e a sensação de não ter feito nada.',
   }[nivel];
@@ -174,7 +174,7 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
       )}
 
       <p className="mt-4 border-l-4 border-terracota-escuro pl-3 text-[15.5px] leading-relaxed text-grafite/85">
-        <b className="text-grafite">Isso não melhora sozinho.</b> Quanto mais tempo a cabeça segura tudo, mais ansiedade, mais cansaço, menos coisa feita e menos vida aproveitada. A boa notícia: dá para começar a mudar <span className="grifo font-bold text-grafite">hoje, com 10 minutos</span>.
+        <b className="text-grafite">Isso não melhora sozinho.</b> Quanto mais tempo a cabeça segura tudo, mais ansiedade, mais cansaço e menos tempo para aproveitar o que importa. A boa notícia: dá para começar a mudar <span className="grifo font-bold text-grafite">hoje, com 10 minutos</span>.
       </p>
 
       <div className="mt-4 rounded-2xl bg-salvia-bg p-4">

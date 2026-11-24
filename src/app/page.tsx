@@ -40,17 +40,17 @@ const ABAS = [
 const VILOES: { n: string; d: string; a: React.ReactNode }[] = [
   {
     n: 'O Ruminador',
-    d: 'Você deita e ele começa: o que você falou, o que esqueceu, o que pode dar errado. E o sono vai embora.',
+    d: 'Você deita para descansar e ele começa a repassar o dia inteiro: o que você falou, o que esqueceu, o que pode dar errado, até o sono ir embora.',
     a: <>o bônus <b className="text-creme">Desligando a Cabeça Antes de Dormir</b>: descarregue tudo no papel e <b className="text-creme">deite sabendo que nada ficou solto</b>.</>,
   },
   {
     n: 'O “E se…”',
-    d: 'Sofre hoje por coisas que ainda não aconteceram. E que, na maioria das vezes, nem vão acontecer.',
+    d: 'Antecipa problemas que ainda não aconteceram (e que, na maioria das vezes, nem vão acontecer), mas que você já sofre hoje.',
     a: <>o lugar <b className="text-creme">Desocupar</b>: registre a preocupação e volte para o que dá para fazer hoje.</>,
   },
   {
     n: 'O Incêndio',
-    d: 'Tudo parece urgente ao mesmo tempo. Você não sabe por onde começar, trava, e o dia passa.',
+    d: 'Tudo parece urgente ao mesmo tempo, você não sabe por onde começar e acaba travando enquanto o dia passa.',
     a: <>os lugares <b className="text-creme">Resolver e Programar</b>: o que é para agora, o que pode esperar e <b className="text-creme">uma única primeira ação</b>.</>,
   },
 ];
@@ -123,7 +123,7 @@ export default function Page() {
               Finalmente, um planner desenvolvido para o <span className="grifo">cérebro com ansiedade</span>.
             </h1>
             <p className="sub mt-5">
-              Chega de viver cansada(o), preocupada(o) e travada(o). Com o <b className="text-grafite">Método Mente em 3 Lugares</b>, em 10 minutos por dia você tira tudo da cabeça, separa o que é problema do que é só preocupação e <b className="text-grafite">volta a saber o que fazer primeiro</b>.
+              Pare de lutar contra uma cabeça que não desliga e te deixa cansada(o) o dia inteiro. Com o <b className="text-grafite">Método Mente em 3 Lugares</b>, em 10 minutos por dia você tira tudo da cabeça, separa o que precisa resolver do que é só preocupação e termina com <b className="text-grafite">um primeiro passo claro</b>.
             </p>
             <div className="mt-7 hidden md:block">
               <Cta>Quero minha mente mais calma</Cta>
@@ -224,13 +224,13 @@ export default function Page() {
 
         <div className="estreito reveal mt-12 space-y-5 text-center text-[19px] leading-relaxed text-grafite/80">
           <p>
-            E o preço vai muito além do cansaço. <b className="text-grafite">O trabalho não rende. Os planos ficam parados. O fim de semana não descansa.</b> Você se irrita com quem não tem culpa e sente a vida passando enquanto só tenta dar conta.
+            E isso cobra um preço alto: o trabalho não rende como você sabe que poderia, os planos vão ficando para depois, nem o fim de semana descansa de verdade e, às vezes, sobra para quem não tem culpa. <b className="text-grafite">Dá a sensação de que a vida está passando enquanto você só tenta dar conta.</b>
           </p>
           <p>
-            Não é preguiça nem falta de força de vontade. <span className="grifo font-bold text-grafite">É uma cabeça cheia demais tentando segurar tudo sozinha.</span>
+            Isso não tem nada a ver com preguiça. <b className="text-grafite">Uma cabeça sobrecarregada não consegue simplesmente sentar, planejar e seguir uma lista.</b>
           </p>
           <p className="font-display text-[22px] font-bold leading-snug text-petroleo-escuro sm:text-[26px]">
-            Você não precisa de mais uma lista de tarefas. Precisa <span className="grifo">esvaziar a cabeça</span> para voltar a viver.
+            Você não precisa de mais uma lista de tarefas. Precisa de um jeito de <span className="grifo">esvaziar a cabeça</span>.
           </p>
         </div>
       </section>
@@ -257,7 +257,7 @@ export default function Page() {
             ))}
           </ol>
           <p className="reveal mt-12 text-center text-[20px] leading-relaxed text-creme/85">
-            Agenda comum não resolve nenhum deles: ela só aumenta a lista. O Mente Calma faz o contrário: <span className="font-bold text-creme underline decoration-terracota decoration-[3px] underline-offset-[6px]">antes de organizar o seu dia, ele tira o peso da sua cabeça.</span>
+            Uma agenda comum não ajuda com nenhum deles, porque só acrescenta mais coisa na lista. O Mente Calma foi desenvolvido ao contrário: <span className="font-bold text-creme underline decoration-terracota decoration-[3px] underline-offset-[6px]">antes de organizar o seu dia, ele organiza o que está ocupando a sua cabeça.</span>
           </p>
         </div>
       </section>
@@ -271,9 +271,9 @@ export default function Page() {
             </span>
             <h2 className="titulo mt-4">Método Mente em 3 Lugares</h2>
             <p className="sub mt-4">
-              A ansiedade joga tudo na mesma gaveta: o que você <b className="text-grafite">precisa fazer</b>, o que <b className="text-grafite">pode esperar</b> e o que é <span className="grifo font-bold text-grafite">só medo do que pode acontecer</span>. Tudo junto, tudo parece urgente. E nada sai do lugar.
+              A ansiedade joga tudo na mesma gaveta: o que você <b className="text-grafite">precisa fazer</b>, o que <b className="text-grafite">pode esperar</b> e o que é <span className="grifo font-bold text-grafite">só medo do que pode acontecer</span>. Enquanto fica tudo junto, tudo parece urgente e fica difícil sair do lugar.
             </p>
-            <p className="sub mt-3">O método separa essas três coisas. Cada pensamento vai para o seu lugar e <b className="text-grafite">a cabeça, finalmente, descansa</b>.</p>
+            <p className="sub mt-3">O método separa essas três coisas. Quando cada pensamento ganha o seu lugar, <b className="text-grafite">a cabeça finalmente para de segurar tudo</b>.</p>
           </div>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -317,7 +317,7 @@ export default function Page() {
 
           <div className="reveal mx-auto mt-12 max-w-[640px] text-center">
             <p className="text-[19px] leading-relaxed text-grafite/80">
-              No fim: <b className="text-grafite">a cabeça mais leve</b>, <b className="text-grafite">as pendências no papel</b> e <span className="grifo font-bold text-grafite">você sabendo exatamente por onde começar</span>.
+              No fim dos 10 minutos, as pendências estão no papel, a cabeça fica mais leve e <span className="grifo font-bold text-grafite">você sabe por onde começar</span>.
             </p>
             <p className="mt-3 text-[16px] leading-relaxed text-grafite/70">
               E sem sobrecarga: <b className="text-grafite">na primeira semana você usa só 2 páginas</b>. O resto vem quando você quiser.
@@ -431,7 +431,7 @@ export default function Page() {
           <h2 className="titulo reveal text-center">
             Quanto tempo mais você vai viver <span className="grifo">no modo sobrevivência</span>?
           </h2>
-          <p className="sub reveal mt-3 text-center">Cada dia com a cabeça cheia é um dia a menos de vida bem vivida. Comece hoje, com 10 minutos.</p>
+          <p className="sub reveal mt-3 text-center">Dá para começar hoje mesmo, com 10 minutos por dia.</p>
           <div className="reveal mt-9 overflow-hidden rounded-[28px] bg-white shadow-papel ring-1 ring-grafite/5">
             <div className="relative flex items-center gap-4 bg-petroleo px-6 py-5 text-creme">
               <LogoMark size={46} light />
@@ -513,7 +513,7 @@ export default function Page() {
           <h2 className="reveal mt-8 font-display text-[28px] font-bold leading-[1.12] sm:text-[40px]">
             Você não precisa guardar tudo na cabeça. Só precisa de <span className="text-terracota">um lugar para colocar</span>.
           </h2>
-          <p className="reveal mt-4 text-[18px] text-creme/80">Voltar a dormir, a render e a aproveitar o seu dia começa com 10 minutos.</p>
+          <p className="reveal mt-4 text-[18px] text-creme/80">Com menos peso na cabeça, fica mais fácil dormir melhor, render no trabalho e aproveitar o seu dia.</p>
           {mostraProva && (
             <p className="so-ex reveal mt-3 text-[16px] text-creme/80">
               Junte-se a <b className="text-creme">mais de {provaSocial.pessoas} pessoas</b> que já trocaram a cabeça cheia por 10 minutos de clareza.
