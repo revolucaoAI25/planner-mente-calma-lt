@@ -2,7 +2,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import { checkout, preco } from '@/config/oferta';
-import { checkoutUrl, track } from '@/lib/tracking';
+import { destinoCheckout, track } from '@/lib/tracking';
 
 /** Botão de compra: abre o checkout da Kiwify com as UTMs (ou rola até o preço, se o link ainda não existe). */
 export function Cta({ children, className = '', verde = false }: { children: React.ReactNode; className?: string; verde?: boolean }) {
@@ -19,7 +19,7 @@ export function Cta({ children, className = '', verde = false }: { children: Rea
           /* ignore */
         }
         track('InitiateCheckout', { value: preco, currency: 'BRL', content_name: 'Planner Mente Calma' });
-        window.location.href = checkoutUrl(checkout);
+        window.location.href = destinoCheckout(checkout, e.currentTarget.href);
       }}
     >
       <span className="relative z-10">{children}</span>

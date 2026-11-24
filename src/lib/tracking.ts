@@ -55,3 +55,30 @@ export function track(event: string, params: Record<string, unknown> = {}) {
     /* ignore */
   }
 }
+
+/**
+ * Link final do checkout. Prefere o link como o script de UTMs da Utmify deixou nos botões
+ * (ele grava os dados que casam a venda com o anúncio) e só completa o que faltar.
+ */
+export function destinoCheckout(base: string, hrefAtual?: string): string {
+  let destino = checkoutUrl(base);
+  try {
+    const b = new URL(base);
+    const candidatos = [hrefAtual, ...Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href]')).map((a) => a.href)];
+    const decorado = candidatos.find((h) => {
+      if (!h) return false;
+      const u = new URL(h, location.href);
+      return u.host === b.host && u.pathname === b.pathname && u.search.length > 1;
+    });
+    if (decorado) {
+      const atual = new URL(decorado, location.href);
+      new URL(destino).searchParams.forEach((v, k) => {
+        if (!atual.searchParams.has(k)) atual.searchParams.set(k, v);
+      });
+      destino = atual.toString();
+    }
+  } catch {
+    /* usa o destino montado pelo site */
+  }
+  return destino;
+}

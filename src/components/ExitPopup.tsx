@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Check, Clock3, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { checkout, imagens, preco, precoDe } from '@/config/oferta';
-import { checkoutUrl, track } from '@/lib/tracking';
+import { destinoCheckout, track } from '@/lib/tracking';
 import { LogoMark } from './Logo';
 
 const KEY = 'pmc:saida';
@@ -106,7 +106,7 @@ export function ExitPopup() {
     }
     if (checkout) {
       track('InitiateCheckout', { value: preco, currency: 'BRL', content_name: 'Planner Mente Calma (pop-up de saída)' });
-      window.location.href = checkoutUrl(checkout);
+      window.location.href = destinoCheckout(checkout);
     } else {
       setOpen(false);
       document.getElementById('oferta')?.scrollIntoView({ behavior: 'smooth' });
