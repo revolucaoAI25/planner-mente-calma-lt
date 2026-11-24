@@ -8,3 +8,6 @@ next-env.d.ts
 .vercel
 planner/.build/
 planner/dist/
+criativos/src/_q/
+criativos/src/_*.html
+criativos/src/_prev*
