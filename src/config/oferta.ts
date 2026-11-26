@@ -12,7 +12,12 @@ export const marca = {
 /** Checkout da Kiwify (variável NEXT_PUBLIC_CHECKOUT na Vercel). Vazio = os botões levam para a seção de preço. */
 export const checkout = process.env.NEXT_PUBLIC_CHECKOUT ?? '';
 
-export const preco = 37;
+export const preco = 24.9;
+
+/** Valor em reais no formato brasileiro: 24.9 → "24,90", 97 → "97". */
+export const valorBR = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(2).replace('.', ','));
+/** "R$ 24,90" */
+export const brl = (n: number) => `R$ ${valorBR(n)}`;
 /** Preço "de" (riscado). */
 export const precoDe = 97;
 

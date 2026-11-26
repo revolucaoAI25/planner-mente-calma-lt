@@ -26,9 +26,8 @@ import { PorDentro } from '@/components/PorDentro';
 import { Quiz } from '@/components/Quiz';
 import { Reveal } from '@/components/Reveal';
 import { StickyBar } from '@/components/StickyBar';
-import { criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, preco, precoDe, provaSocial, valores } from '@/config/oferta';
+import { brl, criadora, criadoraReal, depoimentosTeste, garantiaDias, imagens, marca, modoTeste, preco, precoDe, provaSocial, valorBR, valores } from '@/config/oferta';
 
-const brl = (n: number) => `R$ ${n}`;
 
 const ABAS = [
   { icon: Moon, t: 'Deita exausta(o) e a cabeça não desliga' },
@@ -458,7 +457,7 @@ export default function Page() {
                 </p>
                 <p className="mt-1 font-display text-[60px] font-bold leading-none tracking-tight text-grafite">
                   <span className="align-top text-[24px]">R$</span>
-                  {preco}
+                  {valorBR(preco)}
                 </p>
                 <p className="mt-2 text-[14px] text-grafite/60">pagamento único · sem mensalidade · acesso imediato</p>
               </div>

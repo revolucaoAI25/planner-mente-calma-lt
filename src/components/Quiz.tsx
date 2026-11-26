@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowLeft, Brain, CalendarDays, Check, RotateCcw, Wind } from 'lucide-react';
-import { Cta } from './Cta';
+import { ArrowDown, ArrowLeft, Brain, CalendarDays, Check, RotateCcw, Wind } from 'lucide-react';
 
 type Lugar = 'resolver' | 'programar' | 'desocupar';
 
@@ -200,7 +199,19 @@ function Resultado({ resp, pct, refazer }: { resp: number[]; pct: number; refaze
       </div>
 
       <div className="mt-6 flex flex-col items-center gap-3">
-        <Cta>Quero organizar minha mente</Cta>
+        <a
+          href="#metodo"
+          className="btn-principal animate-pulso"
+          onClick={(e) => {
+            const alvo = document.getElementById('metodo');
+            if (!alvo) return;
+            e.preventDefault();
+            alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+        >
+          <span className="relative z-10">Ver como funciona o método</span>
+          <ArrowDown size={19} strokeWidth={2.6} className="relative z-10 shrink-0" />
+        </a>
         <button type="button" onClick={refazer} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-grafite/50 hover:text-grafite">
           <RotateCcw size={13} /> Refazer o teste
         </button>

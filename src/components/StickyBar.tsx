@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { preco, precoDe } from '@/config/oferta';
+import { preco, precoDe, valorBR } from '@/config/oferta';
 import { Cta } from './Cta';
 
 /** Barra fixa no celular: aparece depois do topo e some na seção de preço. */
@@ -32,7 +32,7 @@ export function StickyBar() {
           <p className="text-[11px] text-grafite/60">
             de <s>R$ {precoDe}</s> por
           </p>
-          <p className="font-display text-[20px] font-bold text-grafite">R$ {preco}</p>
+          <p className="font-display text-[20px] font-bold text-grafite">R$ {valorBR(preco)}</p>
         </div>
         <Cta className="!min-h-[50px] !px-4 !text-[13px]">Quero o meu</Cta>
       </div>

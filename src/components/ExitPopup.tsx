@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Check, Clock3, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { checkout, imagens, preco, precoDe } from '@/config/oferta';
+import { checkout, imagens, preco, precoDe, valorBR } from '@/config/oferta';
 import { destinoCheckout, track } from '@/lib/tracking';
 import { LogoMark } from './Logo';
 
@@ -136,7 +136,7 @@ export function ExitPopup() {
               <p className="text-[14px] text-grafite/60">
                 de <s>R$ {precoDe}</s> por
               </p>
-              <p className="font-display text-[44px] font-bold leading-none text-grafite">R$ {preco}</p>
+              <p className="font-display text-[44px] font-bold leading-none text-grafite">R$ {valorBR(preco)}</p>
               <p className="mt-1 text-[13px] text-grafite/60">planner completo + 4 bônus</p>
             </div>
           </div>
@@ -151,7 +151,7 @@ export function ExitPopup() {
             ))}
           </ul>
           <button type="button" onClick={comprar} className="btn-principal mt-5 !w-full !min-w-0">
-            <span className="relative z-10">Quero garantir por R$ {preco}</span>
+            <span className="relative z-10">Quero garantir por R$ {valorBR(preco)}</span>
           </button>
           <button type="button" onClick={() => setOpen(false)} className="mt-3 w-full py-2 text-center text-[13px] text-grafite/50 underline">
             Não, prefiro continuar com a cabeça cheia
